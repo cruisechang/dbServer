@@ -1,0 +1,1199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a6f3a024-60dd-42c0-a6e4-e62a5f0bae49" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/handler/bannerID.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/handler/bannerID_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/handler/banners.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/handler/banners_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/broadcastID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/broadcastID.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/broadcasts.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/broadcasts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/transferID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/transferID.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/transferPartnerTransferID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/transferPartnerTransferID.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/transfers.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/transfers.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="dbServer" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../dbex/dbex.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="243">
+              <caret line="49" column="23" lean-forward="true" selection-start-line="49" selection-start-column="23" selection-end-line="49" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/handler/config.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" column="26" selection-start-line="12" selection-start-column="26" selection-end-line="12" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="13" column="26" lean-forward="true" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/handler/bannerID.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1395">
+              <caret line="102" column="5" selection-start-line="102" selection-start-column="5" selection-end-line="102" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/handler/bannerID_test.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="660">
+              <caret line="57" column="36" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/handler/banners_test.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1275">
+              <caret line="96" column="44" selection-start-line="96" selection-start-column="44" selection-end-line="96" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/handler/banners.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1680">
+              <caret line="119" column="37" selection-start-line="119" selection-start-column="37" selection-end-line="119" selection-end-column="37" />
+              <folding>
+                <element signature="e#17#120#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>officialCMSManagerHandler</find>
+      <find>betHandler</find>
+      <find>dealerHandler</find>
+      <find>hallHandler</find>
+      <find>partnerHandler</find>
+      <find>NewPartnerHandler</find>
+      <find>roomHandler</find>
+      <find>NewRoomHandler</find>
+      <find>roundHandler</find>
+      <find>transferfHandler</find>
+      <find>userHandler</find>
+      <find>NewUserHandler</find>
+      <find>CodeRequestPostDataIllegal</find>
+      <find>CodeRequestDataError</find>
+      <find>for</find>
+      <find>countByAccount</find>
+      <find>ug</find>
+      <find>sqlExec</find>
+      <find>client</find>
+      <find>nex</find>
+      <find>sqlQueryFunc</find>
+      <find>userAccessTokenData</find>
+      <find>returnPostResDataFunc</find>
+      <find>returnResDataFunc</find>
+      <find>returnTargetColumnResDataCount</find>
+      <find>getByFilter</find>
+      <find>round</find>
+      <find>transfe</find>
+      <find>transeferIDData</find>
+      <find>returnResponseDataFunc</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>oom</replace>
+      <replace>Room</replace>
+      <replace>roomHandler</replace>
+      <replace>hallHandler</replace>
+      <replace>halls</replace>
+      <replace>dealersHandler</replace>
+      <replace>DealerH</replace>
+      <replace>dealerAccountHandler</replace>
+      <replace>dealers</replace>
+      <replace>NewDealer</replace>
+      <replace>dealerHandler</replace>
+      <replace>limitations</replace>
+      <replace>partner_log</replace>
+      <replace>partner_id</replace>
+      <replace>t.Fatalf</replace>
+      <replace>dbex.</replace>
+      <replace>NewOfficialCMSManagerIDHandler</replace>
+      <replace>officialCMSManagerIDHandler</replace>
+      <replace>betIDHandler</replace>
+      <replace>dealerIDHandler</replace>
+      <replace>hallIDHandler</replace>
+      <replace>partnerIDHandler</replace>
+      <replace>NewPartnerIDHandler</replace>
+      <replace>roomIDHandler</replace>
+      <replace>NewRoomIDHandler</replace>
+      <replace>roundIDHandler</replace>
+      <replace>transferIDHandler</replace>
+      <replace>userIDHandler</replace>
+      <replace>NewUserIDHandler</replace>
+      <replace>d</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/../../github.com/sony/sonyflake</dir>
+      <dir>$PROJECT_DIR$/../..</dir>
+    </dirStrings>
+  </component>
+  <component name="GOROOT" path="/usr/local/Cellar/go/1.11.4/libexec" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/handler/dealers_test.go" />
+        <option value="$PROJECT_DIR$/handler/officialCMSManagers_test.go" />
+        <option value="$PROJECT_DIR$/handler/partnerLog_test.go" />
+        <option value="$PROJECT_DIR$/handler/partners_test.go" />
+        <option value="$PROJECT_DIR$/handler/userLog_test.go" />
+        <option value="$PROJECT_DIR$/handler/users_test.go" />
+        <option value="$PROJECT_DIR$/handler/notFoundHandler.go" />
+        <option value="$PROJECT_DIR$/handler/betID.go" />
+        <option value="$PROJECT_DIR$/handler/bets.go" />
+        <option value="$PROJECT_DIR$/handler/dealerAccount.go" />
+        <option value="$PROJECT_DIR$/handler/dealerID.go" />
+        <option value="$PROJECT_DIR$/handler/dealers.go" />
+        <option value="$PROJECT_DIR$/handler/hallID.go" />
+        <option value="$PROJECT_DIR$/handler/limitations.go" />
+        <option value="$PROJECT_DIR$/handler/officialCMSManagerAccount.go" />
+        <option value="$PROJECT_DIR$/handler/officialCMSManagerID.go" />
+        <option value="$PROJECT_DIR$/handler/officialCMSManagers.go" />
+        <option value="$PROJECT_DIR$/handler/officialCMSRoleID.go" />
+        <option value="$PROJECT_DIR$/handler/officialCMSRoles.go" />
+        <option value="$PROJECT_DIR$/handler/partnerID.go" />
+        <option value="$PROJECT_DIR$/handler/partnerLog.go" />
+        <option value="$PROJECT_DIR$/handler/partners.go" />
+        <option value="$PROJECT_DIR$/handler/rooms.go" />
+        <option value="$PROJECT_DIR$/handler/roundID.go" />
+        <option value="$PROJECT_DIR$/handler/rounds.go" />
+        <option value="$PROJECT_DIR$/handler/userAccessToken.go" />
+        <option value="$PROJECT_DIR$/handler/userID.go" />
+        <option value="$PROJECT_DIR$/handler/userLog.go" />
+        <option value="$PROJECT_DIR$/handler/users.go" />
+        <option value="$PROJECT_DIR$/handler/roomID.go" />
+        <option value="$PROJECT_DIR$/handler/roomID_test.go" />
+        <option value="$PROJECT_DIR$/handler/broadcast.go" />
+        <option value="$PROJECT_DIR$/handler/halls.go" />
+        <option value="$PROJECT_DIR$/handler/broadcasts_test.go" />
+        <option value="$PROJECT_DIR$/handler/dealerID_test.go" />
+        <option value="$PROJECT_DIR$/handler/userAccount.go" />
+        <option value="$PROJECT_DIR$/handler/partnerAccount_test.go" />
+        <option value="$PROJECT_DIR$/handler/partnerAccount.go" />
+        <option value="$PROJECT_DIR$/handler/base.go" />
+        <option value="$PROJECT_DIR$/handler/broadcastID_test.go" />
+        <option value="$PROJECT_DIR$/handler/transfers.go" />
+        <option value="$PROJECT_DIR$/handler/transferPartnerTransferID.go" />
+        <option value="$PROJECT_DIR$/handler/transferID.go" />
+        <option value="$PROJECT_DIR$/handler/config.go" />
+        <option value="$PROJECT_DIR$/handler/broadcasts.go" />
+        <option value="$PROJECT_DIR$/handler/broadcastID.go" />
+        <option value="$PROJECT_DIR$/handler/bannerID_test.go" />
+        <option value="$PROJECT_DIR$/handler/bannerID.go" />
+        <option value="$PROJECT_DIR$/handler/banners.go" />
+        <option value="$PROJECT_DIR$/main.go" />
+        <option value="$PROJECT_DIR$/handler/banners_test.go" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="29" />
+    <option name="y" value="23" />
+    <option name="width" value="1412" />
+    <option name="height" value="877" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="dbServer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dbServer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dbServer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="configurable.Global.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Module.GOPATH.is.expanded" value="false" />
+    <property name="configurable.Project.GOPATH.is.expanded" value="true" />
+    <property name="go.gopath.indexing.explicitly.defined" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/config" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Go Build.main">
+    <configuration name="main" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <kind value="DIRECTORY" />
+      <filePath value="$PROJECT_DIR$/" />
+      <package value="oa/dbServer" />
+      <directory value="$PROJECT_DIR$/" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unnamed" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
+    <configuration name="banner" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/banners_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="bannerID" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/bannerID_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="betID" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/betID_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="bets" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/bets_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="broadcastID" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/handler/broadcastID_test.go" />
+      <filePath value="$PROJECT_DIR$/handler/broadcastID_test.go" />
+      <pattern value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="broadcasts" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/broadcasts_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="client" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/test/client_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="dealerAccount" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/dealerAccount_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="dealerID" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/dealerID_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="dealers" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/dealers_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="hallID" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/hallID_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="halls" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/halls_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="handlerTest" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/test/handler_test.go" />
+      <pattern value="$PROJECT_DIR$/../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="limitations" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/limitations_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="notFound" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/notFoundHandler_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="officialCMSManagerAccount" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/officialCMSManagerAccount_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="officialCMSManagerID" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/officialCMSManagerID_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="officialCMSManagers" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/officialCMSManagers_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="officialCMSRoleID" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/officialCMSRoleID_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="officialCMSRoles" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/officialCMSRoles_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="partnerAccount" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/partnerAccount_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="partnerID" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/partnerID_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="partnerLog" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/partnerLog_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="partners" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/partners_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="roomID" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/roomID_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="rooms" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/rooms_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="roundID" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/roundID_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="rounds" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/rounds_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="sonyflake" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/test/sonyflake_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="transferID" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/transferID_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="transferPartnerTransferID" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/transferPartnerTransferID_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="transfers" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/transfers_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="userAccessToken" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/userAccessToken_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="userAccount" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/userAccount_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="userID" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/userID_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="userLog" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/userLog_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <configuration name="users" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="dbServer" />
+      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <package value="oa/dbServer" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/handler/users_test.go" />
+      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Go Build.main" />
+      <item itemvalue="Go Test.banner" />
+      <item itemvalue="Go Test.bannerID" />
+      <item itemvalue="Go Test.bets" />
+      <item itemvalue="Go Test.betID" />
+      <item itemvalue="Go Test.broadcasts" />
+      <item itemvalue="Go Test.broadcastID" />
+      <item itemvalue="Go Test.Unnamed" />
+      <item itemvalue="Go Test.dealerID" />
+      <item itemvalue="Go Test.dealers" />
+      <item itemvalue="Go Test.dealerAccount" />
+      <item itemvalue="Go Test.hallID" />
+      <item itemvalue="Go Test.halls" />
+      <item itemvalue="Go Test.rounds" />
+      <item itemvalue="Go Test.roundID" />
+      <item itemvalue="Go Test.limitations" />
+      <item itemvalue="Go Test.notFound" />
+      <item itemvalue="Go Test.officialCMSManagerAccount" />
+      <item itemvalue="Go Test.officialCMSManagerID" />
+      <item itemvalue="Go Test.officialCMSManagers" />
+      <item itemvalue="Go Test.officialCMSRoles" />
+      <item itemvalue="Go Test.officialCMSRoleID" />
+      <item itemvalue="Go Test.partners" />
+      <item itemvalue="Go Test.partnerID" />
+      <item itemvalue="Go Test.partnerAccount" />
+      <item itemvalue="Go Test.partnerLog" />
+      <item itemvalue="Go Test.rooms" />
+      <item itemvalue="Go Test.roomID" />
+      <item itemvalue="Go Test.transfers" />
+      <item itemvalue="Go Test.transferID" />
+      <item itemvalue="Go Test.transferPartnerTransferID" />
+      <item itemvalue="Go Test.users" />
+      <item itemvalue="Go Test.userID" />
+      <item itemvalue="Go Test.userAccount" />
+      <item itemvalue="Go Test.userAccessToken" />
+      <item itemvalue="Go Test.userLog" />
+      <item itemvalue="Go Test.client" />
+      <item itemvalue="Go Test.sonyflake" />
+      <item itemvalue="Go Test.handlerTest" />
+    </list>
+  </component>
+  <component name="TestHistory">
+    <history-entry file="banner - 2019.01.14 at 13h 10m 55s.xml">
+      <configuration name="banner" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="banner - 2019.01.14 at 13h 11m 57s.xml">
+      <configuration name="banner" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="banner - 2019.01.14 at 13h 13m 10s.xml">
+      <configuration name="banner" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="banner - 2019.01.14 at 13h 13m 42s.xml">
+      <configuration name="banner" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="bannerID - 2019.01.14 at 15h 15m 40s.xml">
+      <configuration name="bannerID" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="bannerID - 2019.01.14 at 15h 16m 40s.xml">
+      <configuration name="bannerID" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="bannerID - 2019.01.14 at 15h 18m 55s.xml">
+      <configuration name="bannerID" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="bannerID - 2019.01.14 at 15h 19m 58s.xml">
+      <configuration name="bannerID" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="bannerID - 2019.01.14 at 16h 49m 28s.xml">
+      <configuration name="bannerID" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+    <history-entry file="banner - 2019.01.14 at 16h 50m 13s.xml">
+      <configuration name="banner" configurationId="GoTestRunConfiguration" />
+    </history-entry>
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="28" y="23" width="1412" height="877" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6564103" visible="true" weight="0.2810219" />
+      <window_info id="Favorites" order="1" sideWeight="0.34358975" side_tool="true" weight="0.22627737" />
+      <window_info x="7" y="-814" width="228" height="785" id="Structure" order="2" sideWeight="0.34358975" side_tool="true" weight="0.17445256" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3566879" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3948718" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32902297" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32948717" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.32948717" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32948717" />
+      <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/handler/notFoundHandler.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="4" column="1" lean-forward="true" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/limitations.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="22" selection-start-line="22" selection-end-line="27" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/partnerLog.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="33" column="7" selection-start-line="33" selection-start-column="7" selection-end-line="33" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/partners.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="30" column="7" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/rooms.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="343">
+          <caret line="30" column="7" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/roundID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="34" column="7" selection-start-line="34" selection-start-column="7" selection-end-line="34" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/rounds.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="19" column="15" lean-forward="true" selection-start-line="19" selection-start-column="15" selection-end-line="19" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/halls.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1155">
+          <caret line="77" column="24" lean-forward="true" selection-start-line="77" selection-start-column="24" selection-end-line="77" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/betID_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="53" column="61" lean-forward="true" selection-start-line="53" selection-start-column="61" selection-end-line="53" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/roomID_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="756" lean-forward="true" selection-start-line="756" selection-end-line="756" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/roomID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3285">
+          <caret line="256" column="41" lean-forward="true" selection-start-line="256" selection-start-column="41" selection-end-line="256" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/bets_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="15" column="47" lean-forward="true" selection-start-line="15" selection-start-column="47" selection-end-line="15" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/userLog_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="32" column="6" lean-forward="true" selection-start-line="32" selection-start-column="6" selection-end-line="32" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/users_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="106" column="42" lean-forward="true" selection-start-line="106" selection-start-column="42" selection-end-line="106" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/userAccessToken_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-216" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/partnerAccount_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="176" column="38" lean-forward="true" selection-start-line="176" selection-start-column="38" selection-end-line="176" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/partnerAccount.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="62" column="54" lean-forward="true" selection-start-line="62" selection-start-column="54" selection-end-line="62" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/dealerID_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-677">
+          <caret line="59" column="35" selection-start-line="59" selection-start-column="35" selection-end-line="59" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/userID_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5115">
+          <caret line="352" column="19" lean-forward="true" selection-start-line="352" selection-start-column="19" selection-end-line="352" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/officialCMSManagerID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1742">
+          <caret line="60" lean-forward="true" selection-start-line="60" selection-end-line="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/Cellar/go/1.11/libexec/src/net/http/status.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="13" column="4" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/officialCMSManagerID_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="14" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../gorilla/mux/mux.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="162" column="1" lean-forward="true" selection-start-line="162" selection-start-column="1" selection-end-line="162" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/partnerID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="282" column="37" lean-forward="true" selection-start-line="282" selection-start-column="37" selection-end-line="282" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/dealerAccount.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/dealerID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="32" column="7" selection-start-line="32" selection-start-column="7" selection-end-line="32" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/userLog.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="33" column="7" selection-start-line="33" selection-start-column="7" selection-end-line="33" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/userID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="32" column="37" lean-forward="true" selection-start-line="32" selection-start-column="37" selection-end-line="32" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/userAccount.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="21" column="32" lean-forward="true" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/transfers.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="40" column="26" lean-forward="true" selection-start-line="40" selection-start-column="26" selection-end-line="40" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/transferPartnerTransferID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1185">
+          <caret line="85" column="9" lean-forward="true" selection-start-line="85" selection-start-column="9" selection-end-line="85" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/transferID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1125">
+          <caret line="85" column="9" lean-forward="true" selection-start-line="85" selection-start-column="9" selection-end-line="85" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/users.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="41" column="29" lean-forward="true" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/userAccessToken.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="51" column="54" lean-forward="true" selection-start-line="51" selection-start-column="54" selection-end-line="51" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../dbex/db.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="76" column="12" selection-start-line="76" selection-start-column="12" selection-end-line="76" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/base.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="529">
+          <caret line="126" column="25" lean-forward="true" selection-start-line="126" selection-start-column="25" selection-end-line="126" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/bets.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="605">
+          <caret line="78" column="12" selection-start-line="78" selection-start-column="12" selection-end-line="78" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/client_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1863" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/broadcasts_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="102" column="38" lean-forward="true" selection-start-line="102" selection-start-column="38" selection-end-line="102" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/betID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="21" column="15" lean-forward="true" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/broadcasts.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="620">
+          <caret line="140" column="9" lean-forward="true" selection-start-line="140" selection-start-column="9" selection-end-line="140" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/broadcastID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="32" column="66" selection-start-line="32" selection-start-column="66" selection-end-line="32" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/broadcastID_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="679">
+          <caret line="95" lean-forward="true" selection-start-line="95" selection-end-line="95" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../gorilla/mux/middleware.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="39" column="49" lean-forward="true" selection-start-line="39" selection-start-column="49" selection-end-line="39" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/config.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="26" selection-start-line="12" selection-start-column="26" selection-end-line="12" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/bannerID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1395">
+          <caret line="102" column="5" selection-start-line="102" selection-start-column="5" selection-end-line="102" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/banners_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1275">
+          <caret line="96" column="44" selection-start-line="96" selection-start-column="44" selection-end-line="96" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/banners.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1680">
+          <caret line="119" column="37" selection-start-line="119" selection-start-column="37" selection-end-line="119" selection-end-column="37" />
+          <folding>
+            <element signature="e#17#120#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/bannerID_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="57" column="36" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="13" column="26" lean-forward="true" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../dbex/dbex.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="49" column="23" lean-forward="true" selection-start-line="49" selection-start-column="23" selection-end-line="49" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
