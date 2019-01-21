@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/cruisechang/dbServer/util"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -20,6 +21,7 @@ func Test_userIDHandler_get(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name       string
@@ -49,7 +51,7 @@ func Test_userIDHandler_get(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/users/{id:[0-9]+}", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/users/{id:[0-9]+}", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -86,6 +88,7 @@ func Test_userIDHandler_getCredit(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name       string
@@ -115,7 +118,7 @@ func Test_userIDHandler_getCredit(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/users/{id:[0-9]+}/credit", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/users/{id:[0-9]+}/credit", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -151,6 +154,7 @@ func Test_userIDHandler_getLogin(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name       string
@@ -180,7 +184,7 @@ func Test_userIDHandler_getLogin(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/users/{id:[0-9]+}/login", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/users/{id:[0-9]+}/login", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -216,6 +220,7 @@ func Test_userIDHandler_getActive(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name       string
@@ -245,7 +250,7 @@ func Test_userIDHandler_getActive(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/users/{id:[0-9]+}/active", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/users/{id:[0-9]+}/active", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -281,6 +286,7 @@ func Test_userIDHandler_patchCredit(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name       string
@@ -318,7 +324,7 @@ func Test_userIDHandler_patchCredit(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/users/{id:[0-9]+}/credit", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/users/{id:[0-9]+}/credit", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -354,6 +360,7 @@ func Test_userIDHandler_patchLogin(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name       string
@@ -396,7 +403,7 @@ func Test_userIDHandler_patchLogin(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/users/{id:[0-9]+}/login", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/users/{id:[0-9]+}/login", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -432,6 +439,7 @@ func Test_userIDHandler_patchActive(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name       string
@@ -478,7 +486,7 @@ func Test_userIDHandler_patchActive(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/users/{id:[0-9]+}/active", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/users/{id:[0-9]+}/active", NewUserIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 

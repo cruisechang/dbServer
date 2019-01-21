@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/cruisechang/dbServer/util"
 	"net/http"
 	"testing"
 
@@ -21,6 +22,8 @@ func Test_betIDHandler_get(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type param struct{ ID string }
 
@@ -53,7 +56,7 @@ func Test_betIDHandler_get(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/bets/{id:[0-9]+}", NewBetIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/bets/{id:[0-9]+}", NewBetIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -90,6 +93,8 @@ func Test_betHandler_patchStatus(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name       string
 		httpStatus int
@@ -123,7 +128,7 @@ func Test_betHandler_patchStatus(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/bets/{id:[0-9]+}/status", NewBetIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/bets/{id:[0-9]+}/status", NewBetIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 

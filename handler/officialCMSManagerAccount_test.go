@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/cruisechang/dbServer/util"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -18,6 +19,8 @@ func Test_officialCMSManagerAccountHandler_getCheckLoginData(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name       string
@@ -50,7 +53,7 @@ func Test_officialCMSManagerAccountHandler_getCheckLoginData(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/officialCMSManagers/{account}/login", NewOfficialCMSManagerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/officialCMSManagers/{account}/login", NewOfficialCMSManagerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 

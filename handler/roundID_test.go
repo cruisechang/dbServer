@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/cruisechang/dbServer/util"
 	"net/http"
 	"testing"
 
@@ -21,6 +22,7 @@ func Test_roundHandler_get(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type param struct{ ID string }
 
@@ -57,7 +59,7 @@ func Test_roundHandler_get(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rounds/{id:[0-9]+}", NewRoundIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/rounds/{id:[0-9]+}", NewRoundIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -95,6 +97,7 @@ func Test_roundHandler_patch(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type x struct {
 		A string `json:"a"`
@@ -138,7 +141,7 @@ func Test_roundHandler_patch(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rounds/{id:[0-9]+}/patch", NewRoundIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/rounds/{id:[0-9]+}/patch", NewRoundIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/cruisechang/dbServer/util"
 	"net/http"
 	"testing"
 
@@ -20,6 +21,9 @@ func Test_dealerAccountHandler_getPassword(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 
 	tt := []struct {
 		name    string
@@ -48,7 +52,7 @@ func Test_dealerAccountHandler_getPassword(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/dealers/{account}/password", NewDealerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/dealers/{account}/password", NewDealerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -82,6 +86,8 @@ func Test_dealerAccountHandler_getDealerID(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name    string
 		account string
@@ -109,7 +115,7 @@ func Test_dealerAccountHandler_getDealerID(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/dealers/{account}/id", NewDealerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/dealers/{account}/id", NewDealerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -142,6 +148,8 @@ func Test_dealerAccountHandler_getLogin(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name    string
@@ -179,7 +187,7 @@ func Test_dealerAccountHandler_getLogin(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/dealers/{account}/login", NewDealerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/dealers/{account}/login", NewDealerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 

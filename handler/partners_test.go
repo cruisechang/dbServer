@@ -4,13 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/cruisechang/dbServer/util"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
 	"testing"
 
-	"github.com/cruisechang/dbServer/util"
 	"github.com/cruisechang/dbex"
 	"github.com/gorilla/mux"
 )
@@ -24,6 +24,7 @@ func TestPartnersHandlerGet(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	fmt.Sprintf("%v", dbx)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name  string
@@ -56,7 +57,7 @@ func TestPartnersHandlerGet(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners", NewPartnersHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/partners", NewPartnersHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -87,8 +88,10 @@ func TestPartnersHandlerPost(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 	//db
-	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))
 	sqlDB := h.db.GetSQLDB()
 	var ids []uint64 //放ids，刪掉用
 
@@ -146,7 +149,7 @@ func TestPartnersHandlerPost(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners", NewPartnersHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("POST")
+		router.Handle("/partners", NewPartnersHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("POST")
 
 		router.ServeHTTP(rr, req)
 

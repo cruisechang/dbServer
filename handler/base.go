@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
+	"github.com/sony/sonyflake"
 	"io"
 	"io/ioutil"
 	"net/http"
-
-	"github.com/cruisechang/dbex"
-	"github.com/gorilla/mux"
 )
 
 type sqlExecFunc func(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error)
@@ -20,18 +20,19 @@ type sqlQueryFunc func(stmt *sql.Stmt, IDOrAccount interface{}, param interface{
 type returnResponseDataStructFunc func() func(IDOrAccount interface{}, column string, rows *sql.Rows) *responseData
 
 //NewBaseHandler returns structure of base handler
-func NewBaseHandler(db *dbex.DB, logger *dbex.Logger) baseHandler {
+func NewBaseHandler(db *dbex.DB, logger *dbex.Logger, provider *sonyflake.Sonyflake) baseHandler {
 	return baseHandler{
-		db:     db,
-		logger: logger,
+		db:               db,
+		logger:           logger,
+		uniqueIDProvider: provider,
 	}
-
 }
 
 //BaseHandler 是所有handler的基礎，負責實際db操作及log行為
 type baseHandler struct {
-	db     *dbex.DB
-	logger *dbex.Logger
+	db               *dbex.DB
+	logger           *dbex.Logger
+	uniqueIDProvider *sonyflake.Sonyflake
 }
 
 func (h *baseHandler) checkHead(w http.ResponseWriter, r *http.Request) bool {
@@ -72,6 +73,14 @@ func (h *baseHandler) getVariable(r *http.Request, variable string) (string, err
 		return "", errors.New("get varialbe error")
 	}
 	return v, nil
+}
+
+func (h *baseHandler) getUniqueID() (uint64, error) {
+	if id, err := h.uniqueIDProvider.NextID(); err != nil {
+		return 0, err
+	} else {
+		return id, nil
+	}
 }
 
 //post creates a new record
@@ -349,5 +358,3 @@ func (h *baseHandler) writeSuccess(w http.ResponseWriter, resStr string) {
 	io.WriteString(w, resStr)
 
 }
-
-

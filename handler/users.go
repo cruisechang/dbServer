@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/cruisechang/dbServer/util"
 	"github.com/cruisechang/dbex"
 	"github.com/juju/errors"
 )
@@ -79,7 +78,7 @@ func (h *UsersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			h.writeError(w, http.StatusOK, CodeRequestPostDataIllegal, "post data illegal")
 			return
 		}
-		ID, err := util.GetUniqueID()
+		ID, err := h.getUniqueID()
 		if err != nil {
 			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler  post get unique userID error %s", logPrefix, err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestPostDataIllegal, fmt.Sprintf("%s handler post get unique userID error %s", logPrefix, err.Error()))

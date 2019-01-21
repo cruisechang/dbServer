@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/cruisechang/dbServer/util"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -19,6 +20,8 @@ func Test_officialCMSRolesHandler_get(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name       string
@@ -43,7 +46,7 @@ func Test_officialCMSRolesHandler_get(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle(path, NewOfficialCMSRolesHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle(path, NewOfficialCMSRolesHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -80,8 +83,11 @@ func Test_officialCMSRolesHandler_post(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
+
 	//db
-	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))
 	sqlDB := h.db.GetSQLDB()
 	var ids []uint //放ids，刪掉用
 
@@ -114,7 +120,7 @@ func Test_officialCMSRolesHandler_post(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle(path, NewOfficialCMSRolesHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("POST")
+		router.Handle(path, NewOfficialCMSRolesHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("POST")
 
 		router.ServeHTTP(rr, req)
 

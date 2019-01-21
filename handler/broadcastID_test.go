@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/cruisechang/dbServer/util"
+
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -21,6 +23,8 @@ func Test_broadcastIDHandler_patch(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type errParam struct {
 		A string `json:"a"`
@@ -62,7 +66,7 @@ func Test_broadcastIDHandler_patch(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/broadcasts/{id:[0-9]+}", NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/broadcasts/{id:[0-9]+}", NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -100,7 +104,9 @@ func Test_broadcastIDHandler_delete(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 
-	h := NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
+
+	h := NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))
 
 	sqlDB := h.db.GetSQLDB()
 
@@ -145,7 +151,7 @@ func Test_broadcastIDHandler_delete(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/broadcasts/{id:[0-9]+}", NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("DELETE")
+		router.Handle("/broadcasts/{id:[0-9]+}", NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("DELETE")
 
 		router.ServeHTTP(rr, req)
 

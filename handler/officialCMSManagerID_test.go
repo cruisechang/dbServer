@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/cruisechang/dbServer/util"
 	"net/http"
 	"testing"
 
@@ -22,6 +23,8 @@ func Test_officialCMSManagerIDHandler_get(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type param struct{ ID string }
 
@@ -54,7 +57,7 @@ func Test_officialCMSManagerIDHandler_get(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/officialCMSManagers/{id:[0-9]+}", NewOfficialCMSManagerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/officialCMSManagers/{id:[0-9]+}", NewOfficialCMSManagerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -91,6 +94,8 @@ func Test_officialCMSManagerIDHandler_patch(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type errParam struct {
 		A string `json:"a"`
@@ -129,7 +134,7 @@ func Test_officialCMSManagerIDHandler_patch(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/officialCMSManagers/{id:[0-9]+}", NewOfficialCMSManagerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/officialCMSManagers/{id:[0-9]+}", NewOfficialCMSManagerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -170,7 +175,9 @@ func Test_officialCMSManagerIDHandler_delete(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 
-	h := NewOfficialCMSManagerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
+	h := NewOfficialCMSManagerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))
 
 	sqlDB := h.db.GetSQLDB()
 

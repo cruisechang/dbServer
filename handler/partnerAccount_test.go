@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/cruisechang/dbServer/util"
 	"net/http"
 	"testing"
 
@@ -20,6 +21,8 @@ func Test_partnerAccountHandler_getPassword(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name       string
@@ -52,7 +55,7 @@ func Test_partnerAccountHandler_getPassword(t *testing.T) {
 		rr := httptest.NewRecorder()
 
 		router := mux.NewRouter()
-		router.Handle("/partners/{account}/password", NewPartnerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/partners/{account}/password", NewPartnerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -90,6 +93,8 @@ func Test_partnerAccountHandler_getID(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name       string
 		account    string
@@ -121,7 +126,7 @@ func Test_partnerAccountHandler_getID(t *testing.T) {
 		rr := httptest.NewRecorder()
 
 		router := mux.NewRouter()
-		router.Handle("/partners/{account}/id", NewPartnerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/partners/{account}/id", NewPartnerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -159,6 +164,8 @@ func Test_partnerAccountHandler_login(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name       string
 		account    string
@@ -189,7 +196,7 @@ func Test_partnerAccountHandler_login(t *testing.T) {
 		rr := httptest.NewRecorder()
 
 		router := mux.NewRouter()
-		router.Handle("/partners/{account}/login", NewPartnerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/partners/{account}/login", NewPartnerAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 

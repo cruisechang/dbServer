@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/cruisechang/dbServer/util"
 	"net/http"
 	"testing"
 
@@ -21,6 +22,8 @@ func Test_officialCMSRoleIDHandler_get(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type param struct{ ID string }
 
@@ -52,7 +55,7 @@ func Test_officialCMSRoleIDHandler_get(t *testing.T) {
 		rr := httptest.NewRecorder()
 
 		router := mux.NewRouter()
-		router.Handle("/officialCMSRoles/{id:[0-9]+}", NewOfficialCMSRoleIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/officialCMSRoles/{id:[0-9]+}", NewOfficialCMSRoleIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -90,6 +93,8 @@ func Test_officialCMSRoleIDHandler_patch(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name       string
 		httpStatus int
@@ -124,7 +129,7 @@ func Test_officialCMSRoleIDHandler_patch(t *testing.T) {
 		rr := httptest.NewRecorder()
 
 		router := mux.NewRouter()
-		router.Handle("/officialCMSRoles/{id:[0-9]+}", NewOfficialCMSRoleIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/officialCMSRoles/{id:[0-9]+}", NewOfficialCMSRoleIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 

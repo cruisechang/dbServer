@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/cruisechang/dbServer/util"
 	"net/http"
 	"testing"
 
@@ -20,6 +21,7 @@ func Test_transferPartnerTransferIDHandler_get(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type param struct{ ID uint64 }
 
@@ -54,7 +56,7 @@ func Test_transferPartnerTransferIDHandler_get(t *testing.T) {
 		rr := httptest.NewRecorder()
 
 		router := mux.NewRouter()
-		router.Handle("/transfers/ptID/{partnerTransferID}", NewTransferPartnerTransferIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/transfers/ptID/{partnerTransferID}", NewTransferPartnerTransferIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/cruisechang/dbServer/util"
 	"net/http"
 	"testing"
 
@@ -21,6 +22,8 @@ func Test_bannerIDHandler_patch(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type errParam struct {
 		A string `json:"a"`
@@ -62,7 +65,7 @@ func Test_bannerIDHandler_patch(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/banners/{id:[0-9]+}", NewBannerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/banners/{id:[0-9]+}", NewBannerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -99,8 +102,10 @@ func Test_bannerIDHandler_delete(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
+
 	//insert first
-	h := NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	h := NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))
 	sqlDB := h.db.GetSQLDB()
 	queryString := "INSERT  INTO banner (pic_url,link_url,description,platform,active ) values (? ,?,?,?,?)"
 
@@ -141,7 +146,7 @@ func Test_bannerIDHandler_delete(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/banners/{id:[0-9]+}", NewBannerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("DELETE")
+		router.Handle("/banners/{id:[0-9]+}", NewBannerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("DELETE")
 
 		router.ServeHTTP(rr, req)
 

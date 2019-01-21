@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/cruisechang/dbServer/util"
+
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -22,6 +24,8 @@ func Test_hallHandler_get(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type param struct{ ID uint64 }
 	tt := []struct {
@@ -51,7 +55,7 @@ func Test_hallHandler_get(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/halls/{id:[0-9]+}", NewHallIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/halls/{id:[0-9]+}", NewHallIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -89,6 +93,8 @@ func Test_hallHandler_patch(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name       string
 		ID         string
@@ -124,7 +130,7 @@ func Test_hallHandler_patch(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/halls/{id:[0-9]+}", NewHallIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/halls/{id:[0-9]+}", NewHallIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -296,8 +302,10 @@ func Test_hallHandler_delete(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
+
 	//insert first
-	h := NewHallIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	h := NewHallIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))
 	sqlDB := h.db.GetSQLDB()
 	insertID := 8888
 	queryString := "INSERT  INTO hall (hall_id,name) values (? ,?)"
@@ -333,7 +341,7 @@ func Test_hallHandler_delete(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/halls/{id:[0-9]+}", NewHallIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("DELETE")
+		router.Handle("/halls/{id:[0-9]+}", NewHallIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("DELETE")
 
 		router.ServeHTTP(rr, req)
 

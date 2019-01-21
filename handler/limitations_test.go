@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/cruisechang/dbServer/util"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -21,6 +22,9 @@ func TestLimitationsHandlerGet(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	fmt.Sprintf("%v", dbx)
+
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name       string
 		code       int
@@ -46,7 +50,7 @@ func TestLimitationsHandlerGet(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/limitations", NewLimitationsHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/limitations", NewLimitationsHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 

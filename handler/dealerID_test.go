@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/cruisechang/dbServer/util"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -21,6 +22,8 @@ func Test_dealerHandler_get(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type param struct{ ID uint64 }
 	tt := []struct {
@@ -51,7 +54,7 @@ func Test_dealerHandler_get(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/dealers/{id:[0-9]+}", NewDealerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/dealers/{id:[0-9]+}", NewDealerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -89,8 +92,10 @@ func Test_dealerHandler_delete(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
+
 	//insert first
-	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))
 	sqlDB := h.db.GetSQLDB()
 	queryString := "INSERT  INTO dealer (name,account,password,portrait_url ) values (? ,?,?,?)"
 
@@ -132,7 +137,7 @@ func Test_dealerHandler_delete(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/dealers/{id:[0-9]+}", NewDealerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("DELETE")
+		router.Handle("/dealers/{id:[0-9]+}", NewDealerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("DELETE")
 
 		router.ServeHTTP(rr, req)
 
@@ -168,6 +173,8 @@ func Test_dealerHandler_patch(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type param struct {
 		Active int `json:"active"`
@@ -208,7 +215,7 @@ func Test_dealerHandler_patch(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/dealers/{id:[0-9]+}", NewDealerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/dealers/{id:[0-9]+}", NewDealerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 

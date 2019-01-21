@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/cruisechang/dbServer/util"
 	"net/http"
 	"testing"
 
@@ -22,6 +23,7 @@ func Test_roomHandler_get(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type param struct{ ID uint64 }
 	tt := []struct {
@@ -57,7 +59,7 @@ func Test_roomHandler_get(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/rooms/{id:[0-9]+}", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -95,9 +97,10 @@ func Test_roomHandler_delete(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	//dbx.Logger.SetLevel(dblog.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	//insert first
-	h := NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	h := NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))
 	sqlDB := h.db.GetSQLDB()
 	queryString := "INSERT  INTO room (room_id,hall_id,name,room_type,hls_url,bet_countdown,dealer_id,limitation_id) values (? ,?,?,?,?,?,?,?)"
 
@@ -135,7 +138,7 @@ func Test_roomHandler_delete(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("DELETE")
+		router.Handle("/rooms/{id:[0-9]+}", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("DELETE")
 
 		router.ServeHTTP(rr, req)
 
@@ -167,6 +170,7 @@ func Test_roomHandler_patch(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	//type param struct {
 	//	DealerID uint `json:"dealerID"`
@@ -201,7 +205,7 @@ func Test_roomHandler_patch(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -233,6 +237,7 @@ func Test_roomHandler_patchName(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type param struct {
 		Name string `json:"name"`
@@ -267,7 +272,7 @@ func Test_roomHandler_patchName(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/name", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/name", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -299,6 +304,7 @@ func Test_roomHandler_patchActive(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type param struct {
 		Active uint `json:"active"`
@@ -333,7 +339,7 @@ func Test_roomHandler_patchActive(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/active", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/active", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -365,6 +371,7 @@ func Test_roomHandler_patchHLRURL(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type param struct {
 		HLSURL string `json:"hlsURL"`
@@ -401,7 +408,7 @@ func Test_roomHandler_patchHLRURL(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/hlsURL", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/hlsURL", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -432,6 +439,7 @@ func Test_roomHandler_patchBoot(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type param struct {
 		Boot uint `json:"boot"`
@@ -468,7 +476,7 @@ func Test_roomHandler_patchBoot(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/boot", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/boot", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -500,6 +508,7 @@ func Test_roomHandler_patchRound(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type param struct {
 		Round uint64 `json:"round"`
@@ -534,7 +543,7 @@ func Test_roomHandler_patchRound(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/round", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/round", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -566,6 +575,7 @@ func Test_roomHandler_patchStatus(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type param struct {
 		Status uint `json:"status"`
@@ -600,7 +610,7 @@ func Test_roomHandler_patchStatus(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/status", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/status", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -632,6 +642,7 @@ func Test_roomHandler_patchBetCountdown(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type param struct {
 		BetCountdown uint `json:"betCountdown"`
@@ -666,7 +677,7 @@ func Test_roomHandler_patchBetCountdown(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/betCountdown", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/betCountdown", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -698,6 +709,7 @@ func Test_roomHandler_patchBetDealerID(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	type param struct {
 		DealerID uint `json:"dealerID"`
@@ -732,7 +744,7 @@ func Test_roomHandler_patchBetDealerID(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/dealerID", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/dealerID", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -764,6 +776,7 @@ func Test_roomHandler_patchNewRound(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name  string
@@ -795,7 +808,7 @@ func Test_roomHandler_patchNewRound(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/newRound", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/newRound", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 

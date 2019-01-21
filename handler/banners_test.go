@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"github.com/cruisechang/dbServer/util"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -20,6 +21,8 @@ func Test_bannersHandler_get(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name       string
@@ -45,7 +48,7 @@ func Test_bannersHandler_get(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle(path, NewBannersHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle(path, NewBannersHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -84,6 +87,8 @@ func TestBannersHandlerPost(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	fmt.Sprintf("%v", dbx)
+
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	sqlDB := dbx.DB.GetSQLDB()
 	var stmt *sql.Stmt
@@ -131,7 +136,7 @@ func TestBannersHandlerPost(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle(path, NewBannersHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("POST")
+		router.Handle(path, NewBannersHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("POST")
 
 		router.ServeHTTP(rr, req)
 

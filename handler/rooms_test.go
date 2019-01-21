@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/cruisechang/dbServer/util"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -22,6 +23,8 @@ func TestRoomsHandlerGet(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	fmt.Sprintf("%v", dbx)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name string
 	}{
@@ -44,7 +47,7 @@ func TestRoomsHandlerGet(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms", NewRoomsHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/rooms", NewRoomsHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -73,9 +76,10 @@ func TestRoomsHandlerPost(t *testing.T) {
 	if err != nil {
 		t.Fatalf("dbex error %s", err.Error())
 	}
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	//db
-	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))
 	sqlDB := h.db.GetSQLDB()
 	var ids []uint //放ids，刪掉用
 
@@ -109,7 +113,7 @@ func TestRoomsHandlerPost(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms", NewRoomsHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("POST")
+		router.Handle("/rooms", NewRoomsHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("POST")
 
 		router.ServeHTTP(rr, req)
 

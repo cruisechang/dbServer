@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/cruisechang/dbServer/util"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -21,6 +22,8 @@ func Test_partnerHandler_get(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name       string
@@ -54,7 +57,7 @@ func Test_partnerHandler_get(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}", NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/partners/{id:[0-9]+}", NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -92,6 +95,8 @@ func Test_partnerHandler_getAESKey(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name       string
 		ID         string
@@ -127,7 +132,7 @@ func Test_partnerHandler_getAESKey(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -165,6 +170,8 @@ func Test_partnerHandler_getAvtive(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name       string
 		ID         string
@@ -200,7 +207,7 @@ func Test_partnerHandler_getAvtive(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -238,6 +245,8 @@ func Test_partnerHandler_getLogin(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name       string
 		ID         string
@@ -273,7 +282,7 @@ func Test_partnerHandler_getLogin(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -311,6 +320,8 @@ func Test_partnerHandler_getAPIBindIP(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name       string
 		ID         string
@@ -346,7 +357,7 @@ func Test_partnerHandler_getAPIBindIP(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -383,6 +394,8 @@ func Test_partnerHandler_getCMSBindIP(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name       string
 		ID         string
@@ -418,7 +431,7 @@ func Test_partnerHandler_getCMSBindIP(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -455,6 +468,7 @@ func Test_partnerHandler_getAccessToken(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name       string
@@ -491,7 +505,7 @@ func Test_partnerHandler_getAccessToken(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
+		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -527,6 +541,7 @@ func Test_partnerHandler_patch(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	ip := []string{"xxx.xxx.xxx", "xxx.xxx.xxx"}
 	ipb, _ := json.Marshal(ip)
@@ -569,7 +584,7 @@ func Test_partnerHandler_patch(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}", NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/partners/{id:[0-9]+}", NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -601,6 +616,7 @@ func Test_partnerHandler_patchLogin(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name  string
@@ -639,7 +655,7 @@ func Test_partnerHandler_patchLogin(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -671,6 +687,9 @@ func Test_partnerHandler_patchActive(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
+
 
 	tt := []struct {
 		name  string
@@ -709,7 +728,7 @@ func Test_partnerHandler_patchActive(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -741,6 +760,7 @@ func Test_partnerHandler_patchAESKey(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name  string
@@ -779,7 +799,7 @@ func Test_partnerHandler_patchAESKey(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -811,6 +831,7 @@ func Test_partnerHandler_patchAPIBindIP(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	ip := []string{"xxx.xxx.xxx"}
 	ip2 := []string{"xxx.xxx.xxx", "xxx.xxx.xxx"}
@@ -862,7 +883,7 @@ func Test_partnerHandler_patchAPIBindIP(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -896,6 +917,7 @@ func Test_partnerHandler_patchCMSBindIP(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	ip := []string{"xxx.xxx.xxx"}
 	ip2 := []string{"xxx.xxx.xxx", "xxx.xxx.xxx"}
@@ -947,7 +969,7 @@ func Test_partnerHandler_patchCMSBindIP(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -982,6 +1004,7 @@ func Test_partnerHandler_patchAccessToken(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
 
 	apis := accessTokenData{
 		AccessToken: "00000000",
@@ -1027,7 +1050,7 @@ func Test_partnerHandler_patchAccessToken(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
+		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 

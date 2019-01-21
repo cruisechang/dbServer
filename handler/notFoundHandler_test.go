@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"github.com/cruisechang/dbServer/util"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -19,6 +20,9 @@ func TestNotFoundHandler(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	fmt.Sprintf("%v", dbx)
+
+	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+
 	tt := []struct {
 		name string
 	}{
@@ -41,7 +45,7 @@ func TestNotFoundHandler(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/", NewNotFoundHandler(NewBaseHandler(dbx.DB, dbx.Logger)))
+		router.Handle("/", NewNotFoundHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider)))
 
 		router.ServeHTTP(rr, req)
 
