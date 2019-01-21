@@ -39,7 +39,7 @@ func (h *roundsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == "GET" {
-		//umarshal request body
+		//unmarshal request body
 		param := &roundGetParam{}
 		err := json.Unmarshal(body, param)
 		if err != nil {
@@ -49,7 +49,6 @@ func (h *roundsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		queryString, queryArgs := h.getQueryStringArgs(param)
-		//h.getByFilter(w, r, logPrefix, queryString, queryArgs, h.returnResDataFunc)
 		h.dbQuery(w, r, logPrefix, 0, "", queryString, queryArgs, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
@@ -75,8 +74,8 @@ func (h *roundsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		queryString := "INSERT  INTO round (round_id,hall_id,room_id,room_type,brief,record,status) VALUE (?,?,?,?,?,?,?)"
-
-		h.post(w, r, logPrefix, ID, queryString, param, h.sqlExec, h.returnPostResData)
+		//h.post(w, r, logPrefix, ID, queryString, param, h.sqlExec, h.returnPostResData)
+		h.dbExec(w, r, logPrefix, ID, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
@@ -231,21 +230,66 @@ func (h *roundsHandler) getQueryStringArgs(param *roundGetParam) (queryString st
 //		return resData, count
 //	}
 //}
-
-func (h *roundsHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//post
+func (h *roundsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*roundPostParam); ok {
 
-		return stmt.Exec(ID, p.HallID, p.RoomID, p.RoomType, p.Brief, p.Record, p.Status)
+		return stmt.Exec(IDOrAccount, p.HallID, p.RoomID, p.RoomType, p.Brief, p.Record, p.Status)
 	}
 	return nil, errors.New("parsing param error")
 
 }
-func (h *roundsHandler) returnPostResData(ID, lastID uint64) interface{} {
+//id預先產生
+func (h *roundsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
 
-	return []roundIDData{
-		{
-			ID,
-		},
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*roundIDData{{}},
+		}
+
+	}
+
+	if id,ok:=IDOrAccount.(uint64);ok{
+		return &responseData{
+			Code:    CodeSuccess,
+			Count:   int(affRow),
+			Message: "",
+			Data: []*roundIDData{
+				{
+					id,
+				},
+			},
+		}
+	}
+
+	//error
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data:    []*roundIDData{{}},
 	}
 }
+
+//func (h *roundsHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//
+//	if p, ok := param.(*roundPostParam); ok {
+//
+//		return stmt.Exec(ID, p.HallID, p.RoomID, p.RoomType, p.Brief, p.Record, p.Status)
+//	}
+//	return nil, errors.New("parsing param error")
+//
+//}
+//func (h *roundsHandler) returnPostResData(ID, lastID uint64) interface{} {
+//
+//	return []roundIDData{
+//		{
+//			ID,
+//		},
+//	}
+//}

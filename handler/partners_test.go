@@ -1,17 +1,17 @@
 package handler
 
 import (
-	"testing"
-	"fmt"
-	"github.com/cruisechang/dbex"
-	"net/http"
 	"bytes"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
 	"encoding/json"
-	"strconv"
-	"io/ioutil"
+	"fmt"
 	"github.com/cruisechang/dbServer/util"
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
+	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
+	"strconv"
+	"testing"
 )
 
 func TestPartnersHandlerGet(t *testing.T) {
@@ -30,13 +30,13 @@ func TestPartnersHandlerGet(t *testing.T) {
 		param partnerGetParam
 	}{
 
-		{"0", 3,partnerGetParam{-1, "", "", -1,-1}},
-		{"0", 3,partnerGetParam{-1, "", "", -1, 0}},
-		{"0", 3,partnerGetParam{-1, "", "", -1, 5}},
-		{"0", 1,partnerGetParam{0, "", "", -1, 5}},
-		{"0", 2,partnerGetParam{1, "partnerID", "asc", 0, -1}},
-		{"0", 0,partnerGetParam{2, "partnerID", "desc", -1, -1}},
-		{"0", 1,partnerGetParam{0, "", "", -1, -1}},
+		{"0", 3, partnerGetParam{-1, "", "", -1, -1}},
+		{"0", 3, partnerGetParam{-1, "", "", -1, 0}},
+		{"0", 3, partnerGetParam{-1, "", "", -1, 5}},
+		{"0", 1, partnerGetParam{0, "", "", -1, 5}},
+		{"0", 2, partnerGetParam{1, "partnerID", "asc", 0, -1}},
+		{"0", 0, partnerGetParam{2, "partnerID", "desc", -1, -1}},
+		{"0", 1, partnerGetParam{0, "", "", -1, -1}},
 	}
 
 	for _, tc := range tt {
@@ -58,7 +58,6 @@ func TestPartnersHandlerGet(t *testing.T) {
 		router.Handle("/partners", NewPartnersHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
-
 
 		if rr.Code != http.StatusOK {
 			continue
@@ -86,8 +85,11 @@ func TestPartnersHandlerPost(t *testing.T) {
 	if err != nil {
 		t.Fatalf("dbex error %s", err.Error())
 	}
-	fmt.Sprintf("%v", dbx)
 
+	//db
+	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	sqlDB := h.db.GetSQLDB()
+	var ids []uint64 //放ids，刪掉用
 
 	//
 	//account 不能重複
@@ -96,11 +98,11 @@ func TestPartnersHandlerPost(t *testing.T) {
 	//
 
 	accounts := []string{}
-	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 999999)), 10))
-	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 999999)), 10))
-	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 999999)), 10))
-	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 999999)), 10))
-	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 999999)), 10))
+	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 9999999999)), 10))
+	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 9999999999)), 10))
+	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 9999999999)), 10))
+	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 9999999999)), 10))
+	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 9999999999)), 10))
 
 	//type param struct {
 	//	Account   string `json:"account"`
@@ -116,15 +118,15 @@ func TestPartnersHandlerPost(t *testing.T) {
 
 	tt := []struct {
 		name  string
-		code int
+		code  int
 		param partnerPostParam
 	}{
 
-		{"0", CodeSuccess,partnerPostParam{accounts[0], "passd", accounts[0], 0, 0, "ssssssss", "12345678", "[]","[]"}},
-		{"1", CodeSuccess,partnerPostParam{accounts[1], "passd", accounts[1], 0, 0, "ssssssss", "12345678", "[]","[]"}},
-		{"2", CodeSuccess,partnerPostParam{accounts[2], "passd", accounts[2], 0, 0, "ssssssss", "12345678", "[]","[]"}},
-		{"3", CodeSuccess,partnerPostParam{accounts[3], "passd", accounts[3], 0, 0, "ssssssss", "12345678", "[]","[]"}},
-		{"4", CodeSuccess,partnerPostParam{accounts[4], "passd", accounts[4], 0, 0, "ssssssss", "12345678", "[]","[]"}},
+		{"0", CodeSuccess, partnerPostParam{accounts[0], "passd", accounts[0], 0, 0, "ssssssss", "12345678", "[]", "[]"}},
+		{"1", CodeSuccess, partnerPostParam{accounts[1], "passd", accounts[1], 0, 0, "ssssssss", "12345678", "[]", "[]"}},
+		{"2", CodeSuccess, partnerPostParam{accounts[2], "passd", accounts[2], 0, 0, "ssssssss", "12345678", "[]", "[]"}},
+		{"3", CodeSuccess, partnerPostParam{accounts[3], "passd", accounts[3], 0, 0, "ssssssss", "12345678", "[]", "[]"}},
+		{"4", CodeSuccess, partnerPostParam{accounts[4], "passd", accounts[4], 0, 0, "ssssssss", "12345678", "[]", "[]"}},
 	}
 
 	for _, tc := range tt {
@@ -153,18 +155,38 @@ func TestPartnersHandlerPost(t *testing.T) {
 			t.Fatalf("handler failed  got %v want %v, name=%s", rr.Code, http.StatusOK, tc.name)
 		}
 
-		body,_:=ioutil.ReadAll(rr.Body)
+		body, _ := ioutil.ReadAll(rr.Body)
 
-		resData := &responseData{
-		}
-		err = json.Unmarshal(body,resData)
+		resData := &struct {
+			Code    int
+			Count   int
+			Message string
+			Data    []*partnerIDData
+		}{}
+		err = json.Unmarshal(body, resData)
 		if err != nil {
-			t.Fatalf("handler unmarshal responseData error=%s, path=%s, param=%+v",err.Error(),path,tc.param)
+			t.Fatalf("handler unmarshal responseData error=%s, path=%s, param=%+v", err.Error(), path, tc.param)
 		}
 
-		if resData.Code!=tc.code{
-			t.Fatalf("handler resData code  got %d want %d, name=%s, path=%s, param=%+v",resData.Code,tc.code,tc.name,path,tc.param)
+		if resData.Code != tc.code {
+			t.Fatalf("handler resData code  got %d want %d, name=%s, path=%s, param=%+v", resData.Code, tc.code, tc.name, path, tc.param)
 
+		}
+
+		//insert success
+		if resData.Count == 1 {
+			t.Logf("id %v ", resData.Data[0].PartnerID)
+			ids = append(ids, resData.Data[0].PartnerID)
+		}
+	}
+
+	if len(ids) > 0 {
+		queryString := "DELETE FROM partner  where partner_id = ? LIMIT 1"
+		stmt, _ := sqlDB.Prepare(queryString)
+		defer stmt.Close()
+
+		for _, v := range ids {
+			stmt.Exec(v)
 		}
 	}
 }

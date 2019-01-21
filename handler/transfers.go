@@ -1,13 +1,14 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"encoding/json"
 	"database/sql"
-	"github.com/juju/errors"
+	"encoding/json"
+	"fmt"
+	"net/http"
+
 	"github.com/cruisechang/dbServer/util"
+	"github.com/cruisechang/dbex"
+	"github.com/juju/errors"
 )
 
 func NewTransfersHandler(base baseHandler) *transfersHandler {
@@ -72,15 +73,13 @@ func (h *transfersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler post get unique ID error %s", logPrefix, err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestPostDataIllegal, fmt.Sprintf("%s handler post get unique ID error %s", logPrefix, err.Error()))
 		}
-		//param.TransferID = transferID
-
 		queryString := "INSERT  INTO transfer (transfer_id,partner_transfer_id,partner_id,user_id, category,transfer_credit,credit,status) values (? ,? ,? ,?, ? ,?, ?,?)"
-		h.post(w, r, logPrefix, transferID, queryString, param, h.sqlExec, h.returnPostResData)
+		h.dbExec(w, r, logPrefix, transferID, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
-
+//query
 func (h *transfersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 
 	args, ok := param.([]interface{})
@@ -134,7 +133,7 @@ func (h *transfersHandler) returnResponseDataFunc() func(IDOrAccount interface{}
 						ud.status,
 						ud.create_date,
 						ud.account,
-						ud.name,})
+						ud.name})
 			}
 		}
 
@@ -196,20 +195,67 @@ func (h *transfersHandler) getQueryStringArgs(param *transferGetParam) (queryStr
 	return
 }
 
-func (h *transfersHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//func (h *transfersHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//
+//	if p, ok := param.(*transferPostParam); ok {
+//
+//		return stmt.Exec(ID, p.PartnerTransferID, p.PartnerID, p.UserID, p.Category, p.TransferCredit, p.Credit, p.Status)
+//	}
+//	return nil, errors.New("parsing param error")
+//
+//}
+//func (h *transfersHandler) returnPostResData(ID, lastID uint64) interface{} {
+//
+//	return []transferIDData{
+//		{
+//			ID,
+//		},
+//	}
+//}
+
+//post
+func (h *transfersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*transferPostParam); ok {
 
-		return stmt.Exec(ID, p.PartnerTransferID, p.PartnerID, p.UserID, p.Category, p.TransferCredit, p.Credit, p.Status)
+		return stmt.Exec(IDOrAccount, p.PartnerTransferID, p.PartnerID, p.UserID, p.Category, p.TransferCredit, p.Credit, p.Status)
 	}
 	return nil, errors.New("parsing param error")
 
 }
-func (h *transfersHandler) returnPostResData(ID, lastID uint64) interface{} {
 
-	return []transferIDData{
-		{
-			ID,
-		},
+//id預先產生
+func (h *transfersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*transferIDData{{}},
+		}
+
+	}
+
+	if id, ok := IDOrAccount.(uint64); ok {
+		return &responseData{
+			Code:    CodeSuccess,
+			Count:   int(affRow),
+			Message: "",
+			Data: []*transferIDData{
+				{
+					id,
+				},
+			},
+		}
+	}
+
+	//error
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data:    []*transferIDData{{}},
 	}
 }

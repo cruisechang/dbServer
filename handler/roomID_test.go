@@ -4,14 +4,14 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"strconv"
-	"io/ioutil"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
+	"fmt"
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
+	"io/ioutil"
+	"net/http/httptest"
+	"strconv"
 )
 
 func Test_roomHandler_get(t *testing.T) {
@@ -88,13 +88,24 @@ func Test_roomHandler_get(t *testing.T) {
 	}
 }
 
-/*
 func Test_roomHandler_delete(t *testing.T) {
 	dbx, err := dbex.NewDBEX("dbexConfig.json")
 	if err != nil {
 		t.Fatalf("dbex error %s", err.Error())
 	}
-	dbx.Logger.SetLevel(dblog.LevelInfo)
+	//dbx.Logger.SetLevel(dblog.LevelInfo)
+
+	//insert first
+	h := NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	sqlDB := h.db.GetSQLDB()
+	queryString := "INSERT  INTO room (room_id,hall_id,name,room_type,hls_url,bet_countdown,dealer_id,limitation_id) values (? ,?,?,?,?,?,?,?)"
+
+	stmt, _ := sqlDB.Prepare(queryString)
+	defer stmt.Close()
+
+	insertID:=9999
+	stmt.Exec(insertID, "99999", "test", 1, "url",20,999,9999)
+
 
 	type param struct{ ID uint64 }
 	tt := []struct {
@@ -103,7 +114,7 @@ func Test_roomHandler_delete(t *testing.T) {
 		code  int
 		count int
 	}{
-		{"0", param{999}, CodeSuccess, 1},
+		{"0", param{uint64(insertID)}, CodeSuccess, 1},
 		{"1", param{9897667556}, CodeSuccess, 0},
 	}
 
@@ -149,7 +160,6 @@ func Test_roomHandler_delete(t *testing.T) {
 		}
 	}
 }
-*/
 
 func Test_roomHandler_patch(t *testing.T) {
 	dbx, err := dbex.NewDBEX("dbexConfig.json")

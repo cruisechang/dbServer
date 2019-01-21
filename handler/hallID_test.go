@@ -295,6 +295,18 @@ func Test_hallHandler_delete(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	//insert first
+	h := NewHallIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	sqlDB := h.db.GetSQLDB()
+	insertID:=8888
+	queryString  := "INSERT  INTO hall (hall_id,name) values (? ,?)"
+
+	stmt, _ := sqlDB.Prepare(queryString)
+	defer stmt.Close()
+
+	 stmt.Exec(insertID,"test")
+
+
 	type param struct{ ID uint64 }
 	tt := []struct {
 		name  string
@@ -302,7 +314,7 @@ func Test_hallHandler_delete(t *testing.T) {
 		code  int
 		count int
 	}{
-		{"0", param{99999}, CodeSuccess, 1},
+		{"0", param{uint64(insertID)}, CodeSuccess, 1},
 		{"1", param{9897667556}, CodeSuccess, 0},
 	}
 

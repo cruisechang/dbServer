@@ -41,7 +41,6 @@ func (h *userLogHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	vars := mux.Vars(r)
-	var id uint64
 	mid, ok := vars["id"]
 	if !ok {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s hander get id not found", logPrefix))
@@ -49,14 +48,14 @@ func (h *userLogHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := strconv.ParseUint(mid, 10, 64)
+	ID, err := strconv.ParseUint(mid, 10, 64)
 	if err != nil {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s hander get id to uint64 error id=%s", logPrefix, mid))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
 	}
 
-	if id == 0 {
+	if ID == 0 {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s hander get id ==0 ", logPrefix))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
@@ -87,14 +86,21 @@ func (h *userLogHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	//get
 	if r.Method == "GET" || r.Method == "get" {
-		param.ID=id
 		queryString, queryArgs := h.getQueryStringArgs(param)
-		//h.getByFilter(w, r, logPrefix, queryString, queryArgs, h.returnResDataFunc)
-		h.dbQuery(w, r, logPrefix, 0, "", queryString, queryArgs, h.sqlQuery, h.returnResponseDataFunc)
+		h.dbQuery(w, r, logPrefix, ID, "", queryString, queryArgs, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
 
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
+}
+//query
+func (h *userLogHandler) getQueryStringArgs(param *timeParam) (queryString string, queryArgs []interface{}) {
+
+	queryString = "SELECT user_log.log_id,user_log.user_id,user_log.category,user_log.ip,user_log.platform,user_log.create_date ,user.account,user.name from user_log LEFT JOIN user on user_log.user_id=user.user_id WHERE user_log.user_id = ? AND user_log.create_date BETWEEN ? AND ?"
+
+	queryArgs=append(queryArgs,param.BeginDate)
+	queryArgs=append(queryArgs,param.EndDate)
+	return
 }
 func (h *userLogHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 
@@ -103,7 +109,7 @@ func (h *userLogHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param
 		return nil, errors.New("args error")
 	}
 
-	return stmt.Query(args[0], args[1], args[2])
+	return stmt.Query(IDOrAccount, args[0], args[1])
 }
 func (h *userLogHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
@@ -136,41 +142,5 @@ func (h *userLogHandler) returnResponseDataFunc() func(IDOrAccount interface{}, 
 		}
 	}
 }
-func (h *userLogHandler) getQueryStringArgs(param *timeParam) (queryString string, queryArgs []interface{}) {
 
-	queryString = "SELECT user_log.log_id,user_log.user_id,user_log.category,user_log.ip,user_log.platform,user_log.create_date ,user.account,user.name from user_log LEFT JOIN user on user_log.user_id=user.user_id WHERE user_log.user_id = ? AND user_log.create_date BETWEEN ? AND ?"
-
-	queryArgs=append(queryArgs,param.ID)
-	queryArgs=append(queryArgs,param.BeginDate)
-	queryArgs=append(queryArgs,param.EndDate)
-	return
-}
-
-/*
-func (h *userLogHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
-
-	return func(rows *sql.Rows) (interface{}, int) {
-		count := 0
-		resData := []userLogData{}
-		for rows.Next() {
-			ud := userLogDB{}
-			err := rows.Scan(&ud.log_id, &ud.user_id, &ud.category, &ud.ip, &ud.platform, &ud.create_date, &ud.account, &ud.name)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					userLogData{
-						ud.log_id,
-						ud.user_id,
-						ud.account,
-						ud.name,
-						ud.category,
-						ud.ip,
-						ud.platform,
-						ud.create_date,})
-			}
-		}
-		return resData, count
-	}
-}
-*/
 

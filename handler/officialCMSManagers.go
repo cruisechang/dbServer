@@ -1,12 +1,13 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"encoding/json"
 	"database/sql"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"net/http"
+
+	"github.com/cruisechang/dbex"
 )
 
 func NewOfficialCMSManagersHandler(base baseHandler) *officialCMSManagersHandler {
@@ -32,7 +33,6 @@ func (h *officialCMSManagersHandler) ServeHTTP(w http.ResponseWriter, r *http.Re
 
 	if r.Method == "GET" || r.Method == "get" {
 		queryString := "SELECT manager_id,account,active, role_id,login,create_date FROM official_cms_manager "
-		//h.get(w, r, logPrefix, queryString, h.returnResDataFunc)
 		h.dbQuery(w, r, logPrefix, 0, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
@@ -58,7 +58,8 @@ func (h *officialCMSManagersHandler) ServeHTTP(w http.ResponseWriter, r *http.Re
 			return
 		}
 		queryString := "INSERT  INTO official_cms_manager (account,password,role_id ) values (? ,?,?)"
-		h.post(w, r, "dealers", 0, queryString, param, h.sqlExec, h.returnPostResData)
+		//h.post(w, r, "dealers", 0, queryString, param, h.sqlExec, h.returnPostResData)
+		h.dbExec(w, r, logPrefix, 0, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
@@ -77,7 +78,7 @@ func (h *officialCMSManagersHandler) returnResponseDataFunc() func(IDOrAccount i
 		for rows.Next() {
 			err := rows.Scan(&d.manager_id, &d.account, &d.active, &d.role_id, &d.login, &d.create_date)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					officialCMSManagerData{
 						d.manager_id,
@@ -95,6 +96,53 @@ func (h *officialCMSManagersHandler) returnResponseDataFunc() func(IDOrAccount i
 			Message: "",
 			Data:    resData,
 		}
+	}
+}
+
+//post
+func (h *officialCMSManagersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+
+	if p, ok := param.(*officialCMSManagerPostParam); ok {
+
+		return stmt.Exec(p.Account, p.Password, p.RoleID)
+	}
+	return nil, errors.New("")
+
+}
+
+//id 自動產生
+func (h *officialCMSManagersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*managerIDData{{}},
+		}
+
+	}
+
+	lastID, err := result.LastInsertId()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecLastIDError,
+			Count:   0,
+			Message: "",
+			Data:    []*managerIDData{{}},
+		}
+	}
+
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data: []*managerIDData{
+			{
+				uint(lastID),
+			},
+		},
 	}
 }
 

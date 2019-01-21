@@ -1,15 +1,16 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"encoding/json"
-	"github.com/gorilla/mux"
-	"strconv"
 	"database/sql"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"net/http"
+	"strconv"
 	"strings"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 //NewRoundIDHandler returns a handler
@@ -61,9 +62,6 @@ func (h *RoundIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" || r.Method == "get" {
 		queryString := "select round.round_id,round.hall_id,round.room_id,round.room_type,round.brief,round.record,round.status,round.create_date, round.end_date,room.name from round LEFT JOIN room on round.room_id=room.room_id where round.round_id= ? "
 		h.dbQuery(w, r, logPrefix, ID, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
-		//h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s  queryString %s, id=%d", logPrefix, queryString, ID))
-
-		//h.getTargetRow(w, r, logPrefix, ID, queryString, h.returnResDataFunc)
 		return
 	}
 
@@ -82,8 +80,8 @@ func (h *RoundIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//umarshal request body
-		patchData, err := h.getPatchData(body)
+		//unmarshal request body
+		param, err := h.getPatchData(body)
 		if err != nil {
 			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s patch data unmarshal error=%s", logPrefix, err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestDataUnmarshalError, "")
@@ -91,7 +89,7 @@ func (h *RoundIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		queryString := "UPDATE round set brief = ? , record =? , status =?  WHERE round_id = ? LIMIT 1"
-		h.patch(w, r, logPrefix, ID, queryString, patchData, h.patchExec, h.returnIDResData)
+		h.dbExec(w, r, logPrefix, ID, "", queryString, param, h.sqlPatch, h.returnExecResponseData)
 		return
 	}
 
@@ -111,7 +109,7 @@ func (h *RoundIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, 
 		for rows.Next() {
 			err := rows.Scan(&ud.round_id, &ud.hall_id, &ud.room_id, &ud.room_type, &ud.brief, &ud.record, &ud.status, &ud.create_date, &ud.end_datea, &ud.name)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					roundData{
 						ud.round_id,
@@ -137,38 +135,7 @@ func (h *RoundIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, 
 	}
 }
 
-/*
-func (h *roundIDHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
-
-	return func(rows *sql.Rows) (interface{}, int) {
-		count := 0
-		ud := roundDB{}
-		resData := []roundData{}
-
-		for rows.Next() {
-			err := rows.Scan(&ud.round_id, &ud.hall_id, &ud.room_id, &ud.room_type, &ud.brief, &ud.record, &ud.status, &ud.create_date, &ud.end_datea, &ud.name)
-			if err == nil {
-				count ++
-				resData = append(resData,
-					roundData{
-						ud.round_id,
-						ud.hall_id,
-						ud.room_id,
-						ud.room_type,
-						ud.brief,
-						ud.record,
-						ud.status,
-						ud.create_date,
-						ud.end_datea,
-						ud.name,
-					})
-			}
-		}
-
-		return resData, count
-	}
-}
-*/
+//patch
 func (h *RoundIDHandler) getPatchData(body []byte) (interface{}, error) {
 
 	d := &roundPatchParam{}
@@ -188,22 +155,38 @@ func (h *RoundIDHandler) getPatchData(body []byte) (interface{}, error) {
 	return d, nil
 
 }
-
-func (h *RoundIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+func (h *RoundIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	//檢查參數是否合法
 	if p, ok := param.(*roundPatchParam); ok {
 
-		return stmt.Exec(p.Brief, p.Record, p.Status, ID)
+		return stmt.Exec(p.Brief, p.Record, p.Status, IDOrAccount)
 	}
 	return nil, errors.New("parsing param error")
-
 }
-func (h *RoundIDHandler) returnIDResData(ID uint64) interface{} {
 
-	return []roundIDData{
-		{
-			ID,
+func (h *RoundIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*roundIDData{{}},
+		}
+	}
+
+	ID, _ := IDOrAccount.(uint64)
+
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data: []*roundIDData{
+			{
+				ID,
+			},
 		},
 	}
 }

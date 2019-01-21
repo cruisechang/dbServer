@@ -61,9 +61,12 @@ func (h *dealerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		h.dbQuery(w, r, logPrefix, ID, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
+
 	if r.Method == "DELETE" || r.Method == "delete" {
 		queryString := "DELETE FROM dealer  where dealer_id = ? LIMIT 1"
-		h.delete(w, r, "dealer", ID, queryString, h.returnIDResData)
+		//h.delete(w, r, "dealer", ID, queryString, h.returnIDResData)
+		h.dbExec(w, r, logPrefix, ID, "", queryString, nil, h.sqlDelete, h.returnExecResponseData)
+
 		return
 	}
 
@@ -75,17 +78,10 @@ func (h *dealerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//check patch
-		//if !strings.Contains(r.URL.Path, "patch") {
-		//	h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s patch path error :%s", logPrefix, r.URL.Path))
-		//	h.writeError(w, http.StatusOK, CodeRequestPathError, "")
-		//	return
-		//}
-
 		queryString := "UPDATE dealer set name= ? , password =? , active =? , portrait_url =?  WHERE dealer_id = ? LIMIT 1"
 
-		//umarshal request body
-		patchData, err := h.getPatchData(body)
+		//unmarshal request body
+		param, err := h.getPatchData(body)
 
 		if err != nil {
 			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s patchTargetColumn data unmarshal error=%s", logPrefix, err.Error()))
@@ -93,7 +89,8 @@ func (h *dealerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		h.patch(w, r, logPrefix, ID, queryString, patchData, h.patchExec, h.returnIDResData)
+		//h.patch(w, r, logPrefix, ID, queryString, patchData, h.patchExec, h.returnIDResData)
+		h.dbExec(w, r, logPrefix, ID, "", queryString, param, h.sqlPatch, h.returnExecResponseData)
 		return
 	}
 
@@ -161,6 +158,14 @@ func (h *dealerIDHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}
 }
 */
 
+
+//delete
+func (h *dealerIDHandler) sqlDelete(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+
+	return stmt.Exec(IDOrAccount)
+}
+
+//patch
 func (h *dealerIDHandler) getPatchData(body []byte) (interface{}, error) {
 	p := &dealerPatchParam{}
 	p.Active = -1 //for test
@@ -173,22 +178,57 @@ func (h *dealerIDHandler) getPatchData(body []byte) (interface{}, error) {
 	}
 	return p, nil
 }
-
-func (h *dealerIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+func (h *dealerIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	//檢查參數是否合法
 	if p, ok := param.(*dealerPatchParam); ok {
-
-		return stmt.Exec(p.Name, p.Password, p.Active, p.PortraitURL, ID)
+		return stmt.Exec(p.Name, p.Password, p.Active, p.PortraitURL, IDOrAccount)
 	}
 	return nil, errors.New("parsing param error")
-
 }
 
-func (h *dealerIDHandler) returnIDResData(ID uint64) interface{} {
-	return []dealerIDData{
-		{
-			uint(ID),
+func (h *dealerIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*dealerIDData{{}},
+		}
+	}
+
+	ID, _ := IDOrAccount.(uint64)
+
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data: []*dealerIDData{
+			{
+				uint(ID),
+			},
 		},
 	}
 }
+
+
+//func (h *dealerIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//
+//	//檢查參數是否合法
+//	if p, ok := param.(*dealerPatchParam); ok {
+//
+//		return stmt.Exec(p.Name, p.Password, p.Active, p.PortraitURL, ID)
+//	}
+//	return nil, errors.New("parsing param error")
+//
+//}
+//
+//func (h *dealerIDHandler) returnIDResData(ID uint64) interface{} {
+//	return []dealerIDData{
+//		{
+//			uint(ID),
+//		},
+//	}
+//}

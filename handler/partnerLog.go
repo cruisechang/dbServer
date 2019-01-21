@@ -1,15 +1,15 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
+	"database/sql"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"github.com/cruisechang/dbex"
 	"github.com/gorilla/mux"
+	"net/http"
 	"strconv"
 	"time"
-	"database/sql"
-	"errors"
 )
 
 func NewPartnerLogHandler(base baseHandler) *partnerLogHandler {
@@ -41,7 +41,6 @@ func (h *partnerLogHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	vars := mux.Vars(r)
-	var id uint64
 	mid, ok := vars["id"]
 	if !ok {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s hander get id not found", logPrefix))
@@ -49,14 +48,14 @@ func (h *partnerLogHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := strconv.ParseUint(mid, 10, 64)
+	ID, err := strconv.ParseUint(mid, 10, 64)
 	if err != nil {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s hander get id to uint64 error id=%s", logPrefix, mid))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
 	}
 
-	if id == 0 {
+	if ID == 0 {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s hander get id ==0 ", logPrefix))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
@@ -87,14 +86,21 @@ func (h *partnerLogHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	//get
 	if r.Method == "GET" || r.Method == "get" {
-		param.ID = id
 		queryString, queryArgs := h.getQueryStringArgs(param)
-		//h.getByFilter(w, r, logPrefix, queryString, queryArgs, h.returnResDataFunc)
-		h.dbQuery(w, r, logPrefix, 0, "", queryString, queryArgs, h.sqlQuery, h.returnResponseDataFunc)
+		h.dbQuery(w, r, logPrefix, ID, "", queryString, queryArgs, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
 
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
+}
+
+func (h *partnerLogHandler) getQueryStringArgs(param *timeParam) (queryString string, queryArgs []interface{}) {
+
+	queryString = "SELECT partner_log.log_id,partner_log.partner_id,partner_log.category,partner_log.create_date ,partner.account,partner.name from partner_log LEFT JOIN partner on partner_log.partner_id=partner.partner_id WHERE partner_log.partner_id = ? AND partner_log.create_date BETWEEN ? AND ?"
+
+	queryArgs = append(queryArgs, param.BeginDate)
+	queryArgs = append(queryArgs, param.EndDate)
+	return
 }
 
 func (h *partnerLogHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
@@ -104,7 +110,7 @@ func (h *partnerLogHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, pa
 		return nil, errors.New("args error")
 	}
 
-	return stmt.Query(args[0], args[1], args[2])
+	return stmt.Query(IDOrAccount, args[0], args[1])
 }
 func (h *partnerLogHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
@@ -135,36 +141,4 @@ func (h *partnerLogHandler) returnResponseDataFunc() func(IDOrAccount interface{
 		}
 	}
 }
-func (h *partnerLogHandler) getQueryStringArgs(param *timeParam) (queryString string, queryArgs []interface{}) {
 
-	queryString = "SELECT partner_log.log_id,partner_log.partner_id,partner_log.category,partner_log.create_date ,partner.account,partner.name from partner_log LEFT JOIN partner on partner_log.partner_id=partner.partner_id WHERE partner_log.partner_id = ? AND partner_log.create_date BETWEEN ? AND ?"
-
-	queryArgs = append(queryArgs, param.ID)
-	queryArgs = append(queryArgs, param.BeginDate)
-	queryArgs = append(queryArgs, param.EndDate)
-	return
-}
-
-//func (h *partnerLogHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
-//
-//	return func(rows *sql.Rows) (interface{}, int) {
-//		count := 0
-//		resData := []partnerLogData{}
-//		for rows.Next() {
-//			ud := partnerLogDB{}
-//			err := rows.Scan(&ud.log_id, &ud.partner_id, &ud.category, &ud.create_date, &ud.account, &ud.name)
-//			if err == nil {
-//				count += 1
-//				resData = append(resData,
-//					partnerLogData{
-//						ud.log_id,
-//						ud.partner_id,
-//						ud.account,
-//						ud.name,
-//						ud.category,
-//						ud.create_date,})
-//			}
-//		}
-//		return resData, count
-//	}
-//}

@@ -4,15 +4,13 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
+	"fmt"
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 	"io/ioutil"
-	"github.com/cruisechang/dbServer/util"
-	"strconv"
+	"net/http/httptest"
 )
 
 func Test_transfersHandler_get(t *testing.T) {
@@ -94,21 +92,22 @@ func TestTransfersHandlerPost(t *testing.T) {
 	if err != nil {
 		t.Fatalf("dbex error %s", err.Error())
 	}
-	fmt.Sprintf("%v", dbx)
+	//db
+	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	sqlDB := h.db.GetSQLDB()
+	var ids []uint64 //放ids，刪掉用
 
 	tt := []struct {
 		name  string
 		code  int
 		count int
-		param transferPostParam
+		param interface{}
 	}{
 
-		{"0", CodeSuccess, 1, transferPostParam{strconv.FormatInt(int64(util.RandomInt(1, 9999999)), 10), 100, 100, 1, 100, 33.3, 2}},
-		{"1", CodeSuccess, 1, transferPostParam{strconv.FormatInt(int64(util.RandomInt(1, 9999999)), 10), 100, 100, 1, 100, 33.3, 2}},
-		{"2", CodeSuccess, 1, transferPostParam{strconv.FormatInt(int64(util.RandomInt(1, 9999999)), 10), 100, 100, 1, 100, 33.3, 2}},
-		{"3", CodeRequestPostDataIllegal, 0, transferPostParam{strconv.FormatInt(int64(util.RandomInt(1, 9999999)), 10), 100, 100, 1, 100, -1, 2}},
-		{"4", CodeSuccess, 1, transferPostParam{"99999", 100, 100, 1, 100, 100.3, 2}},
-		{"5", CodeDBExecError, 0, transferPostParam{"99999", 100, 100, 1, 100, 100.3, 2}}, //partner transfer id 重複
+		{"0", CodeSuccess, 1, transferPostParam{"testID", 10, 100, 1, 100, 33.3, 2}},
+		{"1", CodeRequestPostDataIllegal, 0, transferPostParam{"testID", 10, 100, 1, 100, -1, 2}},
+		{"2", CodeRequestDataUnmarshalError, 0, 3},
+		{"3", CodeRequestDataUnmarshalError, 0, ""},
 	}
 
 	for _, tc := range tt {
@@ -132,13 +131,17 @@ func TestTransfersHandlerPost(t *testing.T) {
 		router.ServeHTTP(rr, req)
 
 		if rr.Code != http.StatusOK {
-			t.Fatalf("handler failed ID=%d, got %v want %v,name=%s, path=%s ,param=%+v", tc.param.PartnerID, rr.Code, http.StatusOK, tc.name, path, tc.param)
+			t.Fatalf("handler failed httpStatus got %v want %v,name=%s, path=%s ,param=%+v", rr.Code, http.StatusOK, tc.name, path, tc.param)
 		}
 
 		body, _ := ioutil.ReadAll(rr.Body)
 
-		resData := &responseData{
-		}
+		resData := &struct {
+			Code    int
+			Count   int
+			Message string
+			Data    []*transferIDData
+		}{}
 		err = json.Unmarshal(body, resData)
 		if err != nil {
 			t.Fatalf("handler unmarshal responseData error=%s, path=%s, param=%+v", err.Error(), path, tc.param)
@@ -152,6 +155,22 @@ func TestTransfersHandlerPost(t *testing.T) {
 		if resData.Count != tc.count {
 			t.Fatalf("handler resData count  got %d want %d, name=%s, path=%s, param=%+v", resData.Count, tc.count, tc.name, path, tc.param)
 
+		}
+
+		//insert success
+		if resData.Count == 1 {
+			t.Logf("ID=%d ", resData.Data[0].TransferID)
+			ids = append(ids, resData.Data[0].TransferID)
+		}
+	}
+
+	if len(ids) > 0 {
+		queryString := "DELETE FROM transfer  where transfer_id = ? LIMIT 1"
+		stmt, _ := sqlDB.Prepare(queryString)
+		defer stmt.Close()
+
+		for _, v := range ids {
+			stmt.Exec(v)
 		}
 	}
 }

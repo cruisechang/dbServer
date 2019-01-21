@@ -1,15 +1,16 @@
 package handler
 
 import (
-	"net/http"
-	"testing"
-	"github.com/cruisechang/dbex"
+	"bytes"
+	"encoding/json"
 	"fmt"
-	"net/http/httptest"
+	"github.com/cruisechang/dbex"
 	"github.com/gorilla/mux"
 	"io/ioutil"
-	"encoding/json"
-	"bytes"
+	"net/http"
+	"net/http/httptest"
+	"strconv"
+	"testing"
 )
 
 func Test_dealerHandler_get(t *testing.T) {
@@ -87,18 +88,30 @@ func Test_dealerHandler_delete(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
+	//insert first
+	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	sqlDB := h.db.GetSQLDB()
+	queryString := "INSERT  INTO dealer (name,account,password,portrait_url ) values (? ,?,?,?)"
+
+	stmt, _ := sqlDB.Prepare(queryString)
+	defer stmt.Close()
+
+	result, _ := stmt.Exec("deleteTest", "accounttest", "aaaa", "url")
+	lastID, _ := result.LastInsertId()
+
 	type param struct{ ID uint64 }
 	tt := []struct {
-		name  string
-		ID    string
-		code  int
-		count int
+		name       string
+		ID         string
+		code       int
+		count      int
+		httpStatus int
 	}{
-		{"0", "10002", CodeSuccess, 1},
-		{"1", "99999", CodeSuccess, 0}, //id not found
-		{"2", "xxx", CodeSuccess, 0},   //mux parsing route error, return 404
-		{"3", "3x", CodeSuccess, 0},    //mux parsing route error, return 404
-		{"4", "3.3", CodeSuccess, 0},   //mux parsing route error, return 404
+		{"0", strconv.FormatInt(lastID, 10), CodeSuccess, 1, http.StatusOK},
+		{"1", "99999", CodeSuccess, 0, http.StatusOK},     //id not found
+		{"2", "xxx", CodeSuccess, 0, http.StatusNotFound}, //mux parsing route error, return 404
+		{"3", "3x", CodeSuccess, 0, http.StatusNotFound},  //mux parsing route error, return 404
+		{"4", "3.3", CodeSuccess, 0, http.StatusNotFound}, //mux parsing route error, return 404
 	}
 
 	for _, tc := range tt {
@@ -122,13 +135,12 @@ func Test_dealerHandler_delete(t *testing.T) {
 
 		router.ServeHTTP(rr, req)
 
-		//路由錯誤，是gorilla mux 回傳的，此時無body
-		if rr.Code != http.StatusNotFound {
-			return
+		if rr.Code != tc.httpStatus {
+			t.Fatalf("handler failed userID=%s, got %d want %d, name=%s", tc.ID, rr.Code, tc.httpStatus, tc.name)
 		}
 
 		if rr.Code != http.StatusOK {
-			t.Fatalf("handler failed  got %v want %v,name=%s", rr.Code, http.StatusOK, tc.name)
+			continue
 		}
 
 		body, _ := ioutil.ReadAll(rr.Body)
@@ -160,19 +172,20 @@ func Test_dealerHandler_patch(t *testing.T) {
 		Active int `json:"active"`
 	}
 	tt := []struct {
-		name  string
-		ID    string
-		code  int
-		count int
-		param interface{}
+		name       string
+		ID         string
+		code       int
+		count      int
+		httpStatus int
+		param      interface{}
 	}{
-		{"0", "1", CodeSuccess, 1, dealerPatchParam{"forUint", "1234", "url", 0}},
-		{"1", "1", CodeSuccess, 1, dealerPatchParam{"forUnit", "1234", "url", 0}},  //update 多項時，內容相同，也會update count=1
-		{"2", "1", CodeSuccess, 1, dealerPatchParam{"test1", "1234", "url", 1}},    //改回去原始的
-		{"3", "9999", CodeSuccess, 0, dealerPatchParam{"test1", "1234", "url", 1}}, //mux parsing route error, return 404
-		{"4", "abc", CodeSuccess, 0, dealerPatchParam{"test1", "1234", "url", 1}},  //mux parsing route error, return 404
-		{"5", "0.3", CodeSuccess, 0, dealerPatchParam{"test1", "1234", "url", 1}},  //mux parsing route error, return 404
-		{"6", "10001", CodeRequestDataUnmarshalError, 0, struct{ Room int }{1}},    //參數錯誤
+		{"0", "1", CodeSuccess, 1, http.StatusOK, dealerPatchParam{"forUint", "1234", "url", 0}},
+		{"1", "1", CodeSuccess, 1, http.StatusOK, dealerPatchParam{"forUnit", "1234", "url", 0}},       //update 多項時，內容相同，也會update count=1
+		{"2", "1", CodeSuccess, 1, http.StatusOK, dealerPatchParam{"test1", "1234", "url", 1}},         //改回去原始的
+		{"3", "9999", CodeSuccess, 0, http.StatusOK, dealerPatchParam{"test1", "1234", "url", 1}},      //mux parsing route error, return 404
+		{"4", "abc", CodeSuccess, 0, http.StatusNotFound, dealerPatchParam{"test1", "1234", "url", 1}}, //mux parsing route error, return 404
+		{"5", "0.3", CodeSuccess, 0, http.StatusNotFound, dealerPatchParam{"test1", "1234", "url", 1}}, //mux parsing route error, return 404
+		{"6", "10001", CodeRequestDataUnmarshalError, 0, http.StatusOK, struct{ Room int }{1}},         //參數錯誤
 	}
 
 	for _, tc := range tt {
@@ -198,13 +211,12 @@ func Test_dealerHandler_patch(t *testing.T) {
 
 		router.ServeHTTP(rr, req)
 
-		//路由錯誤，是gorilla mux 回傳的，此時無body
-		if rr.Code != http.StatusNotFound {
-			return
+		if rr.Code != tc.httpStatus {
+			t.Fatalf("handler failed userID=%s, got %d want %d, name=%s", tc.ID, rr.Code, tc.httpStatus, tc.name)
 		}
 
 		if rr.Code != http.StatusOK {
-			t.Fatalf("handler failed http.Status   got %v want %v,name=%s", rr.Code, http.StatusOK, tc.name)
+			continue
 		}
 
 		body, _ := ioutil.ReadAll(rr.Body)

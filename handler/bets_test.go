@@ -1,15 +1,15 @@
 package handler
 
 import (
-	"net/http"
-	"testing"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
+	"fmt"
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 )
 
 func Test_betsHandler_get(t *testing.T) {
@@ -89,7 +89,11 @@ func TestBetsHandlerPost(t *testing.T) {
 	if err != nil {
 		t.Fatalf("dbex error %s", err.Error())
 	}
-	fmt.Sprintf("%v", dbx)
+
+	//db
+	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	sqlDB := h.db.GetSQLDB()
+	var ids []uint64 //放ids，刪掉用
 
 	tt := []struct {
 		name  string
@@ -130,8 +134,12 @@ func TestBetsHandlerPost(t *testing.T) {
 
 		body, _ := ioutil.ReadAll(rr.Body)
 
-		resData := &responseData{
-		}
+		resData := &struct {
+			Code    int
+			Count   int
+			Message string
+			Data    []*betIDData
+		}{}
 		err = json.Unmarshal(body, resData)
 		if err != nil {
 			t.Fatalf("handler unmarshal responseData error=%s, path=%s, param=%+v", err.Error(), path, tc.param)
@@ -145,6 +153,21 @@ func TestBetsHandlerPost(t *testing.T) {
 		if resData.Count != tc.count {
 			t.Fatalf("handler resData count  got %d want %d, name=%s, path=%s, param=%+v", resData.Count, tc.count, tc.name, path, tc.param)
 
+		}
+		//insert success
+		if resData.Count == 1 {
+			t.Logf("ID=%d ", resData.Data[0].BetID)
+			ids = append(ids, resData.Data[0].BetID)
+		}
+	}
+
+	if len(ids) > 0 {
+		queryString := "DELETE FROM round  where round_id = ? LIMIT 1"
+		stmt, _ := sqlDB.Prepare(queryString)
+		defer stmt.Close()
+
+		for _, v := range ids {
+			stmt.Exec(v)
 		}
 	}
 }

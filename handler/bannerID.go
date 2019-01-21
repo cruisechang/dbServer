@@ -93,7 +93,6 @@ func (h *BannerIDHandler) sqlDelete(stmt *sql.Stmt, IDOrAccount interface{}, par
 }
 
 //patch
-
 func (h *BannerIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	ID, _ := IDOrAccount.(uint64)

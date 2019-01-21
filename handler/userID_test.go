@@ -363,9 +363,9 @@ func Test_userIDHandler_patchLogin(t *testing.T) {
 		httpStatus int
 		param      interface{}
 	}{
-		{"0", "1", CodeSuccess, 1, http.StatusOK, struct{ Login int }{0}},     //success
-		{"1", "1", CodeSuccess, 0, http.StatusOK, struct{ Login int }{0}},     //the same
-		{"2", "1", CodeSuccess, 1, http.StatusOK, struct{ Login int }{1}},     //success
+		{"0", "1", CodeSuccess, 1, http.StatusOK, struct{ Login int }{1}},     //success
+		{"1", "1", CodeSuccess, 0, http.StatusOK, struct{ Login int }{1}},     //the same
+		{"2", "1", CodeSuccess, 1, http.StatusOK, struct{ Login int }{0}},     //success
 		{"3", "99999", CodeSuccess, 0, http.StatusOK, struct{ Login int }{0}}, //not found
 		{"4", "1", CodeRequestDataUnmarshalError, 0, http.StatusOK, struct {Login string `json:"login"`}{"x"}},
 		{"5", "1", CodeRequestDataUnmarshalError, 0, http.StatusOK, ""},

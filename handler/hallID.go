@@ -33,7 +33,7 @@ func (h *hallIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	vars := mux.Vars(r)
-	var id uint64
+	var ID uint64
 	mid, ok := vars["id"]
 	if !ok {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id not found", logPrefix))
@@ -41,14 +41,14 @@ func (h *hallIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := strconv.ParseUint(mid, 10, 64)
+	ID, err := strconv.ParseUint(mid, 10, 64)
 	if err != nil {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id to uint64 error id=%s", logPrefix, mid))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
 	}
 
-	if id == 0 {
+	if ID == 0 {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id ==0 ", logPrefix))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
@@ -57,7 +57,14 @@ func (h *hallIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" || r.Method == "get" {
 		queryString := "SELECT hall_id,name,active,create_date FROM hall where hall_id = ? LIMIT 1"
 		//h.getTargetRow(w, r, logPrefix, id, queryString, h.returnResDataFunc)
-		h.dbQuery(w, r, logPrefix, id, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
+		h.dbQuery(w, r, logPrefix, ID, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
+		return
+	}
+
+	if r.Method == "DELETE" || r.Method == "delete" {
+		queryString := "DELETE FROM hall  where hall_id = ? LIMIT 1"
+		//h.delete(w, r, logPrefix, id, queryString, h.returnIDResData)
+		h.dbExec(w, r, logPrefix, ID, "", queryString, nil, h.sqlDelete, h.returnExecResponseData)
 		return
 	}
 
@@ -72,21 +79,18 @@ func (h *hallIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		queryString := "UPDATE hall SET hall_id=?, name=?, active= ? WHERE hall_id = ? LIMIT 1"
 
 		//unmarshal request body
-		patchData, err := h.getPatchData(body)
+		param, err := h.getPatchData(body)
 		if err != nil {
 			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s patchTargetColumn data unmarshal error=%s", logPrefix, err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestDataUnmarshalError, err.Error())
 			return
 		}
-		h.patch(w, r, logPrefix, id, queryString, patchData, h.patchExec, h.returnIDResData)
+		//h.patch(w, r, logPrefix, ID, queryString, patchData, h.patchExec, h.returnIDResData)
+		h.dbExec(w, r, logPrefix, ID, "", queryString, param, h.sqlPatch, h.returnExecResponseData)
 		return
 	}
 
-	if r.Method == "DELETE" || r.Method == "delete" {
-		queryString := "DELETE FROM hall  where hall_id = ? LIMIT 1"
-		h.delete(w, r, logPrefix, id, queryString, h.returnIDResData)
-		return
-	}
+
 
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
@@ -122,6 +126,60 @@ func (h *hallIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, t
 	}
 }
 
+//delete
+func (h *hallIDHandler) sqlDelete(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+
+	return stmt.Exec(IDOrAccount)
+}
+
+//patch
+func (h *hallIDHandler) getPatchData(body []byte) (interface{}, error) {
+	d := &hallPatchParam{}
+	err := json.Unmarshal(body, d)
+	if err != nil {
+		return nil, err
+	}
+	if len(d.Name) < 3 {
+		return nil, errors.New("patch param error")
+	}
+	return d, nil
+}
+
+func (h *hallIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+
+	if p, ok := param.(*hallPatchParam); ok {
+		return stmt.Exec(p.HallID, p.Name, p.Active, IDOrAccount)
+	}
+
+	return nil, errors.New("parsing param error")
+}
+
+func (h *hallIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*hallIDData{{}},
+		}
+	}
+
+	ID, _ := IDOrAccount.(uint)
+
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data: []*hallIDData{
+			{
+				ID,
+			},
+		},
+	}
+}
+
 //func (h *hallIDHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
 //
 //	return func(rows *sql.Rows) (interface{}, int) {
@@ -144,31 +202,21 @@ func (h *hallIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, t
 //		return resData, count
 //	}
 //}
-func (h *hallIDHandler) getPatchData(body []byte) (interface{}, error) {
-	d := &hallPatchParam{}
-	err := json.Unmarshal(body, d)
-	if err != nil {
-		return nil, err
-	}
-	if len(d.Name) < 3 {
-		return nil, errors.New("patch param error")
-	}
-	return d, nil
-}
-func (h *hallIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
-
-	if p, ok := param.(*hallPatchParam); ok {
-		return stmt.Exec(p.HallID, p.Name, p.Active, ID)
-	}
-
-	return nil, errors.New("parsing param error")
-
-}
-
-func (h *hallIDHandler) returnIDResData(ID uint64) interface{} {
-	return []hallIDData{
-		{
-			uint(ID),
-		},
-	}
-}
+//
+//func (h *hallIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//
+//	if p, ok := param.(*hallPatchParam); ok {
+//		return stmt.Exec(p.HallID, p.Name, p.Active, ID)
+//	}
+//
+//	return nil, errors.New("parsing param error")
+//
+//}
+//
+//func (h *hallIDHandler) returnIDResData(ID uint64) interface{} {
+//	return []hallIDData{
+//		{
+//			uint(ID),
+//		},
+//	}
+//}

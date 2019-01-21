@@ -59,7 +59,6 @@ func (h *OfficialCMSRoleIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Requ
 
 		queryString := "SELECT role_id,permission,create_date FROM official_cms_role where role_id = ? LIMIT 1"
 		h.dbQuery(w, r, logPrefix, ID, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
-		//h.getTargetRow(w, r, logPrefix, ID, queryString, h.returnResDataFunc)
 		return
 	}
 
@@ -77,15 +76,8 @@ func (h *OfficialCMSRoleIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Requ
 			return
 		}
 
-		//check patch
-		//if !strings.Contains(r.URL.Path, "patch") {
-		//	h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler patch path error :%s", logPrefix, r.URL.Path))
-		//	h.writeError(w, http.StatusOK, CodeRequestPathError, "")
-		//	return
-		//}
-
-		//umarshal request body
-		patchData, err := h.getPatchData(body)
+		//unmarshal request body
+		param, err := h.getPatchData(body)
 		if err != nil {
 			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s patch data unmarshal error=%s", logPrefix, err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestDataUnmarshalError, "")
@@ -93,8 +85,7 @@ func (h *OfficialCMSRoleIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Requ
 		}
 
 		queryString := "UPDATE official_cms_role set permission = ?   WHERE role_id = ? LIMIT 1"
-
-		h.patch(w, r, logPrefix, ID, queryString, patchData, h.patchExec, h.returnIDResData)
+		h.dbExec(w, r, logPrefix, ID, "", queryString, param, h.sqlPatch, h.returnExecResponseData)
 		return
 	}
 
@@ -132,29 +123,7 @@ func (h *OfficialCMSRoleIDHandler) returnResponseDataFunc() func(IDOrAccount int
 	}
 }
 
-/*
-func (h *officialCMSRoldIDHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
-
-	return func(rows *sql.Rows) (interface{}, int) {
-		count := 0
-		d := officialCMSRoleDB{}
-		resData := []officialCMSRoleData{}
-
-		for rows.Next() {
-			err := rows.Scan(&d.role_id, &d.permission, &d.create_date)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					officialCMSRoleData{
-						d.role_id,
-						d.permission,
-						d.create_date})
-			}
-		}
-		return resData, count
-	}
-}
-*/
+//patch
 func (h *OfficialCMSRoleIDHandler) getPatchData(body []byte) (interface{}, error) {
 
 	d := &officialCMSRolePatchParam{}
@@ -178,40 +147,39 @@ func (h *OfficialCMSRoleIDHandler) getPatchData(body []byte) (interface{}, error
 	return d, nil
 
 }
+func (h *OfficialCMSRoleIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
-func (h *OfficialCMSRoleIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
-
-	//檢查參數是否合法
 	if p, ok := param.(*officialCMSRolePatchParam); ok {
 
-		return stmt.Exec(p.Permission, ID)
+		return stmt.Exec(p.Permission, IDOrAccount)
 	}
 	return nil, errors.New("parsing param error")
-
 }
-func (h *OfficialCMSRoleIDHandler) returnIDResData(ID uint64) interface{} {
 
-	return []roleIDData{
-		{
-			uint(ID),
+func (h *OfficialCMSRoleIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*roleIDData{{}},
+		}
+	}
+
+	ID, _ := IDOrAccount.(uint)
+
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data: []*roleIDData{
+			{
+				ID,
+			},
 		},
 	}
 }
 
-//func (h *officialCMSRoldIDHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
-//
-//	if p, ok := param.(*officialCMSRolePostParam); ok {
-//
-//		return stmt.Exec(p.Account, p.Password, p.RoleID)
-//	}
-//	return nil, errors.New("")
-//
-//}
-//func (h *officialCMSRoldIDHandler) returnPostResData(ID, lastID uint64) interface{} {
-//	return []roleIDData{
-//		{
-//			uint(lastID),
-//		},
-//	}
-//}
 

@@ -1,12 +1,12 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"encoding/json"
 	"database/sql"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"github.com/cruisechang/dbex"
+	"net/http"
 )
 
 func NewHallsHandler(base baseHandler) *hallsHandler {
@@ -31,7 +31,6 @@ func (h *hallsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" || r.Method == "get" {
 		queryString := "SELECT hall_id,name,active,create_date FROM hall "
-		//h.get(w, r,"halls",queryString,h.returnResDataFunc)
 		h.dbQuery(w, r, logPrefix, 0, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
@@ -57,7 +56,7 @@ func (h *hallsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		queryString := "INSERT  INTO hall (hall_id,name) values (? ,?)"
-		h.post(w, r, logPrefix, uint64(param.HallID), queryString, param, h.sqlExec, h.returnPostResData)
+		h.dbExec(w, r, logPrefix, param.HallID, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
@@ -94,7 +93,8 @@ func (h *hallsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, ta
 	}
 }
 
-func (h *hallsHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//post
+func (h *hallsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*hallPostParam); ok {
 
@@ -103,10 +103,40 @@ func (h *hallsHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sq
 	return nil, errors.New("")
 
 }
-func (h *hallsHandler) returnPostResData(ID, lastID uint64) interface{} {
-	return []hallIDData{
-		{
-			uint(ID),
-		},
+
+//id是預設的
+func (h *hallsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*hallIDData{{}},
+		}
+
+	}
+
+	//id是預設的，非自動產生
+	if id, ok := IDOrAccount.(uint); ok {
+		return &responseData{
+			Code:    CodeSuccess,
+			Count:   int(affRow),
+			Message: "",
+			Data: []*hallIDData{
+				{
+					id,
+				},
+			},
+		}
+	}
+
+	//error
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:    int(affRow),
+		Message: "",
+		Data:    []*hallIDData{{}},
 	}
 }

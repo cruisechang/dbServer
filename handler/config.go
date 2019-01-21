@@ -55,7 +55,6 @@ type responseData struct {
 type timeParam struct {
 	BeginDate string `json:"beginDate"`
 	EndDate   string `json:"endDate"`
-	ID        uint64 `json:"id"`
 }
 
 type userIDData struct {

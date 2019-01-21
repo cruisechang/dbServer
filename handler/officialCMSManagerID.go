@@ -60,14 +60,13 @@ func (h *OfficialCMSManagerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.R
 	if r.Method == "GET" || r.Method == "get" {
 
 		queryString := "SELECT manager_id,account,role_id,active, login,create_date FROM official_cms_manager where manager_id = ? LIMIT 1"
-		//h.getTargetRow(w, r, logPrefix, ID, queryString, h.returnResDataFunc)
 		h.dbQuery(w, r, logPrefix, ID, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
 
 	if r.Method == "DELETE" || r.Method == "delete" {
 		queryString := "DELETE FROM official_cms_manager  where manager_id = ? LIMIT 1"
-		h.delete(w, r, logPrefix, ID, queryString, h.returnIDResData)
+		h.dbExec(w, r, logPrefix, ID, "", queryString, nil, h.sqlDelete, h.returnExecResponseData)
 		return
 	}
 
@@ -79,15 +78,9 @@ func (h *OfficialCMSManagerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.R
 			return
 		}
 
-		//check patch
-		//if !strings.Contains(r.URL.Path, "patch") {
-		//	h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler patch path error :%s", logPrefix, r.URL.Path))
-		//	h.writeError(w, http.StatusOK, CodeRequestPathError, "")
-		//	return
-		//}
 
-		//umarshal request body
-		patchData, err := h.getPatchData(body)
+		//unmarshal request body
+		param, err := h.getPatchData(body)
 		if err != nil {
 			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s patch data unmarshal error=%s", logPrefix, err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestDataUnmarshalError, "")
@@ -95,8 +88,7 @@ func (h *OfficialCMSManagerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.R
 		}
 
 		queryString := "UPDATE official_cms_manager set password = ? , role_id =? , active =?  WHERE manager_id = ? LIMIT 1"
-
-		h.patch(w, r, logPrefix, ID, queryString, patchData, h.patchExec, h.returnIDResData)
+		h.dbExec(w, r, logPrefix, ID, "", queryString, param, h.sqlPatch, h.returnExecResponseData)
 		return
 	}
 
@@ -136,6 +128,66 @@ func (h *OfficialCMSManagerIDHandler) returnResponseDataFunc() func(IDOrAccount 
 	}
 }
 
+//delete
+func (h *OfficialCMSManagerIDHandler) sqlDelete(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+
+	return stmt.Exec(IDOrAccount)
+}
+
+//patch
+func (h *OfficialCMSManagerIDHandler) getPatchData(body []byte) (interface{}, error) {
+
+	d := &officialCMSManagerPatchParam{}
+	err := json.Unmarshal(body, d)
+	if err != nil {
+		return nil, err
+	}
+	if len(d.Password) == 0 {
+		return nil, errors.New("patch data password unmarshal error")
+	} else if d.RoleID < 0 {
+		return nil, errors.New("patch data roleID unmarshal error")
+	} else if d.Active < 0 {
+		return nil, errors.New("patch data active unmarshal error")
+
+	}
+
+	return d, nil
+
+}
+func (h *OfficialCMSManagerIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+
+	if p, ok := param.(*officialCMSManagerPatchParam); ok {
+
+		return stmt.Exec(p.Password, p.RoleID, p.Active, IDOrAccount)
+	}
+	return nil, errors.New("parsing param error")
+}
+
+func (h *OfficialCMSManagerIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*managerIDData{{}},
+		}
+	}
+
+	ID, _ := IDOrAccount.(uint)
+
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data: []*managerIDData{
+			{
+				ID,
+			},
+		},
+	}
+}
 /*
 func (h *officialCMSManagerIDHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
 
@@ -162,58 +214,40 @@ func (h *officialCMSManagerIDHandler) returnResDataFunc() (func(rows *sql.Rows) 
 	}
 }
 */
-func (h *OfficialCMSManagerIDHandler) getPatchData(body []byte) (interface{}, error) {
 
-	d := &officialCMSManagerPatchParam{}
-	err := json.Unmarshal(body, d)
-	if err != nil {
-		return nil, err
-	}
-	if len(d.Password) == 0 {
-		return nil, errors.New("patch data password unmarshal error")
-	} else if d.RoleID < 0 {
-		return nil, errors.New("patch data roleID unmarshal error")
-	} else if d.Active < 0 {
-		return nil, errors.New("patch data active unmarshal error")
-
-	}
-
-	return d, nil
-
-}
-
-func (h *OfficialCMSManagerIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
-
-	//檢查參數是否合法
-	if p, ok := param.(*officialCMSManagerPatchParam); ok {
-
-		return stmt.Exec(p.Password, p.RoleID, p.Active, ID)
-	}
-	return nil, errors.New("parsing param error")
-
-}
-func (h *OfficialCMSManagerIDHandler) returnIDResData(ID uint64) interface{} {
-
-	return []managerIDData{
-		{
-			uint(ID),
-		},
-	}
-}
-
-func (h *OfficialCMSManagerIDHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
-
-	if p, ok := param.(*officialCMSManagerPostParam); ok {
-
-		return stmt.Exec(p.Account, p.Password, p.RoleID)
-	}
-	return nil, errors.New("")
-
-}
-func (h *OfficialCMSManagerIDHandler) returnPostResData(ID, lastID uint64) interface{} {
-	return []managerIDData{
-		{
-			uint(lastID),
-		},
-	}
-}
+//
+//func (h *OfficialCMSManagerIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//
+//	//檢查參數是否合法
+//	if p, ok := param.(*officialCMSManagerPatchParam); ok {
+//
+//		return stmt.Exec(p.Password, p.RoleID, p.Active, ID)
+//	}
+//	return nil, errors.New("parsing param error")
+//
+//}
+//func (h *OfficialCMSManagerIDHandler) returnIDResData(ID uint64) interface{} {
+//
+//	return []managerIDData{
+//		{
+//			uint(ID),
+//		},
+//	}
+//}
+//
+//func (h *OfficialCMSManagerIDHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//
+//	if p, ok := param.(*officialCMSManagerPostParam); ok {
+//
+//		return stmt.Exec(p.Account, p.Password, p.RoleID)
+//	}
+//	return nil, errors.New("")
+//
+//}
+//func (h *OfficialCMSManagerIDHandler) returnPostResData(ID, lastID uint64) interface{} {
+//	return []managerIDData{
+//		{
+//			uint(lastID),
+//		},
+//	}
+//}

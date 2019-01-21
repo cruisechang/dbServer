@@ -29,7 +29,6 @@ func (h *limitationsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" || r.Method == "get" {
 		queryString := "SELECT limitation_id,limitation FROM limitation "
-		//h.get(w, r,logPrefix,queryString,h.returnResDataFunc)
 		h.dbQuery(w, r, logPrefix, 0, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
@@ -67,25 +66,4 @@ func (h *limitationsHandler) returnResponseDataFunc() func(IDOrAccount interface
 	}
 }
 
-/*
-func (h *limitationsHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
 
-	return func(rows *sql.Rows) (interface{}, int) {
-		count := 0
-		ud := limitationDB{}
-		resData := []limitationData{}
-
-		for rows.Next() {
-			err := rows.Scan(&ud.limitation_id, &ud.limitation)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					limitationData{
-						ud.limitation_id,
-						ud.limitation})
-			}
-		}
-		return resData, count
-	}
-}
-*/

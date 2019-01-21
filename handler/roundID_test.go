@@ -147,7 +147,6 @@ func Test_roundHandler_patch(t *testing.T) {
 		}
 
 		if rr.Code != http.StatusOK {
-			//no body
 			return
 		}
 

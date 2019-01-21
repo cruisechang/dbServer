@@ -1,12 +1,13 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"encoding/json"
 	"database/sql"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"net/http"
+
+	"github.com/cruisechang/dbex"
 )
 
 func NewOfficialCMSRolesHandler(base baseHandler) *OfficialCMSRolesHandler {
@@ -44,7 +45,7 @@ func (h *OfficialCMSRolesHandler) ServeHTTP(w http.ResponseWriter, r *http.Reque
 			return
 		}
 
-		postData,err:=h.getPostData(body)
+		param, err := h.getPostData(body)
 		if err != nil {
 			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s post data unmarshal error=%s", logPrefix, err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestDataUnmarshalError, "")
@@ -52,12 +53,14 @@ func (h *OfficialCMSRolesHandler) ServeHTTP(w http.ResponseWriter, r *http.Reque
 		}
 
 		queryString := "INSERT  INTO official_cms_role ( permission ) values (?)"
-		h.post(w, r, logPrefix, 0, queryString, postData, h.sqlExec, h.returnPostResData)
+		h.dbExec(w, r, logPrefix, 0, "", queryString, param, h.sqlPost, h.returnPostResponseData)
+		//h.post(w, r, logPrefix, 0, queryString, postData, h.sqlExec, h.returnPostResData)
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
 
+//get
 func (h *OfficialCMSRolesHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query()
 }
@@ -71,7 +74,7 @@ func (h *OfficialCMSRolesHandler) returnResponseDataFunc() func(IDOrAccount inte
 		for rows.Next() {
 			err := rows.Scan(&d.role_id, &d.permission, &d.create_date)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					officialCMSRoleData{
 						d.role_id,
@@ -89,30 +92,7 @@ func (h *OfficialCMSRolesHandler) returnResponseDataFunc() func(IDOrAccount inte
 	}
 }
 
-/*
-func (h *officialCMSRolesHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
-
-	return func(rows *sql.Rows) (interface{}, int) {
-		count := 0
-		d := officialCMSRoleDB{}
-		resData := []officialCMSRoleData{}
-
-		for rows.Next() {
-			err := rows.Scan(&d.role_id, &d.permission, &d.create_date)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					officialCMSRoleData{
-						d.role_id,
-						d.permission,
-						d.create_date})
-			}
-		}
-		return resData, count
-	}
-}
-*/
-
+//post
 func (h *OfficialCMSRolesHandler) getPostData(body []byte) (interface{}, error) {
 
 	d := &officialCMSRolePostParam{}
@@ -128,16 +108,14 @@ func (h *OfficialCMSRolesHandler) getPostData(body []byte) (interface{}, error) 
 		return nil, err
 	}
 
-
-	if len(d.Permission) <2 {
+	if len(d.Permission) < 2 {
 		return nil, errors.New("patch data password unmarshal error")
 	}
 
 	return d, nil
 
 }
-
-func (h *OfficialCMSRolesHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+func (h *OfficialCMSRolesHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*officialCMSRolePostParam); ok {
 
@@ -146,10 +124,57 @@ func (h *OfficialCMSRolesHandler) sqlExec(stmt *sql.Stmt, ID uint64, param inter
 	return nil, errors.New("")
 
 }
-func (h *OfficialCMSRolesHandler) returnPostResData(ID, lastID uint64) interface{} {
-	return []roleIDData{
-		{
-			uint(lastID),
+
+//id 自動產生
+func (h *OfficialCMSRolesHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*roleIDData{{}},
+		}
+
+	}
+
+	lastID, err := result.LastInsertId()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecLastIDError,
+			Count:   0,
+			Message: "",
+			Data:    []*roleIDData{{}},
+		}
+	}
+
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data: []*roleIDData{
+			{
+				uint(lastID),
+			},
 		},
 	}
 }
+
+//
+//func (h *OfficialCMSRolesHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//
+//	if p, ok := param.(*officialCMSRolePostParam); ok {
+//
+//		return stmt.Exec(p.Permission)
+//	}
+//	return nil, errors.New("")
+//
+//}
+//func (h *OfficialCMSRolesHandler) returnPostResData(ID, lastID uint64) interface{} {
+//	return []roleIDData{
+//		{
+//			uint(lastID),
+//		},
+//	}
+//}

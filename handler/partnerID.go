@@ -1,14 +1,14 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"strconv"
-	"strings"
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"github.com/cruisechang/dbex"
+	"net/http"
+	"strconv"
+	"strings"
 )
 
 func NewPartnerIDHandler(base baseHandler) *partnerIDHandler {
@@ -34,20 +34,20 @@ func (h *partnerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	gotVar, err := h.getVariable(r, "id")
 	if err != nil {
-		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id error",logPrefix))
+		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id error", logPrefix))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
 	}
 
-	id, err := strconv.ParseUint(gotVar, 10, 64)
+	ID, err := strconv.ParseUint(gotVar, 10, 64)
 	if err != nil {
-		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id to uint64 error id=%s", logPrefix,gotVar))
+		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id to uint64 error id=%s", logPrefix, gotVar))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
 	}
 
-	if id <= 0 {
-		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id ==0 ",logPrefix))
+	if ID <= 0 {
+		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id ==0 ", logPrefix))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
 	}
@@ -57,50 +57,44 @@ func (h *partnerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if strings.Contains(r.URL.Path, "aesKey") {
 
 			queryString := "SELECT  aes_key from partner WHERE partner_id = ? LIMIT 1"
-			h.dbQuery(w, r, logPrefix, id, "aes_key", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
-			//h.getTargetColumnValue(w, r, "partner", id, "aes_key", queryString, h.returnTargetColumnResDataCount)
+			h.dbQuery(w, r, logPrefix, ID, "aes_key", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
 			return
 		}
 		if strings.Contains(r.URL.Path, "active") {
 
 			queryString := "SELECT  active from partner WHERE partner_id = ? LIMIT 1"
-			h.dbQuery(w, r, logPrefix, id, "active", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
-			//h.getTargetColumnValue(w, r, "partner", id, "active", queryString, h.returnTargetColumnResDataCount)
+			h.dbQuery(w, r, logPrefix, ID, "active", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
 			return
 		}
 		if strings.Contains(r.URL.Path, "login") {
 
 			queryString := "SELECT  login from partner WHERE partner_id = ? LIMIT 1"
-			h.dbQuery(w, r, logPrefix, id, "login", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
-			//h.getTargetColumnValue(w, r, "partner", id, "login", queryString, h.returnTargetColumnResDataCount)
+			h.dbQuery(w, r, logPrefix, ID, "login", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
 			return
 		}
 		if strings.Contains(r.URL.Path, "apiBindIP") {
 
 			queryString := "SELECT  api_bind_ip from partner WHERE partner_id = ? LIMIT 1"
-			h.dbQuery(w, r, logPrefix, id, "api_bind_ip", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
-			//h.getTargetColumnValue(w, r, "partner", id, "api_bind_ip", queryString, h.returnTargetColumnResDataCount)
+			h.dbQuery(w, r, logPrefix, ID, "api_bind_ip", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
 			return
 		}
 		if strings.Contains(r.URL.Path, "cmsBinkIP") {
 
 			queryString := "SELECT  cms_bind_ip from partner WHERE partner_id = ? LIMIT 1"
-			h.dbQuery(w, r, logPrefix, id, "cms_bind_ip", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
-			//h.getTargetColumnValue(w, r, "partner", id, "cms_bind_ip", queryString, h.returnTargetColumnResDataCount)
+			h.dbQuery(w, r, logPrefix, ID, "cms_bind_ip", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
 			return
 		}
 
 		if strings.Contains(r.URL.Path, "accessToken") {
 
 			queryString := "SELECT  access_token from partner WHERE partner_id = ? LIMIT 1"
-			h.dbQuery(w, r, logPrefix, id, "access_token", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
-			//h.getTargetColumnValue(w, r, "partner", id, "access_token", queryString, h.returnTargetColumnResDataCount)
+			h.dbQuery(w, r, logPrefix, ID, "access_token", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
 			return
 		}
 
 		queryString := "SELECT partner_id,account,name,level,category,active,api_bind_ip,cms_bind_ip,create_date from partner WHERE partner_id = ? LIMIT 1"
 		//h.getTargetRow(w, r, "partner", id, queryString, h.returnResDataFunc)
-		h.dbQuery(w, r, logPrefix, id, "access_token", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
+		h.dbQuery(w, r, logPrefix, ID, "access_token", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
 
@@ -135,23 +129,18 @@ func (h *partnerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			column = "access_token"
 			queryString = "UPDATE partner set " + column + "  = ?  WHERE partner_id = ? LIMIT 1"
 		} else {
-			//error
-			//h.logger.Log(dbex.LevelError, fmt.Sprintf("%s  patch path error :%s", logPrefix, r.URL.Path))
-			//h.writeError(w, http.StatusNotFound, CodePathError, "")
-			//return
-
 			queryString = "UPDATE partner set password=?, name = ?, level=?, category=? , active=? , aes_key=?, access_token=?, api_bind_ip =? , cms_bind_ip =?  WHERE partner_id = ? LIMIT 1"
 		}
 
-
 		//unmarshal request body
-		patchData, err := h.getPatchData(column, body)
+		param, err := h.getPatchData(column, body)
 		if err != nil {
-			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s patchTargetColumn data unmarshal error=%s", logPrefix,err.Error()))
+			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s patchTargetColumn data unmarshal error=%s", logPrefix, err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestDataUnmarshalError, err.Error())
 			return
 		}
-		h.patch(w, r, logPrefix, id, queryString, patchData, h.patchExec, h.returnIDResData)
+		//h.patch(w, r, logPrefix, id, queryString, patchData, h.patchExec, h.returnIDResData)
+		h.dbExec(w, r, logPrefix, ID, column, queryString, param, h.sqlPatch, h.returnExecResponseData)
 		return
 	}
 
@@ -290,6 +279,7 @@ func (h *partnerIDHandler) returnTargetColumnResponseData() func(IDOrAccount int
 		}
 	}
 }
+
 func (h *partnerIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
@@ -323,134 +313,8 @@ func (h *partnerIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}
 		}
 	}
 }
-/*
-func (h *partnerIDHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
 
-	return func(rows *sql.Rows) (interface{}, int) {
-		count := 0
-		ud := partnerDB{}
-		resData := []partnerData{}
-
-		for rows.Next() {
-			err := rows.Scan(&ud.partner_id, &ud.account, &ud.name, &ud.level, &ud.category, &ud.active, &ud.api_bind_ip, &ud.cms_bind_ip, &ud.create_date)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					partnerData{
-						ud.partner_id,
-						ud.account,
-						ud.name,
-						ud.level,
-						ud.category,
-						ud.active,
-						ud.api_bind_ip,
-						ud.cms_bind_ip,
-						ud.create_date,})
-			}
-		}
-		return resData, count
-	}
-}
-
-func (h *partnerIDHandler) returnTargetColumnResDataCount(column string, rows *sql.Rows) (interface{}, int) {
-
-	switch column {
-	case "aes_key":
-		resData := []aesKeyData{}
-		count := 0
-		var aesKey string
-		for rows.Next() {
-			err := rows.Scan(&aesKey)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					aesKeyData{
-						aesKey,
-					})
-			}
-		}
-		return resData, count
-	case "active":
-		resData := []activeData{}
-		count := 0
-		var active uint
-		for rows.Next() {
-			err := rows.Scan(&active)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					activeData{
-						active,
-					})
-			}
-		}
-		return resData, count
-	case "login":
-		resData := []loginData{}
-		count := 0
-		var login uint
-		for rows.Next() {
-			err := rows.Scan(&login)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					loginData{
-						login,
-					})
-			}
-		}
-		return resData, count
-	case "api_bind_ip":
-		resData := []apiBindIPData{}
-		count := 0
-		var ip string
-		for rows.Next() {
-			err := rows.Scan(&ip)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					apiBindIPData{
-						ip,
-					})
-			}
-		}
-		return resData, count
-	case "cms_bind_ip":
-		resData := []cmsBindIPData{}
-		count := 0
-		var ip string
-		for rows.Next() {
-			err := rows.Scan(&ip)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					cmsBindIPData{
-						ip,
-					})
-			}
-		}
-		return resData, count
-	case "access_token":
-		resData := []accessTokenData{}
-		count := 0
-		var token string
-		for rows.Next() {
-			err := rows.Scan(&token)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					accessTokenData{
-						token,
-					})
-			}
-		}
-		return resData, count
-	default:
-		return "[{}]", 0
-	}
-}
-*/
-
+//patch
 func (h *partnerIDHandler) getPatchData(column string, body []byte) (interface{}, error) {
 	switch column {
 
@@ -497,12 +361,12 @@ func (h *partnerIDHandler) getPatchData(column string, body []byte) (interface{}
 		}
 		return ug, nil
 	case "":
-		d:=&partnerPatchParam{}
+		d := &partnerPatchParam{}
 		err := json.Unmarshal(body, d)
 		if err != nil {
 			return nil, err
 		}
-		if len(d.Password)<3 || len(d.Name)<3 || len(d.AccessToken)<3 || len(d.AESKey)<3 {
+		if len(d.Password) < 3 || len(d.Name) < 3 || len(d.AccessToken) < 3 || len(d.AESKey) < 3 {
 			return nil, errors.New("")
 		}
 		return d, nil
@@ -510,41 +374,57 @@ func (h *partnerIDHandler) getPatchData(column string, body []byte) (interface{}
 		return nil, errors.New("column error")
 	}
 }
-
-func (h *partnerIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
-
-	//檢查參數是否合法
+func (h *partnerIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*loginData); ok {
-		return stmt.Exec(p.Login, ID)
+		return stmt.Exec(p.Login, IDOrAccount)
 	}
 	if p, ok := param.(*activeData); ok {
-		return stmt.Exec(p.Active, ID)
+		return stmt.Exec(p.Active, IDOrAccount)
 	}
 	if p, ok := param.(*aesKeyData); ok {
-		return stmt.Exec(p.AESKey, ID)
+		return stmt.Exec(p.AESKey, IDOrAccount)
 	}
 	if p, ok := param.(*apiBindIPData); ok {
-		return stmt.Exec(p.APIBindIP, ID)
+		return stmt.Exec(p.APIBindIP, IDOrAccount)
 	}
 	if p, ok := param.(*cmsBindIPData); ok {
-		return stmt.Exec(p.CMSBindIP, ID)
+		return stmt.Exec(p.CMSBindIP, IDOrAccount)
 	}
 	if p, ok := param.(*accessTokenData); ok {
-		return stmt.Exec(p.AccessToken, ID)
+		return stmt.Exec(p.AccessToken, IDOrAccount)
 	}
 
-	if p,ok:=param.(*partnerPatchParam);ok{
-		return stmt.Exec(p.Password,p.Name,p.Level,p.Category,p.Active,p.AESKey,p.AccessToken,p.APIBindIP,p.CMSBindIP, ID)
+	if p, ok := param.(*partnerPatchParam); ok {
+		return stmt.Exec(p.Password, p.Name, p.Level, p.Category, p.Active, p.AESKey, p.AccessToken, p.APIBindIP, p.CMSBindIP, IDOrAccount)
 	}
 
 	return nil, errors.New("parsing param error")
 }
 
-func (h *partnerIDHandler) returnIDResData(ID uint64) interface{} {
-	return []partnerIDData{
-		{
-			ID,
+func (h *partnerIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*partnerIDData{{}},
+		}
+	}
+
+	ID, _ := IDOrAccount.(uint64)
+
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data: []*partnerIDData{
+			{
+				ID,
+			},
 		},
 	}
 }
+

@@ -37,7 +37,6 @@ func (h *UserIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	vars := mux.Vars(r)
-	var id uint64
 	mid, ok := vars["id"]
 	if !ok {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id not found", logPrefix))
@@ -45,14 +44,14 @@ func (h *UserIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := strconv.ParseUint(mid, 10, 64)
+	ID, err := strconv.ParseUint(mid, 10, 64)
 	if err != nil {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id to uint64 error id=%s", logPrefix, mid))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
 	}
 
-	if id == 0 {
+	if ID == 0 {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id ==0 ", logPrefix))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
@@ -62,16 +61,16 @@ func (h *UserIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" || r.Method == "get" {
 		if strings.Contains(r.URL.Path, "credit") {
 			queryString := "SELECT  credit from user WHERE user_id = ? LIMIT 1"
-			h.dbQuery(w, r, logPrefix, id, "credit", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
+			h.dbQuery(w, r, logPrefix, ID, "credit", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
 		} else if strings.Contains(r.URL.Path, "active") {
 			queryString := "SELECT  active from user WHERE user_id = ? LIMIT 1"
-			h.dbQuery(w, r, logPrefix, id, "active", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
+			h.dbQuery(w, r, logPrefix, ID, "active", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
 		} else if strings.Contains(r.URL.Path, "login") {
 			queryString := "SELECT  login from user WHERE user_id = ? LIMIT 1"
-			h.dbQuery(w, r, logPrefix, id, "login", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
+			h.dbQuery(w, r, logPrefix, ID, "login", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
 		} else {
 			queryString := "SELECT user_id,partner_id,account,name,credit,level,category,active,ip,platform,login,create_date from user WHERE user_id = ? LIMIT 1"
-			h.dbQuery(w, r, logPrefix, id, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
+			h.dbQuery(w, r, logPrefix, ID, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		}
 		return
 	}
@@ -124,14 +123,15 @@ func (h *UserIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		queryString := "UPDATE user set " + column + "  = ?  WHERE user_id = ? LIMIT 1"
 
 		//unmarshal request body
-		patchData, err := h.getPatchData(column, body)
+		param, err := h.getPatchData(column, body)
 		if err != nil {
 			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s patchTargetColumn data unmarshal error=%s", logPrefix, err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestDataUnmarshalError, "")
 			return
 		}
 
-		h.patch(w, r, logPrefix, id, queryString, patchData, h.patchExec, h.returnIDResData)
+		//h.patch(w, r, logPrefix, id, queryString, patchData, h.patchExec, h.returnIDResData)
+		h.dbExec(w, r, logPrefix, ID, column, queryString, param, h.sqlPatch, h.returnExecResponseData)
 		return
 	}
 	h.writeError(w, http.StatusNotFound, CodeMethodError, "")
@@ -278,60 +278,8 @@ func (h *UserIDHandler) returnResDataFunc() func(rows *sql.Rows) (interface{}, i
 		return resData, count
 	}
 }
-/*
-func (h *UserIDHandler) returnTargetColumnResDataCount(column string, rows *sql.Rows) (interface{}, int) {
 
-	switch column {
-	case "credit":
-		resData := []creditData{}
-		count := 0
-		var credit float32
-		for rows.Next() {
-			err := rows.Scan(&credit)
-			if err == nil {
-				count++
-				resData = append(resData,
-					creditData{
-						credit,
-					})
-			}
-		}
-		return resData, count
-	case "active":
-		resData := []activeData{}
-		count := 0
-		var active uint
-		for rows.Next() {
-			err := rows.Scan(&active)
-			if err == nil {
-				count++
-				resData = append(resData,
-					activeData{
-						active,
-					})
-			}
-		}
-		return resData, count
-	case "login":
-		resData := []loginData{}
-		count := 0
-		var login uint
-		for rows.Next() {
-			err := rows.Scan(&login)
-			if err == nil {
-				count++
-				resData = append(resData,
-					loginData{
-						login,
-					})
-			}
-		}
-		return resData, count
-	default:
-		return "[{}]", 0
-	}
-}
-*/
+//patch
 func (h *UserIDHandler) getPatchData(column string, body []byte) (interface{}, error) {
 	switch column {
 	case "credit":
@@ -359,27 +307,44 @@ func (h *UserIDHandler) getPatchData(column string, body []byte) (interface{}, e
 		return nil, errors.New("column error")
 	}
 }
-func (h *UserIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+func (h *UserIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*creditData); ok {
-		return stmt.Exec(p.Credit, ID)
+		return stmt.Exec(p.Credit, IDOrAccount)
 	}
 	if p, ok := param.(*loginData); ok {
-		return stmt.Exec(p.Login, ID)
+		return stmt.Exec(p.Login, IDOrAccount)
 	}
 	if p, ok := param.(*activeData); ok {
 
-		return stmt.Exec(p.Active, ID)
+		return stmt.Exec(p.Active, IDOrAccount)
 	}
 
 	return nil, errors.New("parsing param error")
-
 }
 
-func (h *UserIDHandler) returnIDResData(ID uint64) interface{} {
-	return []userIDData{
-		{
-			ID,
+func (h *UserIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*userIDData{{}},
+		}
+	}
+
+	ID, _ := IDOrAccount.(uint64)
+
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data: []*userIDData{
+			{
+				ID,
+			},
 		},
 	}
 }

@@ -48,7 +48,6 @@ func (h *officialCMSManagerAccountHandler) ServeHTTP(w http.ResponseWriter, r *h
 	if r.Method == "GET" || r.Method == "get" {
 		if strings.Contains(r.URL.Path, "login") {
 			queryString := "SELECT manager_id,password, active  FROM official_cms_manager where account = ? LIMIT 1"
-			//h.getTargetColumnValueByAccount(w, r, logPrefix, account, "login", queryString, h.returnTargetColumnResDataCount)
 			h.dbQuery(w, r, logPrefix, account, "login", queryString, nil, h.sqlQuery, h.returnTargetColumnResponseData)
 			return
 		}
@@ -93,32 +92,4 @@ func (h *officialCMSManagerAccountHandler) returnTargetColumnResponseData() func
 		}
 	}
 }
-/*
-func (h *officialCMSManagerAccountHandler) returnTargetColumnResDataCount(column string, rows *sql.Rows) (interface{}, int) {
 
-	switch column {
-	case "login":
-		resData := []checkLoginData{}
-		count := 0
-		var managerID uint
-		var password string
-		var active uint
-		for rows.Next() {
-			err := rows.Scan(&managerID,&password,&active)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					checkLoginData{
-						managerID,
-						password,
-						active,
-
-					})
-			}
-		}
-		return resData, count
-	default:
-		return "[{}]", 0
-	}
-}
-*/

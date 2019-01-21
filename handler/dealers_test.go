@@ -1,17 +1,17 @@
 package handler
 
 import (
-	"testing"
+	"bytes"
 	"fmt"
 	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 	"net/http"
 	"net/http/httptest"
-	"github.com/gorilla/mux"
+	"testing"
 	//"encoding/json"
 	//"bytes"
 	//"io/ioutil"
 	"encoding/json"
-	"bytes"
 	"io/ioutil"
 )
 
@@ -50,7 +50,7 @@ func TestDealersHandlerGet(t *testing.T) {
 		router.ServeHTTP(rr, req)
 
 		if rr.Code != http.StatusOK {
-			t.Errorf("handler   failed http.status got %v want %v, name=%s", rr.Code, http.StatusOK,tc.name)
+			t.Errorf("handler   failed http.status got %v want %v, name=%s", rr.Code, http.StatusOK, tc.name)
 		}
 
 		body, _ := ioutil.ReadAll(rr.Body)
@@ -60,7 +60,7 @@ func TestDealersHandlerGet(t *testing.T) {
 		if err != nil {
 			t.Fatalf("handler unmarshal responseData error=%s name=%s", err.Error(), tc.name)
 		}
-		t.Logf("resData+%+v",resData)
+		t.Logf("resData+%+v", resData)
 	}
 }
 
@@ -74,17 +74,23 @@ func TestDealersHandlerPost(t *testing.T) {
 	}
 	fmt.Sprintf("%v", dbx)
 
+	//db
+	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	sqlDB := h.db.GetSQLDB()
+	var ids []uint //放ids，刪掉用
+
 	tt := []struct {
-		name string
-		code int
+		name  string
+		code  int
 		count int
-		param dealerPostParam
+		param interface{}
 	}{
 
-		{"0", CodeSuccess,1,dealerPostParam{"gg1","gg1","1234","url"}},
-		{"1", CodeDBExecError,0,dealerPostParam{"gg1","gg1","1234","url"}},  //account duplicate
+		{"0", CodeSuccess, 1, dealerPostParam{"gg1", "gg1", "1234", "url"}},
+		{"1", CodeDBExecError, 0, dealerPostParam{"gg1", "gg1", "1234", "url"}}, //account duplicate
+		{"2", CodeRequestDataUnmarshalError, 0, ""},
+		{"3", CodeRequestDataUnmarshalError, 0, 3},
 	}
-
 
 	for _, tc := range tt {
 		path := fmt.Sprintf("/dealers")
@@ -107,31 +113,50 @@ func TestDealersHandlerPost(t *testing.T) {
 		router.ServeHTTP(rr, req)
 
 		if rr.Code != http.StatusOK {
-			t.Errorf("TestRoomsHandlerPost failed  http.Statuc got %v want %v, name=%s", rr.Code, http.StatusOK,tc.name)
+			t.Errorf("TestRoomsHandlerPost failed  http.Statuc got %v want %v, name=%s", rr.Code, http.StatusOK, tc.name)
 		}
 
-		body,_:=ioutil.ReadAll(rr.Body)
+		body, _ := ioutil.ReadAll(rr.Body)
 
-		resData := &responseData{
-		}
-		err = json.Unmarshal(body,resData)
+		//resData := &responseData{
+		//}
+
+		resData := &struct {
+			Code    int
+			Count   int
+			Message string
+			Data    []*dealerIDData
+		}{}
+
+		err = json.Unmarshal(body, resData)
 		if err != nil {
-			t.Fatalf("handler unmarshal responseData error=%s",err.Error())
+			t.Fatalf("handler unmarshal responseData error=%s", err.Error())
 		}
 
-		if resData.Code!=tc.code{
-			t.Errorf("handler resData code  got %d want %d, name=%s",resData.Code,tc.code,tc.name)
+		if resData.Code != tc.code {
+			t.Errorf("handler resData code  got %d want %d, name=%s", resData.Code, tc.code, tc.name)
 
 		}
 
-		if resData.Count!=tc.count{
-			t.Errorf("handler resData count  got %d want %d, name=%s",resData.Count,tc.count,tc.name)
+		if resData.Count != tc.count {
+			t.Errorf("handler resData count  got %d want %d, name=%s", resData.Count, tc.count, tc.name)
 
+		}
+
+		//insert success
+		if resData.Count == 1 {
+			t.Logf("ID=%d ", resData.Data[0].DealerID)
+			ids = append(ids, resData.Data[0].DealerID)
+		}
+	}
+
+	if len(ids) > 0 {
+		queryString := "DELETE FROM dealer  where dealer_id = ? LIMIT 1"
+		stmt, _ := sqlDB.Prepare(queryString)
+		defer stmt.Close()
+
+		for _,v:= range ids {
+			stmt.Exec(v)
 		}
 	}
 }
-
-
-
-
-

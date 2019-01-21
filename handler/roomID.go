@@ -1,15 +1,15 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
+	"database/sql"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"github.com/cruisechang/dbex"
 	"github.com/gorilla/mux"
+	"net/http"
 	"strconv"
 	"strings"
-	"errors"
-	"database/sql"
 )
 
 func NewRoomIDHandler(base baseHandler) *roomIDHandler {
@@ -57,7 +57,6 @@ func (h *roomIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" || r.Method == "get" {
 		queryString := "SELECT room_id,hall_id,name,room_type,active,hls_url,boot,round_id,status,bet_countdown,dealer_id,limitation_id ,create_date FROM room where room_id = ? LIMIT 1"
-		//h.getTargetRow(w, r, logPrefix, ID, queryString, h.returnResDataFunc)
 		h.dbQuery(w, r, logPrefix, ID, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
@@ -105,20 +104,20 @@ func (h *roomIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//unmarshal request body
-		patchData, err := h.getPatchData(column, body)
+		param, err := h.getPatchData(column, body)
 		if err != nil {
 			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s patchTargetColumn data unmarshal error=%s", logPrefix, err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestDataUnmarshalError, err.Error())
 			return
 		}
 
-		h.patch(w, r, logPrefix, ID, queryString, patchData, h.patchExec, h.returnIDResData)
+		h.dbExec(w, r, logPrefix, ID, column, queryString, param, h.sqlPatch, h.returnExecResponseData)
 		return
 
 	}
 	if r.Method == "DELETE" || r.Method == "delete" {
 		queryString := "DELETE FROM room  where room_id = ? LIMIT 1"
-		h.delete(w, r, logPrefix, ID, queryString, h.returnIDResData)
+		h.dbExec(w, r, logPrefix, ID, "", queryString, nil, h.sqlDelete, h.returnExecResponseData)
 		return
 	}
 
@@ -164,7 +163,12 @@ func (h *roomIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, t
 		}
 	}
 }
+//delete
+func (h *roomIDHandler) sqlDelete(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
+	return stmt.Exec(IDOrAccount)
+}
+//patch
 func (h *roomIDHandler) getPatchData(column string, body []byte) (interface{}, error) {
 	switch column {
 	case "newRound":
@@ -244,48 +248,111 @@ func (h *roomIDHandler) getPatchData(column string, body []byte) (interface{}, e
 		return nil, errors.New("column error")
 	}
 }
-func (h *roomIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+func (h *roomIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
-	//檢查參數是否合法
-	if p, ok := param.(*roomNewRoundPatchParam);ok {
-		return stmt.Exec(p.Boot, p.RoundID, p.Status, ID)
+	if p, ok := param.(*roomNewRoundPatchParam); ok {
+		return stmt.Exec(p.Boot, p.RoundID, p.Status, IDOrAccount)
 	}
 	if p, ok := param.(*nameData); ok {
 
-		return stmt.Exec(p.Name, ID)
+		return stmt.Exec(p.Name, IDOrAccount)
 	}
 	if p, ok := param.(*activeData); ok {
-		return stmt.Exec(p.Active, ID)
+		return stmt.Exec(p.Active, IDOrAccount)
 	}
 	if p, ok := param.(*hlsURLData); ok {
-		return stmt.Exec(p.HLSURL, ID)
+		return stmt.Exec(p.HLSURL, IDOrAccount)
 	}
 	if p, ok := param.(*bootData); ok {
-		return stmt.Exec(p.Boot, ID)
+		return stmt.Exec(p.Boot, IDOrAccount)
 	}
 	if p, ok := param.(*roundIDData); ok {
-		return stmt.Exec(p.Round, ID)
+		return stmt.Exec(p.Round, IDOrAccount)
 	}
 	if p, ok := param.(*statusData); ok {
-		return stmt.Exec(p.Status, ID)
+		return stmt.Exec(p.Status, IDOrAccount)
 	}
 	if p, ok := param.(*betCountdownData); ok {
-		return stmt.Exec(p.BetCountdown, ID)
+		return stmt.Exec(p.BetCountdown, IDOrAccount)
 	}
 	if p, ok := param.(*dealerIDData); ok {
-		return stmt.Exec(p.DealerID, ID)
+		return stmt.Exec(p.DealerID, IDOrAccount)
 	}
 	if p, ok := param.(*roomPatchParam); ok {
-		return stmt.Exec(p.RoomID, p.HallID, p.Name, p.RoomType, p.Active, p.HLSURL, p.BetCountdown, p.LimitationID, ID)
+		return stmt.Exec(p.RoomID, p.HallID, p.Name, p.RoomType, p.Active, p.HLSURL, p.BetCountdown, p.LimitationID, IDOrAccount)
 	}
 	return nil, errors.New("parsing param error")
-
 }
 
-func (h *roomIDHandler) returnIDResData(ID uint64) interface{} {
-	return []roomIDData{
-		{
-			uint(ID),
+func (h *roomIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*roomIDData{{}},
+		}
+	}
+
+	ID, _ := IDOrAccount.(uint)
+
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data: []*roomIDData{
+			{
+				ID,
+			},
 		},
 	}
 }
+
+/////
+//func (h *roomIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//
+//	//檢查參數是否合法
+//	if p, ok := param.(*roomNewRoundPatchParam); ok {
+//		return stmt.Exec(p.Boot, p.RoundID, p.Status, ID)
+//	}
+//	if p, ok := param.(*nameData); ok {
+//
+//		return stmt.Exec(p.Name, ID)
+//	}
+//	if p, ok := param.(*activeData); ok {
+//		return stmt.Exec(p.Active, ID)
+//	}
+//	if p, ok := param.(*hlsURLData); ok {
+//		return stmt.Exec(p.HLSURL, ID)
+//	}
+//	if p, ok := param.(*bootData); ok {
+//		return stmt.Exec(p.Boot, ID)
+//	}
+//	if p, ok := param.(*roundIDData); ok {
+//		return stmt.Exec(p.Round, ID)
+//	}
+//	if p, ok := param.(*statusData); ok {
+//		return stmt.Exec(p.Status, ID)
+//	}
+//	if p, ok := param.(*betCountdownData); ok {
+//		return stmt.Exec(p.BetCountdown, ID)
+//	}
+//	if p, ok := param.(*dealerIDData); ok {
+//		return stmt.Exec(p.DealerID, ID)
+//	}
+//	if p, ok := param.(*roomPatchParam); ok {
+//		return stmt.Exec(p.RoomID, p.HallID, p.Name, p.RoomType, p.Active, p.HLSURL, p.BetCountdown, p.LimitationID, ID)
+//	}
+//	return nil, errors.New("parsing param error")
+//
+//}
+//
+//func (h *roomIDHandler) returnIDResData(ID uint64) interface{} {
+//	return []roomIDData{
+//		{
+//			uint(ID),
+//		},
+//	}
+//}

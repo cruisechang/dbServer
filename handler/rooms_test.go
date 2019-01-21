@@ -1,15 +1,15 @@
 package handler
 
 import (
-	"testing"
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"encoding/json"
-	"bytes"
-	"io/ioutil"
+	"testing"
 )
 
 func TestRoomsHandlerGet(t *testing.T) {
@@ -72,7 +72,11 @@ func TestRoomsHandlerPost(t *testing.T) {
 	if err != nil {
 		t.Fatalf("dbex error %s", err.Error())
 	}
-	fmt.Sprintf("%v", dbx)
+
+	//db
+	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	sqlDB := h.db.GetSQLDB()
+	var ids []uint //放ids，刪掉用
 
 	tt := []struct {
 		name  string
@@ -116,8 +120,12 @@ func TestRoomsHandlerPost(t *testing.T) {
 
 		body, _ := ioutil.ReadAll(rr.Body)
 
-		resData := &responseData{
-		}
+		resData := &struct {
+			Code    int
+			Count   int
+			Message string
+			Data    []*roomIDData
+		}{}
 		err = json.Unmarshal(body, resData)
 		if err != nil {
 			t.Fatalf("handler unmarshal responseData error=%s", err.Error())
@@ -133,5 +141,21 @@ func TestRoomsHandlerPost(t *testing.T) {
 
 		}
 
+		//insert success
+		if resData.Count == 1 {
+			t.Logf("ID=%d ", resData.Data[0].RoomID)
+			ids = append(ids, resData.Data[0].RoomID)
+		}
+
+	}
+
+	if len(ids) > 0 {
+		queryString := "DELETE FROM room  where room_id = ? LIMIT 1"
+		stmt, _ := sqlDB.Prepare(queryString)
+		defer stmt.Close()
+
+		for _, v := range ids {
+			stmt.Exec(v)
+		}
 	}
 }

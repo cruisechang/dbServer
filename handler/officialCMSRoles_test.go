@@ -1,15 +1,16 @@
 package handler
 
 import (
-	"net/http"
-	"testing"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_officialCMSRolesHandler_get(t *testing.T) {
@@ -20,11 +21,11 @@ func Test_officialCMSRolesHandler_get(t *testing.T) {
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
 	tt := []struct {
-		name  string
-		code  int
+		name       string
+		code       int
 		httpStatus int
 	}{
-		{"0", CodeSuccess,http.StatusOK},
+		{"0", CodeSuccess, http.StatusOK},
 	}
 
 	for _, tc := range tt {
@@ -66,7 +67,7 @@ func Test_officialCMSRolesHandler_get(t *testing.T) {
 			t.Fatalf("handler resData code  got %d want %d, name=%s", resData.Code, tc.code, tc.name)
 		}
 
-		t.Logf("resData=%+v",resData)
+		t.Logf("resData=%+v", resData)
 	}
 }
 
@@ -78,7 +79,11 @@ func Test_officialCMSRolesHandler_post(t *testing.T) {
 	if err != nil {
 		t.Fatalf("dbex error %s", err.Error())
 	}
-	fmt.Sprintf("%v", dbx)
+
+	//db
+	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	sqlDB := h.db.GetSQLDB()
+	var ids []uint //放ids，刪掉用
 
 	tt := []struct {
 		name  string
@@ -89,8 +94,8 @@ func Test_officialCMSRolesHandler_post(t *testing.T) {
 
 		{"0", CodeSuccess, 1, officialCMSRolePostParam{"[999,999]"}},
 		{"1", CodeRequestDataUnmarshalError, 0, officialCMSRolePostParam{"999,999"}},
-		{"2", CodeRequestDataUnmarshalError, 0, struct{X int }{ 1}}, //param error
-		{"3", CodeRequestDataUnmarshalError, 0, struct{Str string }{ ""}}, //param error
+		{"2", CodeRequestDataUnmarshalError, 0, struct{ X int }{1}},       //param error
+		{"3", CodeRequestDataUnmarshalError, 0, struct{ Str string }{""}}, //param error
 	}
 
 	for _, tc := range tt {
@@ -124,8 +129,12 @@ func Test_officialCMSRolesHandler_post(t *testing.T) {
 
 		body, _ := ioutil.ReadAll(rr.Body)
 
-		resData := &responseData{
-		}
+		resData := &struct {
+			Code    int
+			Count   int
+			Message string
+			Data    []*roleIDData
+		}{}
 		err = json.Unmarshal(body, resData)
 		if err != nil {
 			t.Fatalf("handler unmarshal responseData error=%s, path=%s, param=%+v", err.Error(), path, tc.param)
@@ -140,6 +149,19 @@ func Test_officialCMSRolesHandler_post(t *testing.T) {
 			t.Fatalf("handler resData count  got %d want %d, name=%s, path=%s, param=%+v", resData.Count, tc.count, tc.name, path, tc.param)
 
 		}
+		//insert success
+		if resData.Count == 1 {
+			t.Logf("ID=%d", resData.Data[0].RoleID)
+			ids = append(ids, resData.Data[0].RoleID)
+		}
+	}
+	if len(ids) > 0 {
+		queryString := "DELETE FROM official_cms_role  where role_id = ? LIMIT 1"
+		stmt, _ := sqlDB.Prepare(queryString)
+		defer stmt.Close()
+
+		for _, v := range ids {
+			stmt.Exec(v)
+		}
 	}
 }
-

@@ -105,8 +105,9 @@ func Test_officialCMSManagerIDHandler_patch(t *testing.T) {
 		count      int
 		param      interface{}
 	}{
-		{"0", http.StatusOK, "1", CodeSuccess, 1, officialCMSManagerPatchParam{"forUnitTest01", 1, 0}},
-		{"1", http.StatusOK, "1", CodeSuccess, 1, officialCMSManagerPatchParam{"test01", 1, 1}},
+		{"0", http.StatusOK, "1", CodeSuccess, 1, officialCMSManagerPatchParam{"unittest", 1, 0}},
+		{"1", http.StatusOK, "1", CodeSuccess, 0, officialCMSManagerPatchParam{"unittest", 1, 0}},
+		{"1", http.StatusOK, "1", CodeSuccess, 1, officialCMSManagerPatchParam{"password01", 1, 1}},
 		{"2", http.StatusOK, "9999", CodeRequestDataUnmarshalError, 0, errParam{"brief", "result"}},
 		{"3", http.StatusOK, "2", CodeRequestDataUnmarshalError, 0, errParam{"brief", "result"}},
 	}

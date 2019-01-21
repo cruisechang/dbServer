@@ -99,11 +99,9 @@ func Test_bannerIDHandler_delete(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 
-	h := NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))
-
-	sqlDB := h.db.GetSQLDB()
-
 	//insert first
+	h := NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	sqlDB := h.db.GetSQLDB()
 	queryString := "INSERT  INTO banner (pic_url,link_url,description,platform,active ) values (? ,?,?,?,?)"
 
 	stmt, _ := sqlDB.Prepare(queryString)

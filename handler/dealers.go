@@ -58,7 +58,8 @@ func (h *dealersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		queryString := "INSERT  INTO dealer (name,account,password,portrait_url ) values (? ,?,?,?)"
-		h.post(w, r, "dealers", 0, queryString, param, h.sqlExec, h.returnPostResData)
+		//h.post(w, r, "dealers", 0, queryString, param, h.sqlExec, h.returnPostResData)
+		h.dbExec(w, r, logPrefix, 0, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
@@ -124,8 +125,7 @@ func (h *dealersHandler)returnResDataFunc() (func(rows *sql.Rows) (interface{}, 
 	}
 }
 */
-
-func (h *dealersHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+func (h *dealersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*dealerPostParam); ok {
 
@@ -134,10 +134,38 @@ func (h *dealersHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (
 	return nil, errors.New("")
 
 }
-func (h *dealersHandler) returnPostResData(ID, lastID uint64) interface{} {
-	return []dealerIDData{
-		{
-			uint(lastID),
+//id自動產生
+func (h *dealersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*dealerIDData{{}},
+		}
+
+	}
+
+	lastID, err := result.LastInsertId()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecLastIDError,
+			Count:   0,
+			Message: "",
+			Data:    []*dealerIDData{{}},
+		}
+	}
+
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data: []*dealerIDData{
+			{
+				uint(lastID),
+			},
 		},
 	}
 }

@@ -4,13 +4,13 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/cruisechang/dbex"
+	"bytes"
+	"encoding/json"
 	"fmt"
-	"net/http/httptest"
+	"github.com/cruisechang/dbex"
 	"github.com/gorilla/mux"
 	"io/ioutil"
-	"encoding/json"
-	"bytes"
+	"net/http/httptest"
 )
 
 func Test_officialCMSRoleIDHandler_get(t *testing.T) {
@@ -50,7 +50,6 @@ func Test_officialCMSRoleIDHandler_get(t *testing.T) {
 
 		rr := httptest.NewRecorder()
 
-		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
 		router.Handle("/officialCMSRoles/{id:[0-9]+}", NewOfficialCMSRoleIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
 
@@ -79,7 +78,7 @@ func Test_officialCMSRoleIDHandler_get(t *testing.T) {
 		if resData.Count != tc.count {
 			t.Fatalf("handler resData count  got %d want %d, name=%s", resData.Count, tc.count, tc.name)
 		}
-		t.Logf("resData=%+v",resData)
+		t.Logf("resData=%+v", resData)
 	}
 }
 
@@ -89,11 +88,6 @@ func Test_officialCMSRoleIDHandler_patch(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
-
-	type errParam struct {
-		A string `json:"a"`
-		B string `json"b"`
-	}
 
 	tt := []struct {
 		name       string
@@ -128,7 +122,6 @@ func Test_officialCMSRoleIDHandler_patch(t *testing.T) {
 
 		rr := httptest.NewRecorder()
 
-		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
 		router.Handle("/officialCMSRoles/{id:[0-9]+}", NewOfficialCMSRoleIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
 

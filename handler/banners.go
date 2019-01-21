@@ -57,7 +57,7 @@ func (h *BannersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		queryString := "INSERT  INTO banner (pic_url,link_url,description,platform,active) values (? ,?, ?, ?,?)"
-		h.dbExec(w, r, logPrefix, 0, "", queryString, param, h.sqlExec, h.returnPostResponseData)
+		h.dbExec(w, r, logPrefix, 0, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
@@ -100,7 +100,7 @@ func (h *BannersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, 
 }
 
 //post
-func (h *BannersHandler) sqlExec(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *BannersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*bannerPostParam); ok {
 
@@ -109,6 +109,7 @@ func (h *BannersHandler) sqlExec(stmt *sql.Stmt, IDOrAccount interface{}, param 
 	return nil, errors.New("")
 
 }
+//id 自動產生
 func (h *BannersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
 
 	affRow, err := result.RowsAffected()

@@ -1,17 +1,17 @@
 package handler
 
 import (
-	"testing"
-	"fmt"
-	"github.com/cruisechang/dbex"
-	"net/http"
 	"bytes"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
 	"encoding/json"
+	"fmt"
 	"github.com/cruisechang/dbServer/util"
-	"strconv"
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
+	"strconv"
+	"testing"
 )
 
 func TestUsersHandlerGet(t *testing.T) {
@@ -92,34 +92,29 @@ func TestUsersHandlerPost(t *testing.T) {
 	if err != nil {
 		t.Fatalf("dbex error %s", err.Error())
 	}
-	fmt.Sprintf("%v", dbx)
+	//db
+	h := NewDealersHandler(NewBaseHandler(dbx.DB, dbx.Logger))
+	sqlDB := h.db.GetSQLDB()
+	var ids []uint64 //放ids，刪掉用
 
 	accounts := []string{}
 	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 9999999)), 10))
-	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 9999999)), 10))
-	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 9999999)), 10))
-	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 9999999)), 10))
-	accounts = append(accounts, "account"+strconv.FormatInt(int64(util.RandomInt(1, 9999999)), 10))
 
 	tt := []struct {
-		PartnerID uint64 `json:"partnerID"`
-		Account   string `json:"account"`
-		Password  string `json:"password"`
-		Name      string `json:"name"`
-		IP        string `json:"ip"`
-		Platform  int    `json:"platform"`
+		name  string
+		code  int
+		count int
+		param interface{}
 	}{
-
-		{0, accounts[0], "passd", accounts[0], "111.111.111.111", 0},
-		{0, accounts[1], "passd", accounts[0], "111.111.111.111", 0},
-		{0, accounts[2], "passd", accounts[0], "111.111.111.111", 0},
-		{0, accounts[3], "passd", accounts[0], "111.111.111.111", 0},
-		{0, accounts[4], "passd", accounts[0], "111.111.111.111", 0},
+		{"0", CodeSuccess, 1, userPostParam{0, accounts[0], "pass", accounts[0], "111.111.111.111", 0}},
+		{"1", CodeDBExecError, 0, userPostParam{0, accounts[0], "passd", accounts[0], "111.111.111.111", 0}},  //partner + account 跟第一組重複
+		{"2", CodeRequestDataUnmarshalError, 0, 0},
+		{"3", CodeRequestDataUnmarshalError, 0, ""},
 	}
 
 	for _, tc := range tt {
 		path := fmt.Sprintf("/users")
-		b, _ := json.Marshal(tc)
+		b, _ := json.Marshal(tc.param)
 
 		req, err := http.NewRequest("POST", path, bytes.NewBuffer(b))
 		if err != nil {
@@ -137,10 +132,47 @@ func TestUsersHandlerPost(t *testing.T) {
 
 		router.ServeHTTP(rr, req)
 
-		// In this case, our MetricsHandler returns a non-200 response
-		// for a route variable it doesn't know about.
 		if rr.Code != http.StatusOK {
-			t.Errorf("handler should have failed on  partnerID=%d, got %v want %v", tc.PartnerID, rr.Code, http.StatusOK)
+			t.Errorf("handler should have failed on  httpStatus got %v want %v", rr.Code, http.StatusOK)
+		}
+
+		body, _ := ioutil.ReadAll(rr.Body)
+
+		resData := &struct {
+			Code    int
+			Count   int
+			Message string
+			Data    []*userIDData
+		}{}
+		err = json.Unmarshal(body, resData)
+		if err != nil {
+			t.Fatalf("handler unmarshal responseData error=%s", err.Error())
+		}
+
+		if resData.Code != tc.code {
+			t.Fatalf("handler resData code  got %d want %d, name=%s", resData.Code, tc.code, tc.name)
+
+		}
+
+		if resData.Count != tc.count {
+			t.Fatalf("handler resData count  got %d want %d, name=%s", resData.Count, tc.count, tc.name)
+
+		}
+
+		//insert success
+		if resData.Count == 1 {
+			t.Logf("ID=%d ", resData.Data[0].UserID)
+			ids = append(ids, resData.Data[0].UserID)
+		}
+	}
+
+	if len(ids) > 0 {
+		queryString := "DELETE FROM user  where user_id = ? LIMIT 1"
+		stmt, _ := sqlDB.Prepare(queryString)
+		defer stmt.Close()
+
+		for _, v := range ids {
+			stmt.Exec(v)
 		}
 	}
 }

@@ -22,7 +22,7 @@ type betsHandler struct {
 
 func (h *betsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
-	logPrefix := "bets"
+	logPrefix := "betsHandler"
 
 	defer func() {
 		if r := recover(); r != nil {
@@ -50,7 +50,6 @@ func (h *betsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		queryString, queryArgs := h.getQueryStringArgs(param)
 		h.dbQuery(w, r, logPrefix, 0, "", queryString, queryArgs, h.sqlQuery, h.returnResponseDataFunc)
-		//h.getByFilter(w, r, logPrefix, queryString, queryArgs, h.returnResDataFunc)
 		return
 	}
 
@@ -76,7 +75,7 @@ func (h *betsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		queryString := "INSERT  INTO bet (bet_id,partner_id,user_id,room_id,room_type,round_id,seat_id,bet_credit,active_credit,prize_credit,result_credit,balance_credit,original_credit,record,status) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 
-		h.post(w, r, logPrefix, betID, queryString, param, h.sqlExec, h.returnPostResData)
+		h.dbExec(w, r, logPrefix, betID, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
@@ -151,7 +150,6 @@ func (h *betsHandler) getQueryStringArgs(param *betGetParam) (queryString string
 }
 
 func (h *betsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
-	//return stmt.Query(IDOrAccount)
 
 	args, ok := param.([]interface{})
 	if !ok {
@@ -224,60 +222,47 @@ func (h *betsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, tar
 		}
 	}
 }
-
-//func (h *betsHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
-//
-//	return func(rows *sql.Rows) (interface{}, int) {
-//		count := 0
-//		ud := betDB{}
-//		resData := []betData{}
-//
-//		for rows.Next() {
-//			err := rows.Scan(&ud.bet_id, &ud.partner_id, &ud.user_id, &ud.room_id, &ud.room_type, &ud.round_id, &ud.seat_id, &ud.bet_credit, &ud.active_credit, &ud.prize_credit, &ud.result_credit, &ud.balance_credit, &ud.original_credit, &ud.partner_id, &ud.status, &ud.create_date, &ud.account, &ud.name)
-//			if err == nil {
-//				count += 1
-//				resData = append(resData,
-//					betData{
-//						ud.bet_id,
-//						ud.partner_id,
-//						ud.user_id,
-//						ud.room_id,
-//						ud.room_type,
-//						ud.round_id,
-//						ud.seat_id,
-//						ud.bet_credit,
-//						ud.active_credit,
-//						ud.prize_credit,
-//						ud.result_credit,
-//						ud.balance_credit,
-//						ud.original_credit,
-//						ud.record,
-//						ud.status,
-//						ud.create_date,
-//						ud.account,
-//						ud.name,
-//					})
-//			}
-//		}
-//
-//		return resData, count
-//	}
-//}
-
-func (h *betsHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//post
+func (h *betsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*betPostParam); ok {
 
-		return stmt.Exec(ID, p.PartnerID, p.UserID, p.RoomID, p.RoomType, p.RoundID, p.SeatID, p.BetCredit, p.ActiveCredit, p.PrizeCredit, p.ResultCredit, p.BalanceCredit, p.OriginalCredit, p.Record, p.Status)
+		return stmt.Exec(IDOrAccount, p.PartnerID, p.UserID, p.RoomID, p.RoomType, p.RoundID, p.SeatID, p.BetCredit, p.ActiveCredit, p.PrizeCredit, p.ResultCredit, p.BalanceCredit, p.OriginalCredit, p.Record, p.Status)
 	}
 	return nil, errors.New("parsing param error")
 
 }
-func (h *betsHandler) returnPostResData(ID, lastID uint64) interface{} {
+//id 是預先產生
+func (h *betsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*betIDData{{}},
+		}
 
-	return []betIDData{
-		{
-			ID,
-		},
+	}
+
+	if id,ok:=IDOrAccount.(uint64);ok{
+		return &responseData{
+			Code:    CodeSuccess,
+			Count:   int(affRow),
+			Message: "",
+			Data: []*betIDData{
+				{
+					id,
+				},
+			},
+		}
+	}
+
+	//error
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data:    []*betIDData{{}},
 	}
 }

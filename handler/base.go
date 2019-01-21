@@ -1,30 +1,30 @@
 package handler
 
 import (
-	"github.com/cruisechang/dbex"
-	"net/http"
-	"encoding/json"
-	"io"
-	"fmt"
-	"io/ioutil"
 	"database/sql"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
+	"io/ioutil"
+	"net/http"
+
+	"github.com/cruisechang/dbex"
 	"github.com/gorilla/mux"
 )
 
 //type returnTargetColumnResDataCount func(column string, rows *sql.Rows) (interface{}, int)
 //type returnResDataFunc func() (func(rows *sql.Rows) (interface{}, int))
 
-type sqlExecFunc func(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error)
-type returnPostResDataFunc func(ID uint64, lastID uint64) interface{}
-type returnIDResDataFunc func(ID uint64) interface{}
+//type sqlExecFunc func(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error)
+//type returnPostResDataFunc func(ID uint64, lastID uint64) interface{}
+//type returnIDResDataFunc func(ID uint64) interface{}
 
-type sqlExecFunc2 func(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error)
-type returnExecResponseData func(IDOrAccount interface{},column string,result sql.Result) (*responseData)
-
+type sqlExecFunc func(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error)
+type returnExecResponseData func(IDOrAccount interface{}, column string, result sql.Result) *responseData
 
 type sqlQueryFunc func(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error)
-type returnResponseDataStructFunc func() (func(IDOrAccount interface{},column string,rows *sql.Rows) (*responseData))
+type returnResponseDataStructFunc func() func(IDOrAccount interface{}, column string, rows *sql.Rows) *responseData
 
 func NewBaseHandler(db *dbex.DB, logger *dbex.Logger) baseHandler {
 	return baseHandler{
@@ -82,6 +82,7 @@ func (h *baseHandler) getVariable(r *http.Request, variable string) (string, err
 //post creates a new record
 //ID 可能是userID 可能是hallID, 或是沒用
 //
+/*
 func (h *baseHandler) post(w http.ResponseWriter, r *http.Request, logPrefix string, ID uint64, queryString string, param interface{}, sqlExec sqlExecFunc, returnPostResData returnPostResDataFunc) {
 	h.logger.LogFile(dbex.LevelInfo, fmt.Sprintf("handler post param =%+v", param))
 
@@ -138,7 +139,9 @@ func (h *baseHandler) post(w http.ResponseWriter, r *http.Request, logPrefix str
 	h.writeSuccess(w, resStr)
 	h.logger.LogFile(dbex.LevelInfo, fmt.Sprintf("%s handler post response data=%s", logPrefix, resStr))
 }
+*/
 
+/*
 func (h *baseHandler) patch(w http.ResponseWriter, r *http.Request, logPrefix string, ID uint64, queryString string, param interface{}, sqlExec sqlExecFunc, returnExecResData returnIDResDataFunc) {
 	h.logger.LogFile(dbex.LevelInfo, fmt.Sprintf("handler post param =%+v", param))
 
@@ -187,7 +190,8 @@ func (h *baseHandler) patch(w http.ResponseWriter, r *http.Request, logPrefix st
 	h.writeSuccess(w, resStr)
 	h.logger.LogFile(dbex.LevelInfo, fmt.Sprintf("%s handler exec response data=%s", logPrefix, resStr))
 }
-
+*/
+/*
 func (h *baseHandler) delete(w http.ResponseWriter, r *http.Request, logPrefix string, ID uint64, queryString string, returnExecResData returnIDResDataFunc) {
 	h.logger.LogFile(dbex.LevelInfo, fmt.Sprintf("%s handler delete sqlDB queryString=%s,ID=%d", logPrefix, queryString, ID))
 
@@ -235,8 +239,9 @@ func (h *baseHandler) delete(w http.ResponseWriter, r *http.Request, logPrefix s
 	h.writeSuccess(w, resStr)
 	h.logger.LogFile(dbex.LevelInfo, fmt.Sprintf("%s handler delete response data=%s", logPrefix, resStr))
 }
+*/
 
-func (h *baseHandler) dbExec(w http.ResponseWriter, r *http.Request, logPrefix string, IDOrAccount interface{}, targetColumn, queryString string, param interface{}, sqlExec sqlExecFunc2, returnResFunc returnExecResponseData) {
+func (h *baseHandler) dbExec(w http.ResponseWriter, r *http.Request, logPrefix string, IDOrAccount interface{}, targetColumn, queryString string, param interface{}, sqlExec sqlExecFunc, returnResFunc returnExecResponseData) {
 	h.logger.LogFile(dbex.LevelInfo, fmt.Sprintf("%s dbExec sqlDB queryString=%s", logPrefix, queryString))
 
 	sqlDB := h.db.GetSQLDB()
@@ -253,11 +258,11 @@ func (h *baseHandler) dbExec(w http.ResponseWriter, r *http.Request, logPrefix s
 
 	if err != nil {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s dbExec sqlDB exec error=%s", logPrefix, err.Error()))
-		h.writeError(w, http.StatusOK, CodeDBExecError, fmt.Sprintf("%s dbExec sqlDB exec error %s",logPrefix,err.Error()))
+		h.writeError(w, http.StatusOK, CodeDBExecError, fmt.Sprintf("%s dbExec sqlDB exec error %s", logPrefix, err.Error()))
 		return
 	}
 
-	resData := returnResFunc(IDOrAccount,targetColumn,result)
+	resData := returnResFunc(IDOrAccount, targetColumn, result)
 
 	js, err := json.Marshal(resData)
 	if err != nil {
@@ -289,7 +294,7 @@ func (h *baseHandler) dbQuery(w http.ResponseWriter, r *http.Request, logPrefix 
 
 	if err != nil {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s dbQuery sqlDB quert error=%s", logPrefix, err.Error()))
-		h.writeError(w, http.StatusOK, CodeDBExecError, fmt.Sprintf("%s get query error %s",logPrefix,err.Error()))
+		h.writeError(w, http.StatusOK, CodeDBExecError, fmt.Sprintf("%s get query error %s", logPrefix, err.Error()))
 		return
 	}
 	defer rows.Close()
@@ -301,8 +306,8 @@ func (h *baseHandler) dbQuery(w http.ResponseWriter, r *http.Request, logPrefix 
 	}
 
 	resFunc := returnResFunc()
-	ID,_:=IDOrAccount.(uint64)
-	resData := resFunc(ID,targetColumn,rows)
+	ID, _ := IDOrAccount.(uint64)
+	resData := resFunc(ID, targetColumn, rows)
 
 	js, err := json.Marshal(resData)
 	if err != nil {
@@ -369,7 +374,6 @@ func (h *baseHandler) get(w http.ResponseWriter, r *http.Request, logPrefix, que
 	h.logger.LogFile(dbex.LevelInfo, fmt.Sprintf("%s handler get response data=%s", logPrefix, resStr))
 }
 */
-
 
 //getByFilter
 /*

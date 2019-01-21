@@ -1,13 +1,13 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"encoding/json"
 	"database/sql"
-	"github.com/juju/errors"
+	"encoding/json"
+	"fmt"
 	"github.com/cruisechang/dbServer/util"
+	"github.com/cruisechang/dbex"
+	"github.com/juju/errors"
+	"net/http"
 )
 
 func NewPartnersHandler(base baseHandler) *partnersHandler {
@@ -38,7 +38,7 @@ func (h *partnersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == "GET" {
-		//umarshal request body
+		//unmarshal request body
 		param := &partnerGetParam{}
 		err := json.Unmarshal(body, param)
 		if err != nil {
@@ -59,7 +59,6 @@ func (h *partnersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		queryString, queryArgs := h.getQueryStringArgs(param)
-		//h.getByFilter(w, r, "partners", queryString, queryArgs, h.returnResDataFunc)
 		h.dbQuery(w, r, logPrefix, 0, "", queryString, queryArgs, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
@@ -77,14 +76,13 @@ func (h *partnersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			h.writeError(w, http.StatusOK, CodeRequestPostDataIllegal, "post data illegal")
 			return
 		}
-		//h.post(w, r, param)
 		partnerID, err := util.GetUniqueID()
 		if err != nil {
 			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("partnersHandler post get unique hallID error %s", err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestPostDataIllegal, fmt.Sprintf("partnersHandler post get unique hallID error %s", err.Error()))
 		}
 		queryString := "INSERT  INTO partner (partner_id,account,password,name,level,category,aes_key,access_token,api_bind_ip,cms_bind_ip) values (? ,? ,? , ?, ? ,?, ?,?,?,?)"
-		h.post(w, r, "partners", partnerID, queryString, param, h.sqlExec, h.returnPostResData)
+		h.dbExec(w, r, logPrefix, partnerID, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
@@ -214,20 +212,67 @@ func (h *partnersHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}
 	}
 }
 
-func (h *partnersHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//post
+func (h *partnersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*partnerPostParam); ok {
 
-		return stmt.Exec(ID, p.Account, p.Password, p.Name, p.Level, p.Category, p.AESKey, p.AccessToken, p.APIBindIP, p.CMSBindIP)
+		return stmt.Exec(IDOrAccount, p.Account, p.Password, p.Name, p.Level, p.Category, p.AESKey, p.AccessToken, p.APIBindIP, p.CMSBindIP)
 	}
 	return nil, errors.New("parsing param error")
 
 }
-func (h *partnersHandler) returnPostResData(ID, lastID uint64) interface{} {
 
-	return []partnerIDData{
-		{
-			ID,
-		},
+//id 預先產生
+func (h *partnersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*partnerIDData{{}},
+		}
+
+	}
+
+	if id, ok := IDOrAccount.(uint64); ok {
+		return &responseData{
+			Code:    CodeSuccess,
+			Count:   int(affRow),
+			Message: "",
+			Data: []*partnerIDData{
+				{
+					id,
+				},
+			},
+		}
+	}
+
+	//error
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data:    []*partnerIDData{{}},
 	}
 }
+
+//func (h *partnersHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//
+//	if p, ok := param.(*partnerPostParam); ok {
+//
+//		return stmt.Exec(ID, p.Account, p.Password, p.Name, p.Level, p.Category, p.AESKey, p.AccessToken, p.APIBindIP, p.CMSBindIP)
+//	}
+//	return nil, errors.New("parsing param error")
+//
+//}
+//func (h *partnersHandler) returnPostResData(ID, lastID uint64) interface{} {
+//
+//	return []partnerIDData{
+//		{
+//			ID,
+//		},
+//	}
+//}

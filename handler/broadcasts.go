@@ -1,12 +1,12 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"encoding/json"
 	"database/sql"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"github.com/cruisechang/dbex"
+	"net/http"
 )
 
 func NewBroadcastsHandler(base baseHandler) *BroadcastsHandler {
@@ -108,6 +108,8 @@ func (h *BroadcastsHandler) sqlExec(stmt *sql.Stmt, IDOrAccount interface{}, par
 	return nil, errors.New("")
 
 }
+
+//id 自動產生
 func (h *BroadcastsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
 
 	affRow, err := result.RowsAffected()

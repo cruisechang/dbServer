@@ -1,12 +1,12 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"encoding/json"
 	"database/sql"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"github.com/cruisechang/dbex"
+	"net/http"
 )
 
 func NewRoomsHandler(base baseHandler) *roomsHandler {
@@ -32,7 +32,6 @@ func (h *roomsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" || r.Method == "get" {
 		queryString := "SELECT room_id,hall_id,name,room_type,active,hls_url,boot,round_id,status,bet_countdown,dealer_id,limitation_id ,create_date FROM room "
-		//h.get(w, r, "rooms", queryString, h.returnResDataFunc)
 		h.dbQuery(w, r, logPrefix, 0, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
@@ -59,13 +58,13 @@ func (h *roomsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		queryString := "INSERT  INTO room (room_id,hall_id,name,room_type,hls_url,bet_countdown,dealer_id,limitation_id) values (? ,?,?,?,?,?,?,?)"
-		h.post(w, r, logPrefix, uint64(param.RoomID), queryString, param, h.sqlExec, h.returnPostResData)
+		h.dbExec(w, r, logPrefix, param.RoomID, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
-
+//get
 func (h *roomsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query()
 }
@@ -107,53 +106,66 @@ func (h *roomsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, ta
 	}
 }
 
-/*
-func (h *roomsHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
-
-	return func(rows *sql.Rows) (interface{}, int) {
-		count := 0
-		ud := roomDB{}
-		resData := []roomData{}
-
-		for rows.Next() {
-			err := rows.Scan(&ud.room_id, &ud.hall_id, &ud.name, &ud.room_type, &ud.active, &ud.hls_url, &ud.boot, &ud.round_id, &ud.status, &ud.bet_countdown, &ud.dealer_id, &ud.limitation_id, &ud.create_date)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					roomData{
-						ud.room_id,
-						ud.hall_id,
-						ud.name,
-						ud.room_type,
-						ud.active,
-						ud.hls_url,
-						ud.boot,
-						ud.round_id,
-						ud.status,
-						ud.bet_countdown,
-						ud.dealer_id,
-						ud.limitation_id,
-						ud.create_date})
-			}
-		}
-		return resData, count
-	}
-}
-*/
-
-func (h *roomsHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//post
+func (h *roomsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*roomPostParam); ok {
 
-		return stmt.Exec(p.RoomID, p.HallID, p.Name, p.RoomType, p.HLSURL, p.BetCountdown,1, p.LimitationID)
+		return stmt.Exec(p.RoomID, p.HallID, p.Name, p.RoomType, p.HLSURL, p.BetCountdown, 1, p.LimitationID)
 	}
 	return nil, errors.New("")
 
 }
-func (h *roomsHandler) returnPostResData(ID, lastID uint64) interface{} {
-	return []roomIDData{
-		{
-			uint(ID),
-		},
+
+//id預先產生
+func (h *roomsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*roomIDData{{}},
+		}
+
+	}
+
+	if id, ok := IDOrAccount.(uint); ok {
+		return &responseData{
+			Code:    CodeSuccess,
+			Count:   int(affRow),
+			Message: "",
+			Data: []*roomIDData{
+				{
+					id,
+				},
+			},
+		}
+	}
+
+	//error
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data:    []*roomIDData{{}},
 	}
 }
+
+//func (h *roomsHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+//
+//	if p, ok := param.(*roomPostParam); ok {
+//
+//		return stmt.Exec(p.RoomID, p.HallID, p.Name, p.RoomType, p.HLSURL, p.BetCountdown,1, p.LimitationID)
+//	}
+//	return nil, errors.New("")
+//
+//}
+//func (h *roomsHandler) returnPostResData(ID, lastID uint64) interface{} {
+//	return []roomIDData{
+//		{
+//			uint(ID),
+//		},
+//	}
+//}

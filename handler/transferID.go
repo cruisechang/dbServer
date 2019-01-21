@@ -1,15 +1,16 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
+	"database/sql"
 	"encoding/json"
-	"github.com/gorilla/mux"
+	"errors"
+	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
-	"errors"
-	"database/sql"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func NewTransferIDHandler(base baseHandler) *transferIDHandler {
@@ -34,7 +35,7 @@ func (h *transferIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	vars := mux.Vars(r)
-	var id uint64
+	var ID uint64
 	mid, ok := vars["id"]
 	if !ok {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id not found", logPrefix))
@@ -42,14 +43,14 @@ func (h *transferIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := strconv.ParseUint(mid, 10, 64)
+	ID, err := strconv.ParseUint(mid, 10, 64)
 	if err != nil {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s  get id to uint64 error id=%s", logPrefix, mid))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
 	}
 
-	if id == 0 {
+	if ID == 0 {
 		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get id ==0 ", logPrefix))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
@@ -58,7 +59,7 @@ func (h *transferIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" || r.Method == "get" {
 
 		queryString := "select transfer.transfer_id, transfer.partner_transfer_id, transfer.partner_id, transfer.user_id, transfer.category, transfer.transfer_credit, transfer.credit, transfer.status, transfer.create_date, user.account, user.name from transfer LEFT JOIN user on transfer.user_id=user.user_id  WHERE transfer.transfer_id = ? "
-		h.dbQuery(w, r, logPrefix, id, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
+		h.dbQuery(w, r, logPrefix, ID, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
 
@@ -83,13 +84,14 @@ func (h *transferIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		queryString = "UPDATE transfer set " + column + " = ?  WHERE transfer_id = ? LIMIT 1"
 
 		//unmarshal request body
-		patchData, err := h.getPatchData(column, body)
+		param, err := h.getPatchData(column, body)
 		if err != nil {
 			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s patchTargetColumn data unmarshal error=%s", logPrefix, err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestDataUnmarshalError, "")
 			return
 		}
-		h.patch(w, r, logPrefix, id, queryString, patchData, h.patchExec, h.returnIDResData)
+		//h.patch(w, r, logPrefix, id, queryString, patchData, h.patchExec, h.returnIDResData)
+		h.dbExec(w, r, logPrefix, ID, column, queryString, param, h.sqlPatch, h.returnExecResponseData)
 		return
 	}
 
@@ -109,7 +111,7 @@ func (h *transferIDHandler) returnResponseDataFunc() func(IDOrAccount interface{
 		for rows.Next() {
 			err := rows.Scan(&ud.transfer_id, &ud.partner_transfer_id, &ud.partner_id, &ud.user_id, &ud.category, &ud.transfer_credit, &ud.credit, &ud.status, &ud.create_date, &ud.account, &ud.name)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					transferData{
 						ud.transfer_id,
@@ -122,7 +124,7 @@ func (h *transferIDHandler) returnResponseDataFunc() func(IDOrAccount interface{
 						ud.status,
 						ud.create_date,
 						ud.account,
-						ud.name,})
+						ud.name})
 			}
 		}
 
@@ -148,21 +150,39 @@ func (h *transferIDHandler) getPatchData(column string, body []byte) (interface{
 		return nil, errors.New("column error")
 	}
 }
-func (h *transferIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
 
-	//檢查參數是否合法
+//patch
+func (h *transferIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+
 	if p, ok := param.(*statusData); ok {
 
-		return stmt.Exec(p.Status, ID)
+		return stmt.Exec(p.Status, IDOrAccount)
 	}
 	return nil, errors.New("parsing param error")
-
 }
 
-func (h *transferIDHandler) returnIDResData(ID uint64) interface{} {
-	return []transferIDData{
-		{
-			ID,
+func (h *transferIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+
+	affRow, err := result.RowsAffected()
+	if err != nil {
+		return &responseData{
+			Code:    CodeDBExecResultError,
+			Count:   0,
+			Message: "",
+			Data:    []*transferIDData{{}},
+		}
+	}
+
+	ID, _ := IDOrAccount.(uint64)
+
+	return &responseData{
+		Code:    CodeSuccess,
+		Count:   int(affRow),
+		Message: "",
+		Data: []*transferIDData{
+			{
+				ID,
+			},
 		},
 	}
 }

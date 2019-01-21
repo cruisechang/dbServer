@@ -1,16 +1,17 @@
 package handler
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
-	"strconv"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"github.com/gorilla/mux"
+	"strconv"
 	"testing"
+
 	"github.com/cruisechang/dbex"
-	"io/ioutil"
-	"encoding/json"
-	"bytes"
+	"github.com/gorilla/mux"
 )
 
 func Test_partnerHandler_get(t *testing.T) {
@@ -110,7 +111,7 @@ func Test_partnerHandler_getAESKey(t *testing.T) {
 	targetPath := "/aesKey"
 
 	for _, tc := range tt {
-		path := fmt.Sprintf("/partners/" +tc.ID + targetPath)
+		path := fmt.Sprintf("/partners/" + tc.ID + targetPath)
 
 		t.Logf("path %s", path)
 
@@ -543,7 +544,7 @@ func Test_partnerHandler_patch(t *testing.T) {
 		{"3", "99999", CodeSuccess, 0, partnerPatchParam{"pass", "account100", 0, 0, "12345678", "12345678", string(ipb), string(ipb), 0}}, //id not found
 		{"4", "xxx", CodeSuccess, 0, partnerPatchParam{"pass", "account100", 0, 0, "12345678", "12345678", string(ipb), string(ipb), 0}},   //mux parsing route error
 		{"5", "3.3", CodeSuccess, 0, partnerPatchParam{"pass", "account100", 0, 0, "12345678", "12345678", string(ipb), string(ipb), 0}},   //mux parsing route error
-		{"6", "100", CodeRequestDataUnmarshalError, 0, struct{ Login int }{1}},                                                                               //參數錯誤
+		{"6", "100", CodeRequestDataUnmarshalError, 0, struct{ Login int }{1}},                                                             //參數錯誤
 	}
 
 	for _, tc := range tt {
@@ -642,7 +643,6 @@ func Test_partnerHandler_patchLogin(t *testing.T) {
 
 		router.ServeHTTP(rr, req)
 
-
 		if rr.Code != http.StatusOK {
 			continue
 		}
@@ -713,7 +713,6 @@ func Test_partnerHandler_patchActive(t *testing.T) {
 
 		router.ServeHTTP(rr, req)
 
-
 		if rr.Code != http.StatusOK {
 			continue
 		}
@@ -783,7 +782,6 @@ func Test_partnerHandler_patchAESKey(t *testing.T) {
 		router.Handle("/partners/{id:[0-9]+}"+targetPath, NewPartnerIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
-
 
 		if rr.Code != http.StatusOK {
 			continue
@@ -977,7 +975,7 @@ func Test_partnerHandler_patchCMSBindIP(t *testing.T) {
 	}
 }
 
-//update 與db相同資料，會回傳affecterd row =0
+//update 與db相同資料，會回傳affected row =0
 func Test_partnerHandler_patchAccessToken(t *testing.T) {
 	dbx, err := dbex.NewDBEX("dbexConfig.json")
 	if err != nil {
