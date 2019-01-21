@@ -1,3 +1,3 @@
 # dbServer
 
-csn db server
+live casino db server
