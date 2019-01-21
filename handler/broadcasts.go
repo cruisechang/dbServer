@@ -5,16 +5,19 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cruisechang/dbex"
 	"net/http"
+
+	"github.com/cruisechang/dbex"
 )
 
+//NewBroadcastsHandler returns Broadcast structure
 func NewBroadcastsHandler(base baseHandler) *BroadcastsHandler {
 	return &BroadcastsHandler{
 		baseHandler: base,
 	}
 }
 
+//BroadcastsHandler handles broadcast events
 type BroadcastsHandler struct {
 	baseHandler
 }
@@ -77,7 +80,7 @@ func (h *BroadcastsHandler) returnResponseDataFunc() func(IDOrAccount interface{
 		for rows.Next() {
 			err := rows.Scan(&ud.broadcast_id, &ud.content, &ud.internal, &ud.repeat_times, &ud.active, &ud.create_date)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					broadcastData{
 						ud.broadcast_id,
@@ -85,7 +88,7 @@ func (h *BroadcastsHandler) returnResponseDataFunc() func(IDOrAccount interface{
 						ud.internal,
 						ud.repeat_times,
 						ud.active,
-						ud.create_date,})
+						ud.create_date})
 			}
 		}
 
@@ -110,7 +113,7 @@ func (h *BroadcastsHandler) sqlExec(stmt *sql.Stmt, IDOrAccount interface{}, par
 }
 
 //id 自動產生
-func (h *BroadcastsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *BroadcastsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {

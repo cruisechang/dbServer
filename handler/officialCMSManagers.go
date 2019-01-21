@@ -10,17 +10,19 @@ import (
 	"github.com/cruisechang/dbex"
 )
 
-func NewOfficialCMSManagersHandler(base baseHandler) *officialCMSManagersHandler {
-	return &officialCMSManagersHandler{
+//NewOfficialCMSManagersHandler returns OfficialCMSManagersHandler structure
+func NewOfficialCMSManagersHandler(base baseHandler) *OfficialCMSManagersHandler {
+	return &OfficialCMSManagersHandler{
 		baseHandler: base,
 	}
 }
 
-type officialCMSManagersHandler struct {
+//OfficialCMSManagersHandler select and insert new data
+type OfficialCMSManagersHandler struct {
 	baseHandler
 }
 
-func (h *officialCMSManagersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *OfficialCMSManagersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "officialCMSManagersHandler"
 
@@ -58,17 +60,16 @@ func (h *officialCMSManagersHandler) ServeHTTP(w http.ResponseWriter, r *http.Re
 			return
 		}
 		queryString := "INSERT  INTO official_cms_manager (account,password,role_id ) values (? ,?,?)"
-		//h.post(w, r, "dealers", 0, queryString, param, h.sqlExec, h.returnPostResData)
 		h.dbExec(w, r, logPrefix, 0, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
 
-func (h *officialCMSManagersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *OfficialCMSManagersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query()
 }
-func (h *officialCMSManagersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *OfficialCMSManagersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -100,7 +101,7 @@ func (h *officialCMSManagersHandler) returnResponseDataFunc() func(IDOrAccount i
 }
 
 //post
-func (h *officialCMSManagersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *OfficialCMSManagersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*officialCMSManagerPostParam); ok {
 
@@ -111,7 +112,7 @@ func (h *officialCMSManagersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interfa
 }
 
 //id 自動產生
-func (h *officialCMSManagersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
+func (h *OfficialCMSManagersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {
@@ -146,32 +147,8 @@ func (h *officialCMSManagersHandler) returnPostResponseData(IDOrAccount interfac
 	}
 }
 
-//func (h *officialCMSManagersHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
-//
-//	return func(rows *sql.Rows) (interface{}, int) {
-//		count := 0
-//		d := officialCMSManagerDB{}
-//		resData := []officialCMSManagerData{}
-//
-//		for rows.Next() {
-//			err := rows.Scan(&d.manager_id, &d.account, &d.active, &d.role_id, &d.login, &d.create_date)
-//			if err == nil {
-//				count += 1
-//				resData = append(resData,
-//					officialCMSManagerData{
-//						d.manager_id,
-//						d.account,
-//						d.active,
-//						d.role_id,
-//						d.login,
-//						d.create_date})
-//			}
-//		}
-//		return resData, count
-//	}
-//}
 
-func (h *officialCMSManagersHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
+func (h *OfficialCMSManagersHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*officialCMSManagerPostParam); ok {
 
@@ -180,7 +157,7 @@ func (h *officialCMSManagersHandler) sqlExec(stmt *sql.Stmt, ID uint64, param in
 	return nil, errors.New("")
 
 }
-func (h *officialCMSManagersHandler) returnPostResData(ID, lastID uint64) interface{} {
+func (h *OfficialCMSManagersHandler) returnPostResData(ID, lastID uint64) interface{} {
 	return []managerIDData{
 		{
 			uint(lastID),

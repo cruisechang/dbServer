@@ -1,11 +1,12 @@
 package handler
 
 import (
-	"testing"
 	"fmt"
-	"github.com/cruisechang/dbex"
 	"net/http"
 	"net/http/httptest"
+	"testing"
+
+	"github.com/cruisechang/dbex"
 	"github.com/gorilla/mux"
 )
 
@@ -47,7 +48,7 @@ func TestNotFoundHandler(t *testing.T) {
 		// In this case, our MetricsHandler returns a non-200 response
 		// for a route variable it doesn't know about.
 		if rr.Code != http.StatusNotFound {
-			t.Errorf("handler   failed http.status got %v want %v, name=%s", rr.Code, http.StatusNotFound,tc.name)
+			t.Errorf("handler   failed http.status got %v want %v, name=%s", rr.Code, http.StatusNotFound, tc.name)
 		}
 	}
 }

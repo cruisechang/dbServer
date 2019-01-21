@@ -2,25 +2,28 @@ package handler
 
 import (
 	"database/sql"
-	"net/http"
 	"encoding/json"
 	"fmt"
+	"net/http"
+
+	"github.com/cruisechang/dbServer/util"
 	"github.com/cruisechang/dbex"
 	"github.com/juju/errors"
-	"github.com/cruisechang/dbServer/util"
 )
 
-func NewRoundsHandler(base baseHandler) *roundsHandler {
-	return &roundsHandler{
+//NewRoundsHandler returns RoundsHandler structure
+func NewRoundsHandler(base baseHandler) *RoundsHandler {
+	return &RoundsHandler{
 		baseHandler: base,
 	}
 }
 
-type roundsHandler struct {
+//RoundsHandler does select and insert
+type RoundsHandler struct {
 	baseHandler
 }
 
-func (h *roundsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *RoundsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "roundsHandler"
 
@@ -74,15 +77,13 @@ func (h *roundsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		queryString := "INSERT  INTO round (round_id,hall_id,room_id,room_type,brief,record,status) VALUE (?,?,?,?,?,?,?)"
-		//h.post(w, r, logPrefix, ID, queryString, param, h.sqlExec, h.returnPostResData)
 		h.dbExec(w, r, logPrefix, ID, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
 
-
-func (h *roundsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *RoundsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 
 	args, ok := param.([]interface{})
 	if !ok {
@@ -112,7 +113,7 @@ func (h *roundsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param 
 	}
 	return nil, errors.New("args error")
 }
-func (h *roundsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *RoundsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -122,7 +123,7 @@ func (h *roundsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, t
 		for rows.Next() {
 			err := rows.Scan(&ud.round_id, &ud.hall_id, &ud.room_id, &ud.room_type, &ud.brief, &ud.record, &ud.status, &ud.create_date, &ud.end_datea, &ud.name)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					roundData{
 						ud.round_id,
@@ -147,7 +148,7 @@ func (h *roundsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, t
 		}
 	}
 }
-func (h *roundsHandler) getQueryStringArgs(param *roundGetParam) (queryString string, queryArgs []interface{}) {
+func (h *RoundsHandler) getQueryStringArgs(param *roundGetParam) (queryString string, queryArgs []interface{}) {
 
 	hasFilter := false
 	queryString = "select round.round_id,round.hall_id,round.room_id,round.room_type,round.brief,round.record,round.status,round.create_date, round.end_date,room.name from round LEFT JOIN room on round.room_id=room.room_id where "
@@ -200,38 +201,9 @@ func (h *roundsHandler) getQueryStringArgs(param *roundGetParam) (queryString st
 
 	return
 }
-//func (h *roundsHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
-//
-//	return func(rows *sql.Rows) (interface{}, int) {
-//		count := 0
-//		ud := roundDB{}
-//		resData := []roundData{}
-//
-//		for rows.Next() {
-//			err := rows.Scan(&ud.round_id, &ud.hall_id, &ud.room_id, &ud.room_type, &ud.brief, &ud.record, &ud.status, &ud.create_date, &ud.end_datea, &ud.name)
-//			if err == nil {
-//				count ++
-//				resData = append(resData,
-//					roundData{
-//						ud.round_id,
-//						ud.hall_id,
-//						ud.room_id,
-//						ud.room_type,
-//						ud.brief,
-//						ud.record,
-//						ud.status,
-//						ud.create_date,
-//						ud.end_datea,
-//						ud.name,
-//					})
-//			}
-//		}
-//
-//		return resData, count
-//	}
-//}
+
 //post
-func (h *roundsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *RoundsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*roundPostParam); ok {
 
@@ -240,8 +212,9 @@ func (h *roundsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param i
 	return nil, errors.New("parsing param error")
 
 }
+
 //id預先產生
-func (h *roundsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *RoundsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {
@@ -254,7 +227,7 @@ func (h *roundsHandler) returnPostResponseData(IDOrAccount interface{}, column s
 
 	}
 
-	if id,ok:=IDOrAccount.(uint64);ok{
+	if id, ok := IDOrAccount.(uint64); ok {
 		return &responseData{
 			Code:    CodeSuccess,
 			Count:   int(affRow),
@@ -275,21 +248,3 @@ func (h *roundsHandler) returnPostResponseData(IDOrAccount interface{}, column s
 		Data:    []*roundIDData{{}},
 	}
 }
-
-//func (h *roundsHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
-//
-//	if p, ok := param.(*roundPostParam); ok {
-//
-//		return stmt.Exec(ID, p.HallID, p.RoomID, p.RoomType, p.Brief, p.Record, p.Status)
-//	}
-//	return nil, errors.New("parsing param error")
-//
-//}
-//func (h *roundsHandler) returnPostResData(ID, lastID uint64) interface{} {
-//
-//	return []roundIDData{
-//		{
-//			ID,
-//		},
-//	}
-//}

@@ -5,24 +5,27 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cruisechang/dbex"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
-func NewPartnerLogHandler(base baseHandler) *partnerLogHandler {
-	return &partnerLogHandler{
+//NewPartnerLogHandler returns PartnerLogHandler structure
+func NewPartnerLogHandler(base baseHandler) *PartnerLogHandler {
+	return &PartnerLogHandler{
 		baseHandler: base,
 	}
 }
 
-type partnerLogHandler struct {
+//PartnerLogHandler does select and insert
+type PartnerLogHandler struct {
 	baseHandler
 }
 
-func (h *partnerLogHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *PartnerLogHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "partnerLog"
 
@@ -94,7 +97,7 @@ func (h *partnerLogHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
 
-func (h *partnerLogHandler) getQueryStringArgs(param *timeParam) (queryString string, queryArgs []interface{}) {
+func (h *PartnerLogHandler) getQueryStringArgs(param *timeParam) (queryString string, queryArgs []interface{}) {
 
 	queryString = "SELECT partner_log.log_id,partner_log.partner_id,partner_log.category,partner_log.create_date ,partner.account,partner.name from partner_log LEFT JOIN partner on partner_log.partner_id=partner.partner_id WHERE partner_log.partner_id = ? AND partner_log.create_date BETWEEN ? AND ?"
 
@@ -103,7 +106,7 @@ func (h *partnerLogHandler) getQueryStringArgs(param *timeParam) (queryString st
 	return
 }
 
-func (h *partnerLogHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *PartnerLogHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 
 	args, ok := param.([]interface{})
 	if !ok {
@@ -112,7 +115,7 @@ func (h *partnerLogHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, pa
 
 	return stmt.Query(IDOrAccount, args[0], args[1])
 }
-func (h *partnerLogHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *PartnerLogHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -129,7 +132,7 @@ func (h *partnerLogHandler) returnResponseDataFunc() func(IDOrAccount interface{
 						ud.account,
 						ud.name,
 						ud.category,
-						ud.create_date,})
+						ud.create_date})
 			}
 		}
 
@@ -141,4 +144,3 @@ func (h *partnerLogHandler) returnResponseDataFunc() func(IDOrAccount interface{
 		}
 	}
 }
-

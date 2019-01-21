@@ -7,10 +7,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/cruisechang/dbex"
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http/httptest"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_officialCMSRoleIDHandler_get(t *testing.T) {

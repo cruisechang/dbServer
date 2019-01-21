@@ -5,21 +5,24 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cruisechang/dbex"
 	"net/http"
+
+	"github.com/cruisechang/dbex"
 )
 
-func NewHallsHandler(base baseHandler) *hallsHandler {
-	return &hallsHandler{
+//NewHallsHandler returns HallsHandler structure
+func NewHallsHandler(base baseHandler) *HallsHandler {
+	return &HallsHandler{
 		baseHandler: base,
 	}
 }
 
-type hallsHandler struct {
+//HallsHandler does select and insert new hall
+type HallsHandler struct {
 	baseHandler
 }
 
-func (h *hallsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *HallsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logPrefix := "hallsHandler"
 
 	defer func() {
@@ -61,10 +64,10 @@ func (h *hallsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
-func (h *hallsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *HallsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query()
 }
-func (h *hallsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *HallsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -74,13 +77,13 @@ func (h *hallsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, ta
 		for rows.Next() {
 			err := rows.Scan(&ud.hall_id, &ud.name, &ud.active, &ud.create_date)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					hallData{
 						ud.hall_id,
 						ud.name,
 						ud.active,
-						ud.create_date,})
+						ud.create_date})
 			}
 		}
 
@@ -94,7 +97,7 @@ func (h *hallsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, ta
 }
 
 //post
-func (h *hallsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *HallsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*hallPostParam); ok {
 
@@ -105,7 +108,7 @@ func (h *hallsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param in
 }
 
 //id是預設的
-func (h *hallsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *HallsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {
@@ -135,7 +138,7 @@ func (h *hallsHandler) returnPostResponseData(IDOrAccount interface{}, column st
 	//error
 	return &responseData{
 		Code:    CodeSuccess,
-		Count:    int(affRow),
+		Count:   int(affRow),
 		Message: "",
 		Data:    []*hallIDData{{}},
 	}

@@ -5,21 +5,24 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cruisechang/dbex"
 	"net/http"
+
+	"github.com/cruisechang/dbex"
 )
 
-func NewRoomsHandler(base baseHandler) *roomsHandler {
-	return &roomsHandler{
+//NewRoomsHandler returns RoomsHandler structure
+func NewRoomsHandler(base baseHandler) *RoomsHandler {
+	return &RoomsHandler{
 		baseHandler: base,
 	}
 }
 
-type roomsHandler struct {
+//RoomsHandler does select and insert
+type RoomsHandler struct {
 	baseHandler
 }
 
-func (h *roomsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *RoomsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "roomsHandler"
 
@@ -64,11 +67,12 @@ func (h *roomsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
+
 //get
-func (h *roomsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *RoomsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query()
 }
-func (h *roomsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *RoomsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -78,7 +82,7 @@ func (h *roomsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, ta
 		for rows.Next() {
 			err := rows.Scan(&ud.room_id, &ud.hall_id, &ud.name, &ud.room_type, &ud.active, &ud.hls_url, &ud.boot, &ud.round_id, &ud.status, &ud.bet_countdown, &ud.dealer_id, &ud.limitation_id, &ud.create_date)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					roomData{
 						ud.room_id,
@@ -107,7 +111,7 @@ func (h *roomsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, ta
 }
 
 //post
-func (h *roomsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *RoomsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*roomPostParam); ok {
 
@@ -118,7 +122,7 @@ func (h *roomsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param in
 }
 
 //id預先產生
-func (h *roomsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *RoomsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {
@@ -152,20 +156,3 @@ func (h *roomsHandler) returnPostResponseData(IDOrAccount interface{}, column st
 		Data:    []*roomIDData{{}},
 	}
 }
-
-//func (h *roomsHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
-//
-//	if p, ok := param.(*roomPostParam); ok {
-//
-//		return stmt.Exec(p.RoomID, p.HallID, p.Name, p.RoomType, p.HLSURL, p.BetCountdown,1, p.LimitationID)
-//	}
-//	return nil, errors.New("")
-//
-//}
-//func (h *roomsHandler) returnPostResData(ID, lastID uint64) interface{} {
-//	return []roomIDData{
-//		{
-//			uint(ID),
-//		},
-//	}
-//}

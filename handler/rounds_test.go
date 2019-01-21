@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/cruisechang/dbex"
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_roundsHandler_get(t *testing.T) {
@@ -59,8 +60,7 @@ func Test_roundsHandler_get(t *testing.T) {
 
 		body, _ := ioutil.ReadAll(rr.Body)
 
-		resData := &responseData{
-		}
+		resData := &responseData{}
 		err = json.Unmarshal(body, resData)
 		if err != nil {
 			t.Fatalf("handler unmarshal responseData error=%s, path=%s, param=%+v", err.Error(), path, tc.param)

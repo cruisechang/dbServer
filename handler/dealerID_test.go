@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/cruisechang/dbex"
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
 	"testing"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_dealerHandler_get(t *testing.T) {

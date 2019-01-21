@@ -367,7 +367,9 @@ func Test_userIDHandler_patchLogin(t *testing.T) {
 		{"1", "1", CodeSuccess, 0, http.StatusOK, struct{ Login int }{1}},     //the same
 		{"2", "1", CodeSuccess, 1, http.StatusOK, struct{ Login int }{0}},     //success
 		{"3", "99999", CodeSuccess, 0, http.StatusOK, struct{ Login int }{0}}, //not found
-		{"4", "1", CodeRequestDataUnmarshalError, 0, http.StatusOK, struct {Login string `json:"login"`}{"x"}},
+		{"4", "1", CodeRequestDataUnmarshalError, 0, http.StatusOK, struct {
+			Login string `json:"login"`
+		}{"x"}},
 		{"5", "1", CodeRequestDataUnmarshalError, 0, http.StatusOK, ""},
 		{"6", "1", CodeRequestDataUnmarshalError, 0, http.StatusOK, 9},
 		{"7", "xxxx", CodeSuccess, 0, http.StatusNotFound, struct{ Login int }{0}}, //404
@@ -439,10 +441,16 @@ func Test_userIDHandler_patchActive(t *testing.T) {
 		httpStatus int
 		param      interface{}
 	}{
-		{"0", "1", CodeSuccess, 1, http.StatusOK, struct{ Active int `json:"active"` }{0}}, //success
-		{"1", "1", CodeSuccess, 0, http.StatusOK, struct{ Active int `json:"active"` }{0}}, //the same
-		{"2", "1", CodeSuccess, 1, http.StatusOK, struct{ Active int `json:"active"` }{1}}, //success
-		{"3", "99999", CodeSuccess, 0, http.StatusOK, struct{ Active int }{0}},             //not found
+		{"0", "1", CodeSuccess, 1, http.StatusOK, struct {
+			Active int `json:"active"`
+		}{0}}, //success
+		{"1", "1", CodeSuccess, 0, http.StatusOK, struct {
+			Active int `json:"active"`
+		}{0}}, //the same
+		{"2", "1", CodeSuccess, 1, http.StatusOK, struct {
+			Active int `json:"active"`
+		}{1}}, //success
+		{"3", "99999", CodeSuccess, 0, http.StatusOK, struct{ Active int }{0}}, //not found
 		{"4", "1", CodeRequestDataUnmarshalError, 0, http.StatusOK, struct{ Active string }{"x"}},
 		{"5", "1", CodeRequestDataUnmarshalError, 0, http.StatusOK, ""},
 		{"6", "1", CodeRequestDataUnmarshalError, 0, http.StatusOK, 9},

@@ -4,14 +4,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/cruisechang/dbServer/util"
-	"github.com/cruisechang/dbex"
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
 	"testing"
+
+	"github.com/cruisechang/dbServer/util"
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func TestUsersHandlerGet(t *testing.T) {
@@ -37,14 +38,14 @@ func TestUsersHandlerGet(t *testing.T) {
 		//Order     string `json:"order"`
 	}{
 
-		{"0", 0, 50, userGetParam{100, -1, -1, -1, "", ""},},
-		{"1", 0, 2, userGetParam{100, 1, -1, -1, "", ""},},
-		{"2", 0, 50, userGetParam{101, -1, -1, -1, "", ""},},
-		{"3", 0, 1, userGetParam{102, -1, 0, -1, "", ""},},
-		{"4", 0, 0, userGetParam{999, 1, 9, -1, "", ""},},
-		{"5", 0, 2, userGetParam{-1, 1, 19, -1, "", ""},},
-		{"6", 0, 0, userGetParam{101, 2, 29, -1, "userID", "asc"},},
-		{"7", 0, 0, userGetParam{100, 2, 29, -1, "userID", "desc"},},
+		{"0", 0, 50, userGetParam{100, -1, -1, -1, "", ""}},
+		{"1", 0, 2, userGetParam{100, 1, -1, -1, "", ""}},
+		{"2", 0, 50, userGetParam{101, -1, -1, -1, "", ""}},
+		{"3", 0, 1, userGetParam{102, -1, 0, -1, "", ""}},
+		{"4", 0, 0, userGetParam{999, 1, 9, -1, "", ""}},
+		{"5", 0, 2, userGetParam{-1, 1, 19, -1, "", ""}},
+		{"6", 0, 0, userGetParam{101, 2, 29, -1, "userID", "asc"}},
+		{"7", 0, 0, userGetParam{100, 2, 29, -1, "userID", "desc"}},
 	}
 
 	for _, tc := range tt {
@@ -107,7 +108,7 @@ func TestUsersHandlerPost(t *testing.T) {
 		param interface{}
 	}{
 		{"0", CodeSuccess, 1, userPostParam{0, accounts[0], "pass", accounts[0], "111.111.111.111", 0}},
-		{"1", CodeDBExecError, 0, userPostParam{0, accounts[0], "passd", accounts[0], "111.111.111.111", 0}},  //partner + account 跟第一組重複
+		{"1", CodeDBExecError, 0, userPostParam{0, accounts[0], "passd", accounts[0], "111.111.111.111", 0}}, //partner + account 跟第一組重複
 		{"2", CodeRequestDataUnmarshalError, 0, 0},
 		{"3", CodeRequestDataUnmarshalError, 0, ""},
 	}

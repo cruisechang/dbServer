@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+
 	"github.com/cruisechang/dbex"
 	"github.com/gorilla/mux"
 	"github.com/juju/errors"
@@ -105,7 +106,7 @@ func (h *BroadcastIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, p
 	return nil, errors.New("parsing param error")
 }
 
-func (h *BroadcastIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *BroadcastIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {
@@ -113,10 +114,9 @@ func (h *BroadcastIDHandler) returnExecResponseData(IDOrAccount interface{}, col
 			Code:    CodeDBExecResultError,
 			Count:   0,
 			Message: "",
-			Data: []broadcastIDData{{}},
-			}
+			Data:    []broadcastIDData{{}},
 		}
-
+	}
 
 	ID, _ := IDOrAccount.(uint64)
 

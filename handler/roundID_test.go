@@ -4,13 +4,14 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"io/ioutil"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http/httptest"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_roundHandler_get(t *testing.T) {

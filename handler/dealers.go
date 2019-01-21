@@ -1,25 +1,28 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"encoding/json"
 	"database/sql"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"net/http"
+
+	"github.com/cruisechang/dbex"
 )
 
-func NewDealersHandler(base baseHandler) *dealersHandler {
-	return &dealersHandler{
+//NewDealersHandler returns DealersHandler structure
+func NewDealersHandler(base baseHandler) *DealersHandler {
+	return &DealersHandler{
 		baseHandler: base,
 	}
 }
 
-type dealersHandler struct {
+//DealersHandler select dealers and insert new dealer
+type DealersHandler struct {
 	baseHandler
 }
 
-func (h *dealersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *DealersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "dealersHandler"
 
@@ -32,7 +35,6 @@ func (h *dealersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" || r.Method == "get" {
 		queryString := "SELECT dealer_id,name,account,active, portrait_url,create_date FROM dealer "
-		//h.get(w, r,"dealers",queryString,h.returnResDataFunc)
 		h.dbQuery(w, r, logPrefix, 0, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
@@ -58,17 +60,17 @@ func (h *dealersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		queryString := "INSERT  INTO dealer (name,account,password,portrait_url ) values (? ,?,?,?)"
-		//h.post(w, r, "dealers", 0, queryString, param, h.sqlExec, h.returnPostResData)
 		h.dbExec(w, r, logPrefix, 0, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
 
-func (h *dealersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+//query
+func (h *DealersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query()
 }
-func (h *dealersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *DealersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -99,33 +101,8 @@ func (h *dealersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, 
 	}
 }
 
-/*
-func (h *dealersHandler)returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
-
-	return func(rows *sql.Rows) (interface{}, int) {
-		count := 0
-		ud := dealerDB{}
-		resData := []dealerData{}
-
-		for rows.Next() {
-			err := rows.Scan(&ud.dealer_id, &ud.name, &ud.account, &ud.active, &ud.portrait_url, &ud.create_date)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					dealerData{
-						ud.dealer_id,
-						ud.name,
-						ud.account,
-						ud.active,
-						ud.portrait_url,
-						ud.create_date})
-			}
-		}
-		return resData,count
-	}
-}
-*/
-func (h *dealersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+//post
+func (h *DealersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*dealerPostParam); ok {
 
@@ -134,8 +111,9 @@ func (h *dealersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param 
 	return nil, errors.New("")
 
 }
+
 //id自動產生
-func (h *dealersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *DealersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {

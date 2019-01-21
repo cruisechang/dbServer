@@ -4,14 +4,15 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"strconv"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"net/http/httptest"
+	"strconv"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_userLogHandler_get(t *testing.T) {
@@ -21,20 +22,20 @@ func Test_userLogHandler_get(t *testing.T) {
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
-	type param struct{
+	type param struct {
 		BeginDate string
-		EndDate string
+		EndDate   string
 	}
 	tt := []struct {
-		name string
+		name   string
 		userID uint64
-		count int
-		param param
+		count  int
+		param  param
 	}{
-		{"0", 100,2,param{"2018-11-20 01:01:01","2018-11-21 23:59:59"}},
-		{"1", 101,1,param{"2018-11-20 01:01:01","2018-11-21 23:59:59"}},
-		{"2", 102,1,param{"2018-11-20 01:01:01","2018-11-21 23:59:59"}},
-		{"3", 103,6,param{"2018-11-20 01:01:01","2018-11-21 23:59:59"}},
+		{"0", 100, 2, param{"2018-11-20 01:01:01", "2018-11-21 23:59:59"}},
+		{"1", 101, 1, param{"2018-11-20 01:01:01", "2018-11-21 23:59:59"}},
+		{"2", 102, 1, param{"2018-11-20 01:01:01", "2018-11-21 23:59:59"}},
+		{"3", 103, 6, param{"2018-11-20 01:01:01", "2018-11-21 23:59:59"}},
 	}
 
 	for _, tc := range tt {
@@ -58,7 +59,6 @@ func Test_userLogHandler_get(t *testing.T) {
 
 		router.ServeHTTP(rr, req)
 
-
 		if rr.Code != http.StatusOK {
 			continue
 		}
@@ -70,7 +70,6 @@ func Test_userLogHandler_get(t *testing.T) {
 		if err != nil {
 			t.Fatalf("handler unmarshal responseData error=%s name=%s", err.Error(), tc.name)
 		}
-
 
 		if resData.Count != tc.count {
 			t.Fatalf("handler resData count  got %d want %d, name=%s", resData.Count, tc.count, tc.name)

@@ -1,25 +1,27 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"github.com/gorilla/mux"
 	"database/sql"
+	"fmt"
+	"net/http"
 	"strings"
-)
 
-func NewOfficialCMSManagerAccountHandler(base baseHandler) *officialCMSManagerAccountHandler {
-	return &officialCMSManagerAccountHandler{
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
+)
+//NewOfficialCMSManagerAccountHandler returns OfficialCMSManagerAccountHandler structure
+func NewOfficialCMSManagerAccountHandler(base baseHandler) *OfficialCMSManagerAccountHandler {
+	return &OfficialCMSManagerAccountHandler{
 		baseHandler: base,
 	}
 }
 
-type officialCMSManagerAccountHandler struct {
+//OfficialCMSManagerAccountHandler selects data from DB by account
+type OfficialCMSManagerAccountHandler struct {
 	baseHandler
 }
 
-func (h *officialCMSManagerAccountHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *OfficialCMSManagerAccountHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "officialCMSManagerAccountHandler"
 
@@ -55,10 +57,10 @@ func (h *officialCMSManagerAccountHandler) ServeHTTP(w http.ResponseWriter, r *h
 
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
-func (h *officialCMSManagerAccountHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *OfficialCMSManagerAccountHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query(IDOrAccount)
 }
-func (h *officialCMSManagerAccountHandler) returnTargetColumnResponseData() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *OfficialCMSManagerAccountHandler) returnTargetColumnResponseData() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		switch targetColumn {
@@ -69,15 +71,14 @@ func (h *officialCMSManagerAccountHandler) returnTargetColumnResponseData() func
 			var password string
 			var active uint
 			for rows.Next() {
-				err := rows.Scan(&managerID,&password,&active)
+				err := rows.Scan(&managerID, &password, &active)
 				if err == nil {
-					count ++
+					count++
 					resData = append(resData,
 						checkLoginData{
 							managerID,
 							password,
 							active,
-
 						})
 				}
 			}
@@ -92,4 +93,3 @@ func (h *officialCMSManagerAccountHandler) returnTargetColumnResponseData() func
 		}
 	}
 }
-

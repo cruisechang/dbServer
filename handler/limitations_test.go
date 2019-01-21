@@ -1,14 +1,15 @@
 package handler
 
 import (
-	"testing"
+	"encoding/json"
 	"fmt"
-	"github.com/cruisechang/dbex"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"testing"
+
+	"github.com/cruisechang/dbex"
 	"github.com/gorilla/mux"
-	"io/ioutil"
-	"encoding/json"
 )
 
 func TestLimitationsHandlerGet(t *testing.T) {
@@ -21,13 +22,13 @@ func TestLimitationsHandlerGet(t *testing.T) {
 	}
 	fmt.Sprintf("%v", dbx)
 	tt := []struct {
-		name string
-		code int
-		count int
+		name       string
+		code       int
+		count      int
 		httpStatus int
 	}{
 
-		{"0", CodeSuccess, 5,http.StatusOK},
+		{"0", CodeSuccess, 5, http.StatusOK},
 	}
 
 	for _, tc := range tt {
@@ -72,12 +73,6 @@ func TestLimitationsHandlerGet(t *testing.T) {
 		if resData.Count != tc.count {
 			t.Fatalf("handler resData count  got %d want %d, name=%s", resData.Count, tc.count, tc.name)
 		}
-		t.Logf("%+v",resData)
+		t.Logf("%+v", resData)
 	}
 }
-
-
-
-
-
-

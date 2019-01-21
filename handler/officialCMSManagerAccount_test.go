@@ -1,14 +1,15 @@
 package handler
 
 import (
-	"testing"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"io/ioutil"
-	"encoding/json"
+	"testing"
+
 	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_officialCMSManagerAccountHandler_getCheckLoginData(t *testing.T) {
@@ -27,9 +28,9 @@ func Test_officialCMSManagerAccountHandler_getCheckLoginData(t *testing.T) {
 	}{
 		{"0", "test01", CodeSuccess, 1, http.StatusOK},
 		{"1", "99999", CodeSuccess, 0, http.StatusOK},
-		{"2", "3.3", CodePathError, 0, http.StatusOK}, //account 太短
-		{"3", "0", CodePathError, 0, http.StatusOK},   //account 太短
-		{"4", "", CodePathError, 0, http.StatusMovedPermanently},   //account 太短
+		{"2", "3.3", CodePathError, 0, http.StatusOK},            //account 太短
+		{"3", "0", CodePathError, 0, http.StatusOK},              //account 太短
+		{"4", "", CodePathError, 0, http.StatusMovedPermanently}, //account 太短
 	}
 
 	for _, tc := range tt {
@@ -57,7 +58,7 @@ func Test_officialCMSManagerAccountHandler_getCheckLoginData(t *testing.T) {
 			t.Fatalf("handler failed account=%s, http status got %d want %d, name=%s", tc.account, rr.Code, tc.httpStatus, tc.name)
 		}
 
-		if rr.Code == http.StatusNotFound || rr.Code==http.StatusMovedPermanently{
+		if rr.Code == http.StatusNotFound || rr.Code == http.StatusMovedPermanently {
 			continue
 		}
 

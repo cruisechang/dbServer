@@ -4,12 +4,13 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"net/http/httptest"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_userAccessTokenHandler_get(t *testing.T) {
@@ -57,8 +58,7 @@ func Test_userAccessTokenHandler_get(t *testing.T) {
 
 		body, _ := ioutil.ReadAll(rr.Body)
 
-		resData := &responseData{
-		}
+		resData := &responseData{}
 		err = json.Unmarshal(body, resData)
 		if err != nil {
 			t.Fatalf("handler unmarshal responseData error=%s, path=%s ", err.Error(), path)
@@ -74,6 +74,6 @@ func Test_userAccessTokenHandler_get(t *testing.T) {
 
 		}
 
-		t.Logf("resData=%+v",resData)
+		t.Logf("resData=%+v", resData)
 	}
 }

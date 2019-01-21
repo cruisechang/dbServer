@@ -11,17 +11,19 @@ import (
 	"github.com/juju/errors"
 )
 
-func NewTransfersHandler(base baseHandler) *transfersHandler {
-	return &transfersHandler{
+//NewTransfersHandler returns TransfersHandler structure
+func NewTransfersHandler(base baseHandler) *TransfersHandler {
+	return &TransfersHandler{
 		baseHandler: base,
 	}
 }
 
-type transfersHandler struct {
+//TransfersHandler does mysql select and insert
+type TransfersHandler struct {
 	baseHandler
 }
 
-func (h *transfersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *TransfersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "transfersHandler"
 
@@ -79,8 +81,9 @@ func (h *transfersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
+
 //query
-func (h *transfersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *TransfersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 
 	args, ok := param.([]interface{})
 	if !ok {
@@ -110,7 +113,7 @@ func (h *transfersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, par
 	}
 	return nil, errors.New("args error")
 }
-func (h *transfersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *TransfersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -146,7 +149,7 @@ func (h *transfersHandler) returnResponseDataFunc() func(IDOrAccount interface{}
 	}
 }
 
-func (h *transfersHandler) getQueryStringArgs(param *transferGetParam) (queryString string, queryArgs []interface{}) {
+func (h *TransfersHandler) getQueryStringArgs(param *transferGetParam) (queryString string, queryArgs []interface{}) {
 
 	queryString = "select transfer.transfer_id, transfer.partner_transfer_id, transfer.partner_id, transfer.user_id, transfer.category, transfer.transfer_credit, transfer.credit, transfer.status, transfer.create_date, user.account, user.name from transfer LEFT JOIN user on transfer.user_id=user.user_id  WHERE "
 	hasFilter := true
@@ -195,26 +198,9 @@ func (h *transfersHandler) getQueryStringArgs(param *transferGetParam) (queryStr
 	return
 }
 
-//func (h *transfersHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
-//
-//	if p, ok := param.(*transferPostParam); ok {
-//
-//		return stmt.Exec(ID, p.PartnerTransferID, p.PartnerID, p.UserID, p.Category, p.TransferCredit, p.Credit, p.Status)
-//	}
-//	return nil, errors.New("parsing param error")
-//
-//}
-//func (h *transfersHandler) returnPostResData(ID, lastID uint64) interface{} {
-//
-//	return []transferIDData{
-//		{
-//			ID,
-//		},
-//	}
-//}
 
 //post
-func (h *transfersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *TransfersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*transferPostParam); ok {
 
@@ -225,7 +211,7 @@ func (h *transfersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, para
 }
 
 //id預先產生
-func (h *transfersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
+func (h *TransfersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {

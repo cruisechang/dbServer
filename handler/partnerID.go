@@ -5,23 +5,24 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cruisechang/dbex"
 	"net/http"
 	"strconv"
 	"strings"
-)
 
-func NewPartnerIDHandler(base baseHandler) *partnerIDHandler {
-	return &partnerIDHandler{
+	"github.com/cruisechang/dbex"
+)
+//NewPartnerIDHandler returns PartnerIDHandler structure
+func NewPartnerIDHandler(base baseHandler) *PartnerIDHandler {
+	return &PartnerIDHandler{
 		baseHandler: base,
 	}
 }
-
-type partnerIDHandler struct {
+//PartnerIDHandler select and updates by ID
+type PartnerIDHandler struct {
 	baseHandler
 }
 
-func (h *partnerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *PartnerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "partnerIDHandler"
 
@@ -93,7 +94,6 @@ func (h *partnerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		queryString := "SELECT partner_id,account,name,level,category,active,api_bind_ip,cms_bind_ip,create_date from partner WHERE partner_id = ? LIMIT 1"
-		//h.getTargetRow(w, r, "partner", id, queryString, h.returnResDataFunc)
 		h.dbQuery(w, r, logPrefix, ID, "access_token", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
@@ -139,18 +139,17 @@ func (h *partnerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			h.writeError(w, http.StatusOK, CodeRequestDataUnmarshalError, err.Error())
 			return
 		}
-		//h.patch(w, r, logPrefix, id, queryString, patchData, h.patchExec, h.returnIDResData)
 		h.dbExec(w, r, logPrefix, ID, column, queryString, param, h.sqlPatch, h.returnExecResponseData)
 		return
 	}
 
 	h.writeError(w, http.StatusNotFound, CodeMethodError, "")
 }
-func (h *partnerIDHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *PartnerIDHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query(IDOrAccount)
 }
 
-func (h *partnerIDHandler) returnTargetColumnResponseData() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *PartnerIDHandler) returnTargetColumnResponseData() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		switch targetColumn {
@@ -280,7 +279,7 @@ func (h *partnerIDHandler) returnTargetColumnResponseData() func(IDOrAccount int
 	}
 }
 
-func (h *partnerIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *PartnerIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -290,7 +289,7 @@ func (h *partnerIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}
 		for rows.Next() {
 			err := rows.Scan(&ud.partner_id, &ud.account, &ud.name, &ud.level, &ud.category, &ud.active, &ud.api_bind_ip, &ud.cms_bind_ip, &ud.create_date)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					partnerData{
 						ud.partner_id,
@@ -301,7 +300,7 @@ func (h *partnerIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}
 						ud.active,
 						ud.api_bind_ip,
 						ud.cms_bind_ip,
-						ud.create_date,})
+						ud.create_date})
 			}
 		}
 
@@ -315,7 +314,7 @@ func (h *partnerIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}
 }
 
 //patch
-func (h *partnerIDHandler) getPatchData(column string, body []byte) (interface{}, error) {
+func (h *PartnerIDHandler) getPatchData(column string, body []byte) (interface{}, error) {
 	switch column {
 
 	case "login":
@@ -374,7 +373,7 @@ func (h *partnerIDHandler) getPatchData(column string, body []byte) (interface{}
 		return nil, errors.New("column error")
 	}
 }
-func (h *partnerIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *PartnerIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*loginData); ok {
 		return stmt.Exec(p.Login, IDOrAccount)
@@ -402,7 +401,7 @@ func (h *partnerIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, par
 	return nil, errors.New("parsing param error")
 }
 
-func (h *partnerIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *PartnerIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {
@@ -427,4 +426,3 @@ func (h *partnerIDHandler) returnExecResponseData(IDOrAccount interface{}, colum
 		},
 	}
 }
-

@@ -4,23 +4,26 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	"github.com/cruisechang/dbServer/util"
 	"github.com/cruisechang/dbex"
 	"github.com/juju/errors"
-	"net/http"
 )
 
-func NewPartnersHandler(base baseHandler) *partnersHandler {
-	return &partnersHandler{
+//NewPartnersHandler returns PartnersHandler structure
+func NewPartnersHandler(base baseHandler) *PartnersHandler {
+	return &PartnersHandler{
 		baseHandler: base,
 	}
 }
 
-type partnersHandler struct {
+//PartnersHandler select and insert new data
+type PartnersHandler struct {
 	baseHandler
 }
 
-func (h *partnersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *PartnersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logPrefix := "partnersHandler"
 
 	defer func() {
@@ -87,7 +90,7 @@ func (h *partnersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
-func (h *partnersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *PartnersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 
 	args, ok := param.([]interface{})
 	if !ok {
@@ -117,7 +120,7 @@ func (h *partnersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, para
 	}
 	return nil, errors.New("args error")
 }
-func (h *partnersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *PartnersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -127,7 +130,7 @@ func (h *partnersHandler) returnResponseDataFunc() func(IDOrAccount interface{},
 		for rows.Next() {
 			err := rows.Scan(&dc.partner_id, &dc.account, &dc.name, &dc.level, &dc.category, &dc.active, &dc.api_bind_ip, &dc.cms_bind_ip, &dc.create_date)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					partnerData{
 						dc.partner_id,
@@ -138,7 +141,7 @@ func (h *partnersHandler) returnResponseDataFunc() func(IDOrAccount interface{},
 						dc.active,
 						dc.api_bind_ip,
 						dc.cms_bind_ip,
-						dc.create_date,})
+						dc.create_date})
 			}
 		}
 
@@ -151,7 +154,7 @@ func (h *partnersHandler) returnResponseDataFunc() func(IDOrAccount interface{},
 	}
 }
 
-func (h *partnersHandler) getQueryStringArgs(param *partnerGetParam) (queryString string, queryArgs []interface{}) {
+func (h *PartnersHandler) getQueryStringArgs(param *partnerGetParam) (queryString string, queryArgs []interface{}) {
 
 	queryString = "select partner_id,account,name,level,category,active,api_bind_ip,cms_bind_ip,create_date from partner "
 
@@ -184,7 +187,7 @@ func (h *partnersHandler) getQueryStringArgs(param *partnerGetParam) (queryStrin
 	}
 	return
 }
-func (h *partnersHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
+func (h *PartnersHandler) returnResDataFunc() func(rows *sql.Rows) (interface{}, int) {
 
 	return func(rows *sql.Rows) (interface{}, int) {
 		count := 0
@@ -194,7 +197,7 @@ func (h *partnersHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}
 		for rows.Next() {
 			err := rows.Scan(&dc.partner_id, &dc.account, &dc.name, &dc.level, &dc.category, &dc.active, &dc.api_bind_ip, &dc.cms_bind_ip, &dc.create_date)
 			if err == nil {
-				count += 1
+				count ++
 				resData = append(resData,
 					partnerData{
 						dc.partner_id,
@@ -205,7 +208,7 @@ func (h *partnersHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}
 						dc.active,
 						dc.api_bind_ip,
 						dc.cms_bind_ip,
-						dc.create_date,})
+						dc.create_date})
 			}
 		}
 		return resData, count
@@ -213,7 +216,7 @@ func (h *partnersHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}
 }
 
 //post
-func (h *partnersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *PartnersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*partnerPostParam); ok {
 
@@ -224,7 +227,7 @@ func (h *partnersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param
 }
 
 //id 預先產生
-func (h *partnersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *PartnersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {
@@ -258,21 +261,3 @@ func (h *partnersHandler) returnPostResponseData(IDOrAccount interface{}, column
 		Data:    []*partnerIDData{{}},
 	}
 }
-
-//func (h *partnersHandler) sqlExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
-//
-//	if p, ok := param.(*partnerPostParam); ok {
-//
-//		return stmt.Exec(ID, p.Account, p.Password, p.Name, p.Level, p.Category, p.AESKey, p.AccessToken, p.APIBindIP, p.CMSBindIP)
-//	}
-//	return nil, errors.New("parsing param error")
-//
-//}
-//func (h *partnersHandler) returnPostResData(ID, lastID uint64) interface{} {
-//
-//	return []partnerIDData{
-//		{
-//			ID,
-//		},
-//	}
-//}

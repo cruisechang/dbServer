@@ -1,14 +1,15 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"encoding/json"
-	"github.com/gorilla/mux"
-	"strconv"
-	"errors"
 	"database/sql"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
+	"strconv"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 //NewOfficialCMSRoleIDHandler returns official cms role structure
@@ -17,6 +18,7 @@ func NewOfficialCMSRoleIDHandler(base baseHandler) *OfficialCMSRoleIDHandler {
 		baseHandler: base,
 	}
 }
+
 //OfficialCMSRoleIDHandler handles request of official cms role
 type OfficialCMSRoleIDHandler struct {
 	baseHandler
@@ -105,7 +107,7 @@ func (h *OfficialCMSRoleIDHandler) returnResponseDataFunc() func(IDOrAccount int
 		for rows.Next() {
 			err := rows.Scan(&d.role_id, &d.permission, &d.create_date)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					officialCMSRoleData{
 						d.role_id,
@@ -139,8 +141,7 @@ func (h *OfficialCMSRoleIDHandler) getPatchData(body []byte) (interface{}, error
 		return nil, err
 	}
 
-
-	if len(d.Permission) <2 {
+	if len(d.Permission) < 2 {
 		return nil, errors.New("patch data password unmarshal error")
 	}
 
@@ -156,7 +157,7 @@ func (h *OfficialCMSRoleIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interfac
 	return nil, errors.New("parsing param error")
 }
 
-func (h *OfficialCMSRoleIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *OfficialCMSRoleIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {
@@ -181,5 +182,3 @@ func (h *OfficialCMSRoleIDHandler) returnExecResponseData(IDOrAccount interface{
 		},
 	}
 }
-
-

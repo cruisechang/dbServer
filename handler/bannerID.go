@@ -6,12 +6,13 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+
 	"github.com/cruisechang/dbex"
 	"github.com/gorilla/mux"
 	"github.com/juju/errors"
 )
 
-//NewBroadcastIDHandler returns handler for banner
+//NewBannerIDHandler returns handler for banner
 func NewBannerIDHandler(base baseHandler) *BannerIDHandler {
 	return &BannerIDHandler{
 		baseHandler: base,
@@ -104,7 +105,7 @@ func (h *BannerIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, para
 	return nil, errors.New("parsing param error")
 }
 
-func (h *BannerIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *BannerIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {

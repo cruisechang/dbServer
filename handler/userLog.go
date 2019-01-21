@@ -1,28 +1,31 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
+	"database/sql"
 	"encoding/json"
-	"github.com/gorilla/mux"
+	"errors"
+	"fmt"
+	"net/http"
 	"strconv"
 	"time"
-	"database/sql"
-	"errors"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
-func NewUserLogHandler(base baseHandler) *userLogHandler {
-	return &userLogHandler{
+//NewUserLogHandler returns UserLogHandler structure
+func NewUserLogHandler(base baseHandler) *UserLogHandler {
+	return &UserLogHandler{
 		baseHandler: base,
 	}
 }
 
-type userLogHandler struct {
+//UserLogHandler does mysql select about user log record
+type UserLogHandler struct {
 	baseHandler
 }
 
-func (h *userLogHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *UserLogHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "userLog"
 
@@ -93,16 +96,17 @@ func (h *userLogHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
+
 //query
-func (h *userLogHandler) getQueryStringArgs(param *timeParam) (queryString string, queryArgs []interface{}) {
+func (h *UserLogHandler) getQueryStringArgs(param *timeParam) (queryString string, queryArgs []interface{}) {
 
 	queryString = "SELECT user_log.log_id,user_log.user_id,user_log.category,user_log.ip,user_log.platform,user_log.create_date ,user.account,user.name from user_log LEFT JOIN user on user_log.user_id=user.user_id WHERE user_log.user_id = ? AND user_log.create_date BETWEEN ? AND ?"
 
-	queryArgs=append(queryArgs,param.BeginDate)
-	queryArgs=append(queryArgs,param.EndDate)
+	queryArgs = append(queryArgs, param.BeginDate)
+	queryArgs = append(queryArgs, param.EndDate)
 	return
 }
-func (h *userLogHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *UserLogHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 
 	args, ok := param.([]interface{})
 	if !ok {
@@ -111,7 +115,7 @@ func (h *userLogHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param
 
 	return stmt.Query(IDOrAccount, args[0], args[1])
 }
-func (h *userLogHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *UserLogHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -120,7 +124,7 @@ func (h *userLogHandler) returnResponseDataFunc() func(IDOrAccount interface{}, 
 			ud := userLogDB{}
 			err := rows.Scan(&ud.log_id, &ud.user_id, &ud.category, &ud.ip, &ud.platform, &ud.create_date, &ud.account, &ud.name)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					userLogData{
 						ud.log_id,
@@ -130,7 +134,7 @@ func (h *userLogHandler) returnResponseDataFunc() func(IDOrAccount interface{}, 
 						ud.category,
 						ud.ip,
 						ud.platform,
-						ud.create_date,})
+						ud.create_date})
 			}
 		}
 
@@ -142,5 +146,3 @@ func (h *userLogHandler) returnResponseDataFunc() func(IDOrAccount interface{}, 
 		}
 	}
 }
-
-

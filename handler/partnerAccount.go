@@ -1,21 +1,23 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"github.com/gorilla/mux"
-	"strings"
 	"database/sql"
 	"encoding/json"
-)
+	"fmt"
+	"net/http"
+	"strings"
 
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
+)
+//NewPartnerAccountHandler returns PartnerAccountHandler structure
 func NewPartnerAccountHandler(base baseHandler) *PartnerAccountHandler {
 	return &PartnerAccountHandler{
 		baseHandler: base,
 	}
 }
 
+//PartnerAccountHandler selects data from DB by account
 type PartnerAccountHandler struct {
 	baseHandler
 }
@@ -30,7 +32,6 @@ func (h *PartnerAccountHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			h.writeError(w, http.StatusOK, CodePanic, fmt.Sprintf("%s panic %v", logPrefix, r))
 		}
 	}()
-
 
 	vars := mux.Vars(r)
 	account, ok := vars["account"]
@@ -58,7 +59,7 @@ func (h *PartnerAccountHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 			h.dbQuery(w, r, logPrefix, account, "partner_id", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 			return
 
-		}else if strings.Contains(r.URL.Path, "login") {
+		} else if strings.Contains(r.URL.Path, "login") {
 
 			body, errCode, errMsg := h.checkBody(w, r)
 			if errCode != CodeSuccess {
@@ -85,8 +86,8 @@ func (h *PartnerAccountHandler) ServeHTTP(w http.ResponseWriter, r *http.Request
 }
 func (h *PartnerAccountHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 
-	if p,ok:=param.(*partnerAccountGetParam);ok{
-		return stmt.Query(IDOrAccount,p.Password)
+	if p, ok := param.(*partnerAccountGetParam); ok {
+		return stmt.Query(IDOrAccount, p.Password)
 	}
 	return stmt.Query(IDOrAccount)
 }
@@ -102,7 +103,7 @@ func (h *PartnerAccountHandler) returnResponseDataFunc() func(IDOrAccount interf
 			for rows.Next() {
 				err := rows.Scan(&password)
 				if err == nil {
-					count ++
+					count++
 					resData = append(resData,
 						passwordData{
 							password,
@@ -122,7 +123,7 @@ func (h *PartnerAccountHandler) returnResponseDataFunc() func(IDOrAccount interf
 			for rows.Next() {
 				err := rows.Scan(&id)
 				if err == nil {
-					count ++
+					count++
 					resData = append(resData,
 						partnerIDData{
 							id,
@@ -143,7 +144,7 @@ func (h *PartnerAccountHandler) returnResponseDataFunc() func(IDOrAccount interf
 			for rows.Next() {
 				err := rows.Scan(&ud.partner_id, &ud.account, &ud.name, &ud.level, &ud.category, &ud.active, &ud.api_bind_ip, &ud.cms_bind_ip, &ud.create_date)
 				if err == nil {
-					count ++
+					count++
 					resData = append(resData,
 						partnerData{
 							ud.partner_id,
@@ -154,7 +155,7 @@ func (h *PartnerAccountHandler) returnResponseDataFunc() func(IDOrAccount interf
 							ud.active,
 							ud.api_bind_ip,
 							ud.cms_bind_ip,
-							ud.create_date,})
+							ud.create_date})
 				}
 			}
 			return &responseData{
@@ -168,4 +169,3 @@ func (h *PartnerAccountHandler) returnResponseDataFunc() func(IDOrAccount interf
 		}
 	}
 }
-

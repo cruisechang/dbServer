@@ -11,17 +11,19 @@ import (
 	"github.com/juju/errors"
 )
 
-func NewUsersHandler(base baseHandler) *usersHandler {
-	return &usersHandler{
+//NewUsersHandler returns UsersHandler structure
+func NewUsersHandler(base baseHandler) *UsersHandler {
+	return &UsersHandler{
 		baseHandler: base,
 	}
 }
 
-type usersHandler struct {
+//UsersHandler does mysql select and insert
+type UsersHandler struct {
 	baseHandler
 }
 
-func (h *usersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *UsersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "usersHandler"
 
@@ -84,7 +86,6 @@ func (h *usersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		queryString := "INSERT  INTO user (user_id,partner_id,account,password,name,ip,platform) values (? ,? ,? ,?, ? ,?, ?)"
-		//h.post(w, r, "users", userID, queryString, param, h.sqlExec, h.returnPostResData)
 		h.dbExec(w, r, logPrefix, ID, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 		return
 	}
@@ -92,7 +93,7 @@ func (h *usersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 //query
-func (h *usersHandler) getQueryStringArgs(ug *userGetParam) (queryString string, queryArgs []interface{}) {
+func (h *UsersHandler) getQueryStringArgs(ug *userGetParam) (queryString string, queryArgs []interface{}) {
 
 	queryString = "select user_id,partner_id,account,name,credit,level,category,active,ip,platform,login,create_date from user "
 
@@ -132,7 +133,7 @@ func (h *usersHandler) getQueryStringArgs(ug *userGetParam) (queryString string,
 	return
 }
 
-func (h *usersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *UsersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 
 	args, ok := param.([]interface{})
 	if !ok {
@@ -162,7 +163,7 @@ func (h *usersHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param i
 	}
 	return nil, errors.New("args error")
 }
-func (h *usersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *UsersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -200,7 +201,7 @@ func (h *usersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, ta
 }
 
 //post
-func (h *usersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *UsersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*userPostParam); ok {
 
@@ -211,7 +212,7 @@ func (h *usersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param in
 }
 
 //id預先產生
-func (h *usersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *UsersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {
@@ -245,4 +246,3 @@ func (h *usersHandler) returnPostResponseData(IDOrAccount interface{}, column st
 		Data:    []*userIDData{{}},
 	}
 }
-

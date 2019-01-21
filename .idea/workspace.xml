@@ -2,14 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a6f3a024-60dd-42c0-a6e4-e62a5f0bae49" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/bannerID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/bannerID.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/bannerID_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/bannerID_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/banners.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/banners.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/banners_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/banners_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/base.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/base.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/betID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/betID.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/bets.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/bets.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/bets_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/bets_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/broadcastID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/broadcastID.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/broadcasts.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/broadcasts.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/broadcasts_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/broadcasts_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/dealerAccount.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/dealerAccount.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/dealerAccount_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/dealerAccount_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/dealerID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/dealerID.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/dealerID_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/dealerID_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/dealers.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/dealers.go" afterDir="false" />
@@ -19,37 +22,19 @@
       <change beforePath="$PROJECT_DIR$/handler/halls.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/halls.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/halls_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/halls_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/limitations.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/limitations.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/limitations_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/limitations_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/notFoundHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/notFoundHandler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/notFoundHandler_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/notFoundHandler_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/officialCMSManagerAccount.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/officialCMSManagerAccount.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/officialCMSManagerID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/officialCMSManagerID.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/officialCMSManagerID_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/officialCMSManagerID_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/officialCMSManagerAccount_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/officialCMSManagerAccount_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/officialCMSManagers.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/officialCMSManagers.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/officialCMSManagers_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/officialCMSManagers_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/officialCMSRoleID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/officialCMSRoleID.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/officialCMSRoleID_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/officialCMSRoleID_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/officialCMSRoles.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/officialCMSRoles.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/officialCMSRoles_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/officialCMSRoles_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/partnerAccount.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/partnerAccount.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/partnerAccount_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/partnerAccount_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handler/partnerID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/partnerID.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/partnerID_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/partnerID_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/partnerLog.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/partnerLog.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/partners.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/partners.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/partners_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/partners_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/roomID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/roomID.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/roomID_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/roomID_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/rooms.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/rooms.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/rooms_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/rooms_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/roundID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/roundID.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/roundID_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/roundID_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/rounds.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/rounds.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/rounds_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/rounds_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/transferID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/transferID.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/transferID_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/transferID_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/transfers.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/transfers.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/transfers_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/transfers_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/userID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/userID.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/userID_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/userID_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/sonyflake_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/test/sonyflake_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/util.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/util_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/util_test.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -68,56 +53,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/handler/config.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="79">
-              <caret line="19" column="26" lean-forward="true" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/handler/rooms.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1726">
-              <caret line="140" column="2" lean-forward="true" selection-start-line="140" selection-start-column="2" selection-end-line="140" selection-end-column="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/handler/rooms_test.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="53">
-              <caret line="126" column="33" lean-forward="true" selection-start-line="126" selection-start-column="33" selection-end-line="126" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/handler/roomID.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="242" column="35" selection-start-line="242" selection-start-column="35" selection-end-line="242" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/handler/userID.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="885">
-              <caret line="398" column="19" lean-forward="true" selection-start-line="398" selection-start-column="19" selection-end-line="398" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/handler/userID_test.go">
+        <entry file="file://$PROJECT_DIR$/handler/partnerID.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="486">
-              <caret line="367" column="71" selection-start-line="367" selection-start-column="71" selection-end-line="367" selection-end-column="71" />
+            <state relative-caret-position="345">
+              <caret line="96" column="46" lean-forward="true" selection-start-line="96" selection-start-column="46" selection-end-line="96" selection-end-column="46" />
+              <folding>
+                <element signature="e#17#143#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -133,8 +76,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>officialCMSManagerHandler</find>
-      <find>betHandler</find>
       <find>dealerHandler</find>
       <find>hallHandler</find>
       <find>partnerHandler</find>
@@ -163,6 +104,8 @@
       <find>transfe</find>
       <find>transeferIDData</find>
       <find>returnResponseDataFunc</find>
+      <find>timeParam</find>
+      <find>dealer_id</find>
     </findStrings>
     <replaceStrings>
       <replace>oom</replace>
@@ -208,57 +151,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/handler/transferPartnerTransferID.go" />
-        <option value="$PROJECT_DIR$/handler/broadcastID.go" />
-        <option value="$PROJECT_DIR$/main.go" />
-        <option value="$PROJECT_DIR$/handler/banners_test.go" />
-        <option value="$PROJECT_DIR$/handler/dealerID.go" />
-        <option value="$PROJECT_DIR$/handler/bannerID_test.go" />
-        <option value="$PROJECT_DIR$/handler/dealerID_test.go" />
-        <option value="$PROJECT_DIR$/handler/config.go" />
-        <option value="$PROJECT_DIR$/handler/hallID.go" />
-        <option value="$PROJECT_DIR$/handler/hallID_test.go" />
         <option value="$PROJECT_DIR$/handler/halls_test.go" />
-        <option value="$PROJECT_DIR$/handler/banners.go" />
-        <option value="$PROJECT_DIR$/handler/broadcasts.go" />
-        <option value="$PROJECT_DIR$/handler/betID.go" />
-        <option value="$PROJECT_DIR$/handler/dealers.go" />
-        <option value="$PROJECT_DIR$/handler/halls.go" />
-        <option value="$PROJECT_DIR$/handler/limitations.go" />
-        <option value="$PROJECT_DIR$/handler/officialCMSManagerAccount.go" />
-        <option value="$PROJECT_DIR$/handler/bannerID.go" />
         <option value="$PROJECT_DIR$/handler/officialCMSManagerID.go" />
         <option value="$PROJECT_DIR$/handler/officialCMSManagerID_test.go" />
-        <option value="$PROJECT_DIR$/handler/officialCMSManagers.go" />
         <option value="$PROJECT_DIR$/handler/dealers_test.go" />
         <option value="$PROJECT_DIR$/handler/officialCMSManagers_test.go" />
         <option value="$PROJECT_DIR$/handler/officialCMSRoleID.go" />
         <option value="$PROJECT_DIR$/handler/officialCMSRoleID_test.go" />
-        <option value="$PROJECT_DIR$/handler/officialCMSRoles.go" />
         <option value="$PROJECT_DIR$/handler/officialCMSRoles_test.go" />
         <option value="$PROJECT_DIR$/handler/partnerID_test.go" />
-        <option value="$PROJECT_DIR$/handler/partnerLog.go" />
         <option value="$PROJECT_DIR$/handler/partners_test.go" />
         <option value="$PROJECT_DIR$/handler/partners.go" />
         <option value="$PROJECT_DIR$/util/util_test.go" />
         <option value="$PROJECT_DIR$/test/sonyflake_test.go" />
         <option value="$PROJECT_DIR$/util/util.go" />
-        <option value="$PROJECT_DIR$/handler/partnerID.go" />
         <option value="$PROJECT_DIR$/handler/roomID_test.go" />
         <option value="$PROJECT_DIR$/handler/roomID.go" />
         <option value="$PROJECT_DIR$/handler/rooms_test.go" />
-        <option value="$PROJECT_DIR$/handler/bets.go" />
         <option value="$PROJECT_DIR$/handler/roundID_test.go" />
         <option value="$PROJECT_DIR$/handler/roundID.go" />
         <option value="$PROJECT_DIR$/handler/rounds.go" />
         <option value="$PROJECT_DIR$/handler/rounds_test.go" />
         <option value="$PROJECT_DIR$/handler/bets_test.go" />
         <option value="$PROJECT_DIR$/handler/transferID.go" />
-        <option value="$PROJECT_DIR$/handler/rooms.go" />
         <option value="$PROJECT_DIR$/handler/transfers.go" />
         <option value="$PROJECT_DIR$/handler/transfers_test.go" />
-        <option value="$PROJECT_DIR$/handler/userID.go" />
         <option value="$PROJECT_DIR$/handler/userID_test.go" />
+        <option value="$PROJECT_DIR$/handler/userID.go" />
+        <option value="$PROJECT_DIR$/handler/partnerLog.go" />
+        <option value="$PROJECT_DIR$/handler/userLog.go" />
+        <option value="$PROJECT_DIR$/handler/rooms.go" />
+        <option value="$PROJECT_DIR$/handler/config.go" />
+        <option value="$PROJECT_DIR$/handler/users_test.go" />
+        <option value="$PROJECT_DIR$/handler/users.go" />
+        <option value="$PROJECT_DIR$/handler/bannerID.go" />
+        <option value="$PROJECT_DIR$/handler/banners.go" />
+        <option value="$PROJECT_DIR$/handler/base.go" />
+        <option value="$PROJECT_DIR$/handler/bets.go" />
+        <option value="$PROJECT_DIR$/handler/broadcasts.go" />
+        <option value="$PROJECT_DIR$/handler/dealerAccount.go" />
+        <option value="$PROJECT_DIR$/handler/dealerID.go" />
+        <option value="$PROJECT_DIR$/handler/dealers.go" />
+        <option value="$PROJECT_DIR$/handler/hallID.go" />
+        <option value="$PROJECT_DIR$/handler/betID.go" />
+        <option value="$PROJECT_DIR$/handler/halls.go" />
+        <option value="$PROJECT_DIR$/handler/limitations.go" />
+        <option value="$PROJECT_DIR$/handler/notFoundHandler.go" />
+        <option value="$PROJECT_DIR$/handler/officialCMSManagerAccount.go" />
+        <option value="$PROJECT_DIR$/handler/officialCMSManagers.go" />
+        <option value="$PROJECT_DIR$/handler/officialCMSRoles.go" />
+        <option value="$PROJECT_DIR$/handler/partnerAccount.go" />
+        <option value="$PROJECT_DIR$/handler/partnerID.go" />
       </list>
     </option>
   </component>
@@ -339,7 +282,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Test.userID">
+  <component name="RunManager" selected="Go Test.users">
     <configuration name="main" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="dbServer" />
       <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
@@ -827,35 +770,35 @@
     </list>
   </component>
   <component name="TestHistory">
-    <history-entry file="rounds - 2019.01.18 at 15h 53m 09s.xml">
-      <configuration name="rounds" configurationId="GoTestRunConfiguration" />
+    <history-entry file="users - 2019.01.21 at 11h 20m 29s.xml">
+      <configuration name="users" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="rounds - 2019.01.18 at 15h 53m 40s.xml">
-      <configuration name="rounds" configurationId="GoTestRunConfiguration" />
+    <history-entry file="users - 2019.01.21 at 11h 21m 35s.xml">
+      <configuration name="users" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="bets - 2019.01.18 at 15h 57m 56s.xml">
-      <configuration name="bets" configurationId="GoTestRunConfiguration" />
+    <history-entry file="users - 2019.01.21 at 11h 22m 04s.xml">
+      <configuration name="users" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="transferID - 2019.01.18 at 16h 00m 52s.xml">
-      <configuration name="transferID" configurationId="GoTestRunConfiguration" />
+    <history-entry file="users - 2019.01.21 at 11h 27m 05s.xml">
+      <configuration name="users" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="transferID - 2019.01.18 at 16h 02m 20s.xml">
-      <configuration name="transferID" configurationId="GoTestRunConfiguration" />
+    <history-entry file="users - 2019.01.21 at 11h 27m 40s.xml">
+      <configuration name="users" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="transfers - 2019.01.21 at 10h 42m 12s.xml">
-      <configuration name="transfers" configurationId="GoTestRunConfiguration" />
+    <history-entry file="users - 2019.01.21 at 11h 32m 11s.xml">
+      <configuration name="users" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="transfers - 2019.01.21 at 10h 45m 32s.xml">
-      <configuration name="transfers" configurationId="GoTestRunConfiguration" />
+    <history-entry file="users - 2019.01.21 at 11h 39m 12s.xml">
+      <configuration name="users" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="transfers - 2019.01.21 at 10h 48m 09s.xml">
-      <configuration name="transfers" configurationId="GoTestRunConfiguration" />
+    <history-entry file="users - 2019.01.21 at 11h 40m 23s.xml">
+      <configuration name="users" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="transfers - 2019.01.21 at 10h 48m 41s.xml">
-      <configuration name="transfers" configurationId="GoTestRunConfiguration" />
+    <history-entry file="users - 2019.01.21 at 11h 40m 36s.xml">
+      <configuration name="users" configurationId="GoTestRunConfiguration" />
     </history-entry>
-    <history-entry file="userID - 2019.01.21 at 10h 56m 05s.xml">
-      <configuration name="userID" configurationId="GoTestRunConfiguration" />
+    <history-entry file="users - 2019.01.21 at 11h 40m 49s.xml">
+      <configuration name="users" configurationId="GoTestRunConfiguration" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -877,7 +820,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.23834197" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39363056" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39274612" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32902297" />
@@ -897,327 +840,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/handler/broadcasts.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="126" column="29" lean-forward="true" selection-start-line="126" selection-start-column="29" selection-end-line="126" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/dealers.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="159" lean-forward="true" selection-start-line="159" selection-end-line="159" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/limitations.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="68" selection-start-line="68" selection-end-line="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/notFoundHandler.go">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/officialCMSManagerAccount.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="895">
-          <caret line="94" selection-start-line="94" selection-end-line="94" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/officialCMSManagerID_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-880">
-          <caret line="94" column="26" lean-forward="true" selection-start-line="94" selection-start-column="26" selection-end-line="94" selection-end-column="26" />
-          <folding>
-            <element signature="e#17#187#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/officialCMSManagerID.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-25">
-          <caret line="62" selection-start-line="62" selection-end-line="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/officialCMSRoleID_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="21" column="39" lean-forward="true" selection-start-line="21" selection-start-column="39" selection-end-line="21" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/officialCMSRoleID.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="553">
-          <caret line="87" selection-start-line="87" selection-end-line="87" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/officialCMSManagers.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="96" column="29" lean-forward="true" selection-start-line="96" selection-start-column="29" selection-end-line="96" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/officialCMSManagers_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="126" column="8" selection-start-line="126" selection-start-column="8" selection-end-line="131" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/officialCMSRoles_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2114">
-          <caret line="157" column="21" lean-forward="true" selection-start-line="157" selection-start-column="21" selection-end-line="157" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/officialCMSRoles.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1047">
-          <caret line="116" column="1" selection-start-line="116" selection-start-column="1" selection-end-line="116" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/partnerAccount.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="49" column="47" lean-forward="true" selection-start-line="49" selection-start-column="47" selection-end-line="49" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/partnerID_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5052">
-          <caret line="10" column="13" lean-forward="true" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/partnerLog.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1345">
-          <caret line="145" selection-start-line="145" selection-end-line="145" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/halls_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="119" column="42" lean-forward="true" selection-start-line="119" selection-start-column="42" selection-end-line="119" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/partners_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="124" column="19" selection-start-line="124" selection-start-column="19" selection-end-line="124" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/util/util_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="28" lean-forward="true" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/sonyflake_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="34" column="44" lean-forward="true" selection-start-line="34" selection-start-column="44" selection-end-line="34" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/util/util.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/base.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="238" column="117" selection-start-line="238" selection-start-column="117" selection-end-line="238" selection-end-column="117" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/partnerID.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="383" column="5" lean-forward="true" selection-start-line="383" selection-start-column="5" selection-end-line="383" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/roomID_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="621">
-          <caret line="110" column="20" lean-forward="true" selection-start-line="110" selection-start-column="20" selection-end-line="110" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/broadcasts_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1380">
-          <caret line="102" column="38" lean-forward="true" selection-start-line="102" selection-start-column="38" selection-end-line="102" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/banners_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="157" column="21" selection-start-line="157" selection-start-column="21" selection-end-line="157" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/halls.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="548">
-          <caret line="59" column="14" lean-forward="true" selection-start-line="59" selection-start-column="14" selection-end-line="59" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/partners.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="84" column="41" selection-start-line="84" selection-start-column="41" selection-end-line="84" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/dealers_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="116" column="9" lean-forward="true" selection-start-line="116" selection-start-column="9" selection-end-line="116" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/roundID.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2310">
-          <caret line="165" column="1" lean-forward="true" selection-start-line="165" selection-start-column="1" selection-end-line="165" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/banners.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="103" lean-forward="true" selection-start-line="103" selection-end-line="103" />
-          <folding>
-            <element signature="e#17#120#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/rounds.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-74">
-          <caret line="52" column="14" lean-forward="true" selection-start-line="52" selection-start-column="14" selection-end-line="52" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/rounds_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="133" column="8" selection-start-line="133" selection-start-column="8" selection-end-line="138" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/bets_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/bets.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="86">
-          <caret line="226" lean-forward="true" selection-start-line="226" selection-end-line="226" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/roundID_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="362">
-          <caret line="149" selection-start-line="149" selection-end-line="149" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/transferID_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="33" column="28" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/transferID.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="188" selection-start-line="188" selection-end-line="188" />
-          <folding>
-            <element signature="e#17#169#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/transferPartnerTransferID.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-311" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/bannerID_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="95" column="48" lean-forward="true" selection-start-line="95" selection-start-column="48" selection-end-line="95" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/bannerID.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="708">
-          <caret line="91" column="32" selection-start-line="91" selection-start-column="32" selection-end-line="91" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/rooms.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1726">
-          <caret line="140" column="2" lean-forward="true" selection-start-line="140" selection-start-column="2" selection-end-line="140" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/config.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="79">
-          <caret line="19" column="26" lean-forward="true" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/transfers_test.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="871">
-          <caret line="176" lean-forward="true" selection-start-line="176" selection-end-line="176" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/transfers.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-608">
-          <caret line="76" selection-start-line="76" selection-end-line="76" />
-          <folding>
-            <element signature="e#17#177#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/handler/userAccessToken.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-318" />
@@ -1228,31 +850,414 @@
         <state relative-caret-position="-675" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/handler/rooms_test.go">
+    <entry file="file://$PROJECT_DIR$/handler/userID_test.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
-          <caret line="126" column="33" lean-forward="true" selection-start-line="126" selection-start-column="33" selection-end-line="126" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/roomID.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="242" column="35" selection-start-line="242" selection-start-column="35" selection-end-line="242" selection-end-column="35" />
+        <state relative-caret-position="-1652">
+          <caret line="351" column="47" lean-forward="true" selection-start-line="351" selection-start-column="47" selection-end-line="351" selection-end-column="47" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/handler/userID.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="885">
-          <caret line="398" column="19" lean-forward="true" selection-start-line="398" selection-start-column="19" selection-end-line="398" selection-end-column="19" />
+        <state relative-caret-position="180">
+          <caret line="12" column="28" lean-forward="true" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/handler/userID_test.go">
+    <entry file="file://$PROJECT_DIR$/handler/partnerLog.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="367" column="71" selection-start-line="367" selection-start-column="71" selection-end-line="367" selection-end-column="71" />
+        <state relative-caret-position="296">
+          <caret line="105" column="58" selection-start-line="105" selection-start-column="58" selection-end-line="105" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/userLog_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="18" column="19" lean-forward="true" selection-start-line="18" selection-start-column="19" selection-end-line="18" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/roomID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="240" column="27" lean-forward="true" selection-start-line="240" selection-start-column="27" selection-end-line="240" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/userLog.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2025">
+          <caret line="145" selection-start-line="145" selection-end-line="145" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/users.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3570">
+          <caret line="247" selection-start-line="247" selection-end-line="247" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/rooms_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="861">
+          <caret line="117" column="22" lean-forward="true" selection-start-line="117" selection-start-column="22" selection-end-line="117" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/rooms.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1025">
+          <caret line="104" column="9" lean-forward="true" selection-start-line="104" selection-start-column="9" selection-end-line="104" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/config.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/bannerID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/users_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="102" selection-start-line="102" selection-end-line="102" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/base.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4845">
+          <caret line="334" column="19" lean-forward="true" selection-start-line="334" selection-start-column="19" selection-end-line="334" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/banners.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="16" column="5" lean-forward="true" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
+          <folding>
+            <element signature="e#17#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/betID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" column="9" lean-forward="true" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="9" />
+          <folding>
+            <element signature="e#17#169#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/bets.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="25" lean-forward="true" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
+          <folding>
+            <element signature="e#17#177#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/broadcastID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="18" lean-forward="true" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/broadcasts.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="50" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
+          <folding>
+            <element signature="e#17#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/dealerAccount.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2507">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#148#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/dealerID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="13" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/dealers.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1607">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/hallID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2460">
+          <caret line="164" lean-forward="true" selection-start-line="164" selection-end-line="164" />
+          <folding>
+            <element signature="e#17#158#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/halls.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="48" selection-start-line="12" selection-start-column="48" selection-end-line="12" selection-end-column="48" />
+          <folding>
+            <element signature="e#17#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/limitations.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-302">
+          <caret line="10" column="60" selection-start-line="10" selection-start-column="60" selection-end-line="10" selection-end-column="60" />
+          <folding>
+            <element signature="e#17#94#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/notFoundHandler.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="29" lean-forward="true" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="29" />
+          <folding>
+            <element signature="e#17#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/notFoundHandler_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#136#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/limitations_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#166#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/halls_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#174#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/dealers_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1545">
+          <caret line="118" column="9" lean-forward="true" selection-start-line="118" selection-start-column="9" selection-end-line="118" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/dealerID_test.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/broadcasts_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1380">
+          <caret line="103" column="38" lean-forward="true" selection-start-line="103" selection-start-column="38" selection-end-line="103" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/broadcastID_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#187#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/banners_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#190#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/bannerID_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#187#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/dealerAccount_test.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/hallID_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#187#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/officialCMSManagerAccount.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="66" selection-start-line="18" selection-start-column="66" selection-end-line="18" selection-end-column="66" />
+          <folding>
+            <element signature="e#17#131#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/officialCMSManagerAccount_test.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/officialCMSManagerID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#158#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/officialCMSManagerID_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#187#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/officialCMSManagers.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1577">
+          <caret line="21" column="15" lean-forward="true" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="15" />
+          <folding>
+            <element signature="e#17#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/officialCMSManagers_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#175#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/officialCMSRoleID_test.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/officialCMSRoleID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-132">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#158#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/officialCMSRoles.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="17" column="52" selection-start-line="17" selection-start-column="52" selection-end-line="17" selection-end-column="52" />
+          <folding>
+            <element signature="e#17#121#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/officialCMSRoles_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#175#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/partnerAccount.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="55" selection-start-line="19" selection-start-column="55" selection-end-line="19" selection-end-column="55" />
+          <folding>
+            <element signature="e#17#148#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/partnerAccount_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#17#176#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/partnerID.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="96" column="46" lean-forward="true" selection-start-line="96" selection-start-column="46" selection-end-line="96" selection-end-column="46" />
+          <folding>
+            <element signature="e#17#143#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

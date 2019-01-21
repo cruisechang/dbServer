@@ -1,20 +1,23 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"encoding/json"
 	"database/sql"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"net/http"
+
+	"github.com/cruisechang/dbex"
 )
 
+//NewBannersHandler returns structure of banner handler
 func NewBannersHandler(base baseHandler) *BannersHandler {
 	return &BannersHandler{
 		baseHandler: base,
 	}
 }
 
+//BannersHandler presents handler of banner
 type BannersHandler struct {
 	baseHandler
 }
@@ -77,7 +80,7 @@ func (h *BannersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, 
 		for rows.Next() {
 			err := rows.Scan(&ud.banner_id, &ud.pic_url, &ud.link_url, &ud.description, &ud.platform, &ud.active, &ud.create_date)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					bannerData{
 						ud.banner_id,
@@ -86,7 +89,7 @@ func (h *BannersHandler) returnResponseDataFunc() func(IDOrAccount interface{}, 
 						ud.description,
 						ud.platform,
 						ud.active,
-						ud.create_date,})
+						ud.create_date})
 			}
 		}
 
@@ -109,8 +112,9 @@ func (h *BannersHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param 
 	return nil, errors.New("")
 
 }
+
 //id 自動產生
-func (h *BannersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *BannersHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {

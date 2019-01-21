@@ -4,14 +4,15 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"strconv"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"net/http/httptest"
+	"strconv"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_partnerLogHandler_get(t *testing.T) {
@@ -27,14 +28,14 @@ func Test_partnerLogHandler_get(t *testing.T) {
 	}
 	tt := []struct {
 		name      string
-		count int
+		count     int
 		partnerID uint64
 		param     param
 	}{
-		{"0", 0,100, param{"2018-11-20 01:01:01", "2018-11-27 23:59:59"}},
-		{"1", 6,101, param{"2018-11-20 01:01:01", "2018-11-27 23:59:59"}},
-		{"2", 3,102, param{"2018-11-20 01:01:01", "2018-11-27 23:59:59"}},
-		{"3", 0,103, param{"2018-11-20 01:01:01", "2018-11-27 23:59:59"}},
+		{"0", 0, 100, param{"2018-11-20 01:01:01", "2018-11-27 23:59:59"}},
+		{"1", 6, 101, param{"2018-11-20 01:01:01", "2018-11-27 23:59:59"}},
+		{"2", 3, 102, param{"2018-11-20 01:01:01", "2018-11-27 23:59:59"}},
+		{"3", 0, 103, param{"2018-11-20 01:01:01", "2018-11-27 23:59:59"}},
 	}
 
 	for _, tc := range tt {

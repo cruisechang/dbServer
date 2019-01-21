@@ -3,11 +3,13 @@ package handler
 import (
 	"bytes"
 	"fmt"
-	"github.com/cruisechang/dbex"
-	"github.com/gorilla/mux"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
+
 	//"encoding/json"
 	//"bytes"
 	//"io/ioutil"
@@ -155,7 +157,7 @@ func TestDealersHandlerPost(t *testing.T) {
 		stmt, _ := sqlDB.Prepare(queryString)
 		defer stmt.Close()
 
-		for _,v:= range ids {
+		for _, v := range ids {
 			stmt.Exec(v)
 		}
 	}

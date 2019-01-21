@@ -1,16 +1,17 @@
 package handler
 
 import (
-	"net/http"
-	"testing"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"encoding/json"
 	"bytes"
-	"io/ioutil"
 	"database/sql"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_bannersHandler_get(t *testing.T) {

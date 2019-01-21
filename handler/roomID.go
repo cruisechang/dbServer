@@ -5,24 +5,25 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cruisechang/dbex"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
 	"strings"
-)
 
-func NewRoomIDHandler(base baseHandler) *roomIDHandler {
-	return &roomIDHandler{
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
+)
+//NewRoomIDHandler returns RoomIDHandler structure
+func NewRoomIDHandler(base baseHandler) *RoomIDHandler {
+	return &RoomIDHandler{
 		baseHandler: base,
 	}
 }
-
-type roomIDHandler struct {
+//RoomIDHandler does select, update, delete data from DB by ID
+type RoomIDHandler struct {
 	baseHandler
 }
 
-func (h *roomIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *RoomIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "roomIDHandler"
 
@@ -123,10 +124,10 @@ func (h *roomIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
-func (h *roomIDHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *RoomIDHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query(IDOrAccount)
 }
-func (h *roomIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *RoomIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -136,7 +137,7 @@ func (h *roomIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, t
 		for rows.Next() {
 			err := rows.Scan(&ud.room_id, &ud.hall_id, &ud.name, &ud.room_type, &ud.active, &ud.hls_url, &ud.boot, &ud.round_id, &ud.status, &ud.bet_countdown, &ud.dealer_id, &ud.limitation_id, &ud.create_date)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					roomData{
 						ud.room_id,
@@ -163,13 +164,15 @@ func (h *roomIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, t
 		}
 	}
 }
+
 //delete
-func (h *roomIDHandler) sqlDelete(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *RoomIDHandler) sqlDelete(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	return stmt.Exec(IDOrAccount)
 }
+
 //patch
-func (h *roomIDHandler) getPatchData(column string, body []byte) (interface{}, error) {
+func (h *RoomIDHandler) getPatchData(column string, body []byte) (interface{}, error) {
 	switch column {
 	case "newRound":
 		d := &roomNewRoundPatchParam{}
@@ -248,7 +251,7 @@ func (h *roomIDHandler) getPatchData(column string, body []byte) (interface{}, e
 		return nil, errors.New("column error")
 	}
 }
-func (h *roomIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *RoomIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*roomNewRoundPatchParam); ok {
 		return stmt.Exec(p.Boot, p.RoundID, p.Status, IDOrAccount)
@@ -284,7 +287,7 @@ func (h *roomIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param 
 	return nil, errors.New("parsing param error")
 }
 
-func (h *roomIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *RoomIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {
@@ -309,50 +312,3 @@ func (h *roomIDHandler) returnExecResponseData(IDOrAccount interface{}, column s
 		},
 	}
 }
-
-/////
-//func (h *roomIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
-//
-//	//檢查參數是否合法
-//	if p, ok := param.(*roomNewRoundPatchParam); ok {
-//		return stmt.Exec(p.Boot, p.RoundID, p.Status, ID)
-//	}
-//	if p, ok := param.(*nameData); ok {
-//
-//		return stmt.Exec(p.Name, ID)
-//	}
-//	if p, ok := param.(*activeData); ok {
-//		return stmt.Exec(p.Active, ID)
-//	}
-//	if p, ok := param.(*hlsURLData); ok {
-//		return stmt.Exec(p.HLSURL, ID)
-//	}
-//	if p, ok := param.(*bootData); ok {
-//		return stmt.Exec(p.Boot, ID)
-//	}
-//	if p, ok := param.(*roundIDData); ok {
-//		return stmt.Exec(p.Round, ID)
-//	}
-//	if p, ok := param.(*statusData); ok {
-//		return stmt.Exec(p.Status, ID)
-//	}
-//	if p, ok := param.(*betCountdownData); ok {
-//		return stmt.Exec(p.BetCountdown, ID)
-//	}
-//	if p, ok := param.(*dealerIDData); ok {
-//		return stmt.Exec(p.DealerID, ID)
-//	}
-//	if p, ok := param.(*roomPatchParam); ok {
-//		return stmt.Exec(p.RoomID, p.HallID, p.Name, p.RoomType, p.Active, p.HLSURL, p.BetCountdown, p.LimitationID, ID)
-//	}
-//	return nil, errors.New("parsing param error")
-//
-//}
-//
-//func (h *roomIDHandler) returnIDResData(ID uint64) interface{} {
-//	return []roomIDData{
-//		{
-//			uint(ID),
-//		},
-//	}
-//}

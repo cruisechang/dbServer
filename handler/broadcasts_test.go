@@ -1,15 +1,16 @@
 package handler
 
 import (
-	"net/http"
-	"testing"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_broadcastsHandler_get(t *testing.T) {
@@ -92,10 +93,10 @@ func TestBroadcastsHandlerPost(t *testing.T) {
 	}{
 
 		{"0", CodeSuccess, 1, http.StatusOK, broadcastPostParam{"for test...", 2, 999, 1}},
-		{"1", CodeRequestPostDataIllegal, 0,http.StatusOK, broadcastPostParam{"", 0, 999, 1}}, //internal <1, repeat times < 1
-		{"2", CodeRequestPostDataIllegal, 0,http.StatusOK,  broadcastPostParam{"", 2, 0, 1}},   //internal <1, repeat times < 1
-		{"3", CodeRequestDataUnmarshalError, 0,http.StatusOK, ""},
-		{"4", CodeRequestDataUnmarshalError, 0,http.StatusOK,  1},
+		{"1", CodeRequestPostDataIllegal, 0, http.StatusOK, broadcastPostParam{"", 0, 999, 1}}, //internal <1, repeat times < 1
+		{"2", CodeRequestPostDataIllegal, 0, http.StatusOK, broadcastPostParam{"", 2, 0, 1}},   //internal <1, repeat times < 1
+		{"3", CodeRequestDataUnmarshalError, 0, http.StatusOK, ""},
+		{"4", CodeRequestDataUnmarshalError, 0, http.StatusOK, 1},
 	}
 
 	for _, tc := range tt {

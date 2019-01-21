@@ -4,13 +4,14 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"io/ioutil"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http/httptest"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_partnerAccountHandler_getPassword(t *testing.T) {
@@ -151,7 +152,6 @@ func Test_partnerAccountHandler_getID(t *testing.T) {
 	}
 }
 
-
 func Test_partnerAccountHandler_login(t *testing.T) {
 	dbx, err := dbex.NewDBEX("dbexConfig.json")
 	if err != nil {
@@ -165,14 +165,13 @@ func Test_partnerAccountHandler_login(t *testing.T) {
 		code       int
 		count      int
 		httpStatus int
-		param interface{}
+		param      interface{}
 	}{
-		{"0", "account100", CodeSuccess, 1, http.StatusOK,partnerAccountGetParam{Password:"pass"}},
+		{"0", "account100", CodeSuccess, 1, http.StatusOK, partnerAccountGetParam{Password: "pass"}},
 	}
 
 	for _, tc := range tt {
 		path := fmt.Sprintf("/partners/" + tc.account + "/login")
-
 
 		b, err := json.Marshal(tc.param)
 		if err != nil {

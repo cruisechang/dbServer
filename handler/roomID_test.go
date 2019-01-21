@@ -7,11 +7,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/cruisechang/dbex"
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http/httptest"
 	"strconv"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_roomHandler_get(t *testing.T) {
@@ -103,9 +104,8 @@ func Test_roomHandler_delete(t *testing.T) {
 	stmt, _ := sqlDB.Prepare(queryString)
 	defer stmt.Close()
 
-	insertID:=9999
-	stmt.Exec(insertID, "99999", "test", 1, "url",20,999,9999)
-
+	insertID := 9999
+	stmt.Exec(insertID, "99999", "test", 1, "url", 20, 999, 9999)
 
 	type param struct{ ID uint64 }
 	tt := []struct {

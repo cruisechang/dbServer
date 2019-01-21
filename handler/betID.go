@@ -1,28 +1,31 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
+	"database/sql"
 	"encoding/json"
-	"github.com/gorilla/mux"
+	"errors"
+	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
-	"errors"
-	"database/sql"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
-func NewBetIDHandler(base baseHandler) *betIDHandler {
-	return &betIDHandler{
+//NewBetIDHandler returns BetIDHandler structure
+func NewBetIDHandler(base baseHandler) *BetIDHandler {
+	return &BetIDHandler{
 		baseHandler: base,
 	}
 }
 
-type betIDHandler struct {
+//BetIDHandler does select, update by ID
+type BetIDHandler struct {
 	baseHandler
 }
 
-func (h *betIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *BetIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logPrefix := "betIDHandler"
 
 	defer func() {
@@ -90,17 +93,16 @@ func (h *betIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		h.dbExec(w, r, logPrefix, ID, "", queryString, param, h.sqlPatch, h.returnExecResponseData)
-		//h.patch(w, r, logPrefix, id, queryString, patchData, h.patchExec, h.returnIDResData)
 		return
 	}
 
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
 
-func (h *betIDHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *BetIDHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query(IDOrAccount)
 }
-func (h *betIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *BetIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -110,7 +112,7 @@ func (h *betIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, ta
 		for rows.Next() {
 			err := rows.Scan(&ud.bet_id, &ud.partner_id, &ud.user_id, &ud.room_id, &ud.room_type, &ud.round_id, &ud.seat_id, &ud.bet_credit, &ud.active_credit, &ud.prize_credit, &ud.result_credit, &ud.balance_credit, &ud.original_credit, &ud.partner_id, &ud.status, &ud.create_date, &ud.account, &ud.name)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					betData{
 						ud.bet_id,
@@ -144,49 +146,8 @@ func (h *betIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, ta
 	}
 }
 
-/*
-func (h *betIDHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
-
-	return func(rows *sql.Rows) (interface{}, int) {
-		count := 0
-		ud := betDB{}
-		resData := []betData{}
-
-		for rows.Next() {
-			err := rows.Scan(&ud.bet_id, &ud.partner_id, &ud.user_id, &ud.room_id, &ud.room_type, &ud.round_id, &ud.seat_id, &ud.bet_credit, &ud.active_credit, &ud.prize_credit, &ud.result_credit, &ud.balance_credit, &ud.original_credit, &ud.partner_id, &ud.status, &ud.create_date, &ud.account, &ud.name)
-			if err == nil {
-				count ++
-				resData = append(resData,
-					betData{
-						ud.bet_id,
-						ud.partner_id,
-						ud.user_id,
-						ud.room_id,
-						ud.room_type,
-						ud.round_id,
-						ud.seat_id,
-						ud.bet_credit,
-						ud.active_credit,
-						ud.prize_credit,
-						ud.result_credit,
-						ud.balance_credit,
-						ud.original_credit,
-						ud.record,
-						ud.status,
-						ud.create_date,
-						ud.account,
-						ud.name,
-					})
-			}
-		}
-
-		return resData, count
-	}
-}
-*/
-
-func (h *betIDHandler) getPatchData(column string, body []byte) (interface{}, error) {
-	switch(column) {
+func (h *BetIDHandler) getPatchData(column string, body []byte) (interface{}, error) {
+	switch column {
 	case "status":
 		dt := &statusData{}
 		err := json.Unmarshal(body, dt)
@@ -198,7 +159,7 @@ func (h *betIDHandler) getPatchData(column string, body []byte) (interface{}, er
 		return nil, errors.New("column error")
 	}
 }
-func (h *betIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *BetIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	//檢查參數是否合法
 	if p, ok := param.(*statusData); ok {
@@ -209,7 +170,7 @@ func (h *betIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param i
 
 }
 
-func (h *betIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *BetIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {
@@ -220,7 +181,6 @@ func (h *betIDHandler) returnExecResponseData(IDOrAccount interface{}, column st
 			Data:    []*betIDData{{}},
 		}
 	}
-
 
 	ID, _ := IDOrAccount.(uint64)
 

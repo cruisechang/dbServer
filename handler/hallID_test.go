@@ -4,14 +4,15 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"strconv"
-	"io/ioutil"
-	"encoding/json"
 	"bytes"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http/httptest"
+	"strconv"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_hallHandler_get(t *testing.T) {
@@ -298,14 +299,13 @@ func Test_hallHandler_delete(t *testing.T) {
 	//insert first
 	h := NewHallIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))
 	sqlDB := h.db.GetSQLDB()
-	insertID:=8888
-	queryString  := "INSERT  INTO hall (hall_id,name) values (? ,?)"
+	insertID := 8888
+	queryString := "INSERT  INTO hall (hall_id,name) values (? ,?)"
 
 	stmt, _ := sqlDB.Prepare(queryString)
 	defer stmt.Close()
 
-	 stmt.Exec(insertID,"test")
-
+	stmt.Exec(insertID, "test")
 
 	type param struct{ ID uint64 }
 	tt := []struct {

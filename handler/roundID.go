@@ -19,7 +19,7 @@ func NewRoundIDHandler(base baseHandler) *RoundIDHandler {
 		baseHandler: base,
 	}
 }
-
+//RoundIDHandler does select and update by ID
 type RoundIDHandler struct {
 	baseHandler
 }

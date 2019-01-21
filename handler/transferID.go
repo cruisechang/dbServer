@@ -13,17 +13,19 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func NewTransferIDHandler(base baseHandler) *transferIDHandler {
-	return &transferIDHandler{
+//TransferIDHandler returns TransferIDHandler structure
+func NewTransferIDHandler(base baseHandler) *TransferIDHandler {
+	return &TransferIDHandler{
 		baseHandler: base,
 	}
 }
 
-type transferIDHandler struct {
+//TransferIDHandler does mysql select and update by ID
+type TransferIDHandler struct {
 	baseHandler
 }
 
-func (h *transferIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *TransferIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "transferIDHandler"
 
@@ -90,7 +92,6 @@ func (h *transferIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			h.writeError(w, http.StatusOK, CodeRequestDataUnmarshalError, "")
 			return
 		}
-		//h.patch(w, r, logPrefix, id, queryString, patchData, h.patchExec, h.returnIDResData)
 		h.dbExec(w, r, logPrefix, ID, column, queryString, param, h.sqlPatch, h.returnExecResponseData)
 		return
 	}
@@ -98,10 +99,10 @@ func (h *transferIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
 
-func (h *transferIDHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *TransferIDHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query(IDOrAccount)
 }
-func (h *transferIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *TransferIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -137,7 +138,7 @@ func (h *transferIDHandler) returnResponseDataFunc() func(IDOrAccount interface{
 	}
 }
 
-func (h *transferIDHandler) getPatchData(column string, body []byte) (interface{}, error) {
+func (h *TransferIDHandler) getPatchData(column string, body []byte) (interface{}, error) {
 	switch column {
 	case "status":
 		ug := &statusData{}
@@ -152,7 +153,7 @@ func (h *transferIDHandler) getPatchData(column string, body []byte) (interface{
 }
 
 //patch
-func (h *transferIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *TransferIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*statusData); ok {
 
@@ -161,7 +162,7 @@ func (h *transferIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, pa
 	return nil, errors.New("parsing param error")
 }
 
-func (h *transferIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *TransferIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {

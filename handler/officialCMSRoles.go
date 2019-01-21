@@ -9,13 +9,13 @@ import (
 
 	"github.com/cruisechang/dbex"
 )
-
+//NewOfficialCMSRolesHandler returns OfficialCMSRolesHandler strurcture
 func NewOfficialCMSRolesHandler(base baseHandler) *OfficialCMSRolesHandler {
 	return &OfficialCMSRolesHandler{
 		baseHandler: base,
 	}
 }
-
+//OfficialCMSRolesHandler select and insert new data
 type OfficialCMSRolesHandler struct {
 	baseHandler
 }
@@ -34,7 +34,6 @@ func (h *OfficialCMSRolesHandler) ServeHTTP(w http.ResponseWriter, r *http.Reque
 	if r.Method == "GET" || r.Method == "get" {
 		queryString := "SELECT role_id, permission, create_date FROM official_cms_role"
 		h.dbQuery(w, r, logPrefix, 0, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
-		//h.get(w, r, logPrefix, queryString, h.returnResDataFunc)
 		return
 	}
 	if r.Method == "POST" || r.Method == "post" {
@@ -54,7 +53,6 @@ func (h *OfficialCMSRolesHandler) ServeHTTP(w http.ResponseWriter, r *http.Reque
 
 		queryString := "INSERT  INTO official_cms_role ( permission ) values (?)"
 		h.dbExec(w, r, logPrefix, 0, "", queryString, param, h.sqlPost, h.returnPostResponseData)
-		//h.post(w, r, logPrefix, 0, queryString, postData, h.sqlExec, h.returnPostResData)
 		return
 	}
 	h.writeError(w, http.StatusOK, CodeMethodError, "")

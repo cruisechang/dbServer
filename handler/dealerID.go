@@ -1,27 +1,30 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"encoding/json"
-	"github.com/gorilla/mux"
-	"strconv"
-	"errors"
 	"database/sql"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
+	"strconv"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
-func NewDealerIDHandler(base baseHandler) *dealerIDHandler {
-	return &dealerIDHandler{
+//NewDealerIDHandler returns DealerIDHandler structure
+func NewDealerIDHandler(base baseHandler) *DealerIDHandler {
+	return &DealerIDHandler{
 		baseHandler: base,
 	}
 }
 
-type dealerIDHandler struct {
+//DealerIDHandler does select, delete and patch by ID
+type DealerIDHandler struct {
 	baseHandler
 }
 
-func (h *dealerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *DealerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "dealerIDHandler"
 
@@ -97,10 +100,10 @@ func (h *dealerIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
 
-func (h *dealerIDHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *DealerIDHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query(IDOrAccount)
 }
-func (h *dealerIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *DealerIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -110,7 +113,7 @@ func (h *dealerIDHandler) returnResponseDataFunc() func(IDOrAccount interface{},
 		for rows.Next() {
 			err := rows.Scan(&ud.dealer_id, &ud.name, &ud.account, &ud.active, &ud.portrait_url, &ud.create_date)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					dealerData{
 						ud.dealer_id,
@@ -131,42 +134,14 @@ func (h *dealerIDHandler) returnResponseDataFunc() func(IDOrAccount interface{},
 	}
 }
 
-/*
-func (h *dealerIDHandler) returnResDataFunc() (func(rows *sql.Rows) (interface{}, int)) {
-
-	return func(rows *sql.Rows) (interface{}, int) {
-		count := 0
-		ud := dealerDB{}
-		resData := []dealerData{}
-
-		for rows.Next() {
-			err := rows.Scan(&ud.dealer_id, &ud.name, &ud.account, &ud.active, &ud.portrait_url, &ud.create_date)
-			if err == nil {
-				count += 1
-				resData = append(resData,
-					dealerData{
-						ud.dealer_id,
-						ud.name,
-						ud.account,
-						ud.active,
-						ud.portrait_url,
-						ud.create_date})
-			}
-		}
-		return resData, count
-	}
-}
-*/
-
-
 //delete
-func (h *dealerIDHandler) sqlDelete(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *DealerIDHandler) sqlDelete(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	return stmt.Exec(IDOrAccount)
 }
 
 //patch
-func (h *dealerIDHandler) getPatchData(body []byte) (interface{}, error) {
+func (h *DealerIDHandler) getPatchData(body []byte) (interface{}, error) {
 	p := &dealerPatchParam{}
 	p.Active = -1 //for test
 	err := json.Unmarshal(body, p)
@@ -178,7 +153,8 @@ func (h *dealerIDHandler) getPatchData(body []byte) (interface{}, error) {
 	}
 	return p, nil
 }
-func (h *dealerIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+
+func (h *DealerIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	//檢查參數是否合法
 	if p, ok := param.(*dealerPatchParam); ok {
@@ -187,7 +163,7 @@ func (h *dealerIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, para
 	return nil, errors.New("parsing param error")
 }
 
-func (h *dealerIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *DealerIDHandler) returnExecResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 
 	affRow, err := result.RowsAffected()
 	if err != nil {
@@ -212,23 +188,3 @@ func (h *dealerIDHandler) returnExecResponseData(IDOrAccount interface{}, column
 		},
 	}
 }
-
-
-//func (h *dealerIDHandler) patchExec(stmt *sql.Stmt, ID uint64, param interface{}) (sql.Result, error) {
-//
-//	//檢查參數是否合法
-//	if p, ok := param.(*dealerPatchParam); ok {
-//
-//		return stmt.Exec(p.Name, p.Password, p.Active, p.PortraitURL, ID)
-//	}
-//	return nil, errors.New("parsing param error")
-//
-//}
-//
-//func (h *dealerIDHandler) returnIDResData(ID uint64) interface{} {
-//	return []dealerIDData{
-//		{
-//			uint(ID),
-//		},
-//	}
-//}

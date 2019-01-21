@@ -4,12 +4,13 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"net/http/httptest"
-	"github.com/gorilla/mux"
-	"io/ioutil"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http/httptest"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 )
 
 func Test_transferPartnerTransferIDHandler_get(t *testing.T) {
@@ -52,7 +53,6 @@ func Test_transferPartnerTransferIDHandler_get(t *testing.T) {
 
 		rr := httptest.NewRecorder()
 
-		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
 		router.Handle("/transfers/ptID/{partnerTransferID}", NewTransferPartnerTransferIDHandler(NewBaseHandler(dbx.DB, dbx.Logger))).Methods("GET")
 

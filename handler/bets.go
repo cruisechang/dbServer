@@ -2,25 +2,28 @@ package handler
 
 import (
 	"database/sql"
-	"net/http"
 	"encoding/json"
 	"fmt"
+	"net/http"
+
+	"github.com/cruisechang/dbServer/util"
 	"github.com/cruisechang/dbex"
 	"github.com/juju/errors"
-	"github.com/cruisechang/dbServer/util"
 )
 
-func NewBetsHandler(base baseHandler) *betsHandler {
-	return &betsHandler{
+//NewBetsHandler returns BetsHandler structure
+func NewBetsHandler(base baseHandler) *BetsHandler {
+	return &BetsHandler{
 		baseHandler: base,
 	}
 }
 
-type betsHandler struct {
+//BetsHandler handles bet events
+type BetsHandler struct {
 	baseHandler
 }
 
-func (h *betsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *BetsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "betsHandler"
 
@@ -81,7 +84,7 @@ func (h *betsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
 
-func (h *betsHandler) getQueryStringArgs(param *betGetParam) (queryString string, queryArgs []interface{}) {
+func (h *BetsHandler) getQueryStringArgs(param *betGetParam) (queryString string, queryArgs []interface{}) {
 
 	hasFilter := true
 	queryString = "select bet.bet_id,bet.partner_id,bet.user_id,bet.room_id,bet.room_type,bet.round_id,bet.seat_id,bet.bet_credit,bet.active_credit,bet.prize_credit,bet.result_credit,bet.balance_credit,bet.original_credit,bet.record,bet.status,bet.create_date, user.account, user.name from bet LEFT JOIN user on bet.user_id=user.user_id where "
@@ -149,7 +152,7 @@ func (h *betsHandler) getQueryStringArgs(param *betGetParam) (queryString string
 	return
 }
 
-func (h *betsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *BetsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 
 	args, ok := param.([]interface{})
 	if !ok {
@@ -179,7 +182,7 @@ func (h *betsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param in
 	}
 	return nil, errors.New("args error")
 }
-func (h *betsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *BetsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -189,7 +192,7 @@ func (h *betsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, tar
 		for rows.Next() {
 			err := rows.Scan(&ud.bet_id, &ud.partner_id, &ud.user_id, &ud.room_id, &ud.room_type, &ud.round_id, &ud.seat_id, &ud.bet_credit, &ud.active_credit, &ud.prize_credit, &ud.result_credit, &ud.balance_credit, &ud.original_credit, &ud.partner_id, &ud.status, &ud.create_date, &ud.account, &ud.name)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					betData{
 						ud.bet_id,
@@ -222,8 +225,9 @@ func (h *betsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, tar
 		}
 	}
 }
+
 //post
-func (h *betsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
+func (h *BetsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (sql.Result, error) {
 
 	if p, ok := param.(*betPostParam); ok {
 
@@ -232,8 +236,9 @@ func (h *betsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param int
 	return nil, errors.New("parsing param error")
 
 }
+
 //id 是預先產生
-func (h *betsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) (*responseData) {
+func (h *BetsHandler) returnPostResponseData(IDOrAccount interface{}, column string, result sql.Result) *responseData {
 	affRow, err := result.RowsAffected()
 	if err != nil {
 		return &responseData{
@@ -245,7 +250,7 @@ func (h *betsHandler) returnPostResponseData(IDOrAccount interface{}, column str
 
 	}
 
-	if id,ok:=IDOrAccount.(uint64);ok{
+	if id, ok := IDOrAccount.(uint64); ok {
 		return &responseData{
 			Code:    CodeSuccess,
 			Count:   int(affRow),

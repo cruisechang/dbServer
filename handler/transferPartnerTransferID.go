@@ -1,24 +1,25 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"github.com/gorilla/mux"
 	"database/sql"
-)
+	"fmt"
+	"net/http"
 
-func NewTransferPartnerTransferIDHandler(base baseHandler) *transferPartnerTransferIDHandler {
-	return &transferPartnerTransferIDHandler{
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
+)
+//NewTransferPartnerTransferIDHandler returns TransferPartnerTransferIDHandler structure
+func NewTransferPartnerTransferIDHandler(base baseHandler) *TransferPartnerTransferIDHandler {
+	return &TransferPartnerTransferIDHandler{
 		baseHandler: base,
 	}
 }
-
-type transferPartnerTransferIDHandler struct {
+//TransferPartnerTransferIDHandler handles mysql select query
+type TransferPartnerTransferIDHandler struct {
 	baseHandler
 }
 
-func (h *transferPartnerTransferIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *TransferPartnerTransferIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "transferPartnerTransferID"
 
@@ -32,14 +33,13 @@ func (h *transferPartnerTransferIDHandler) ServeHTTP(w http.ResponseWriter, r *h
 	vars := mux.Vars(r)
 	tid, ok := vars["partnerTransferID"]
 	if !ok {
-		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler get partnerTransferID not found %s", logPrefix,r.RequestURI))
+		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler get partnerTransferID not found %s", logPrefix, r.RequestURI))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
 	}
 
-
-	if len(tid) <5  {
-		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler  get path error %s ", logPrefix,r.RequestURI))
+	if len(tid) < 5 {
+		h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler  get path error %s ", logPrefix, r.RequestURI))
 		h.writeError(w, http.StatusOK, CodePathError, "")
 		return
 	}
@@ -54,11 +54,10 @@ func (h *transferPartnerTransferIDHandler) ServeHTTP(w http.ResponseWriter, r *h
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
 
-
-func (h *transferPartnerTransferIDHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *TransferPartnerTransferIDHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query(IDOrAccount)
 }
-func (h *transferPartnerTransferIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *TransferPartnerTransferIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -68,7 +67,7 @@ func (h *transferPartnerTransferIDHandler) returnResponseDataFunc() func(IDOrAcc
 		for rows.Next() {
 			err := rows.Scan(&ud.transfer_id, &ud.partner_transfer_id, &ud.partner_id, &ud.user_id, &ud.category, &ud.transfer_credit, &ud.credit, &ud.status, &ud.create_date, &ud.account, &ud.name)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					transferData{
 						ud.transfer_id,
@@ -81,7 +80,7 @@ func (h *transferPartnerTransferIDHandler) returnResponseDataFunc() func(IDOrAcc
 						ud.status,
 						ud.create_date,
 						ud.account,
-						ud.name,})
+						ud.name})
 			}
 		}
 
@@ -93,5 +92,3 @@ func (h *transferPartnerTransferIDHandler) returnResponseDataFunc() func(IDOrAcc
 		}
 	}
 }
-
-

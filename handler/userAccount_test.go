@@ -177,20 +177,20 @@ func Test_userAccountHandler_getAccessToken(t *testing.T) {
 	dbx.Logger.SetLevel(dbex.LevelInfo)
 
 	tt := []struct {
-		name    string
-		account string
-		code    int
-		count   int
+		name       string
+		account    string
+		code       int
+		count      int
 		httpStatus int
-		param   userAccountGetParam
+		param      userAccountGetParam
 	}{
-		{"0", "account1", CodeSuccess, 1, http.StatusOK,userAccountGetParam{100, "pass"}},
-		{"1", "99999", CodeSuccess, 0, http.StatusOK,userAccountGetParam{100, "pass"}}, //active 0
-		{"2", "account1", CodeSuccess, 0, http.StatusOK,userAccountGetParam{0, "pass"}},     //partnerID not found
-		{"3", "xxx", CodePathError, 0, http.StatusOK,userAccountGetParam{0, "pass"}},     //account 太短
-		{"4", "0", CodePathError, 0, http.StatusOK,userAccountGetParam{100, "pass"}},     //account 太短
-		{"5", "-1", CodePathError, 0, http.StatusOK,userAccountGetParam{9999, "pass"}},   //account 太短
-		{"6", "", CodeSuccess, 0, http.StatusMovedPermanently,userAccountGetParam{9999, "pass"}},
+		{"0", "account1", CodeSuccess, 1, http.StatusOK, userAccountGetParam{100, "pass"}},
+		{"1", "99999", CodeSuccess, 0, http.StatusOK, userAccountGetParam{100, "pass"}},  //active 0
+		{"2", "account1", CodeSuccess, 0, http.StatusOK, userAccountGetParam{0, "pass"}}, //partnerID not found
+		{"3", "xxx", CodePathError, 0, http.StatusOK, userAccountGetParam{0, "pass"}},    //account 太短
+		{"4", "0", CodePathError, 0, http.StatusOK, userAccountGetParam{100, "pass"}},    //account 太短
+		{"5", "-1", CodePathError, 0, http.StatusOK, userAccountGetParam{9999, "pass"}},  //account 太短
+		{"6", "", CodeSuccess, 0, http.StatusMovedPermanently, userAccountGetParam{9999, "pass"}},
 	}
 
 	for _, tc := range tt {

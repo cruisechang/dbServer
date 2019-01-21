@@ -1,24 +1,27 @@
 package handler
 
 import (
-	"net/http"
-	"github.com/cruisechang/dbex"
-	"fmt"
-	"github.com/gorilla/mux"
-	"strings"
 	"database/sql"
 	"encoding/json"
+	"fmt"
+	"net/http"
+	"strings"
 	"time"
-	"github.com/satori/go.uuid"
+
+	"github.com/cruisechang/dbex"
+	"github.com/gorilla/mux"
 	"github.com/juju/errors"
+	uuid "github.com/satori/go.uuid"
 )
 
+//NewUserAccountHandler returns userAccountHandler structure
 func NewUserAccountHandler(base baseHandler) *userAccountHandler {
 	return &userAccountHandler{
 		baseHandler: base,
 	}
 }
 
+//UserAccountHandler does mysql select by account
 type userAccountHandler struct {
 	baseHandler
 }
@@ -76,7 +79,7 @@ func (h *userAccountHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 
 		} else if strings.Contains(r.URL.Path, "accessToken") {
-			h.handleAccessToken(w, r, logPrefix, account,param)
+			h.handleAccessToken(w, r, logPrefix, account, param)
 			return
 
 		} else {
@@ -89,13 +92,12 @@ func (h *userAccountHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
 
-
 func (h *userAccountHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 
-	if p,ok:=param.(*userAccountGetParam);ok{
+	if p, ok := param.(*userAccountGetParam); ok {
 		return stmt.Query(p.PartnerID, IDOrAccount)
 	}
-	return nil,errors.New("assertion error")
+	return nil, errors.New("assertion error")
 }
 func (h *userAccountHandler) returnTargetColumnResponseData() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
@@ -147,7 +149,7 @@ func (h *userAccountHandler) returnTargetColumnResponseData() func(IDOrAccount i
 	}
 }
 
-func (h *userAccountHandler) handleAccessToken(w http.ResponseWriter, r *http.Request, logPrefix string, account string,param *userAccountGetParam) {
+func (h *userAccountHandler) handleAccessToken(w http.ResponseWriter, r *http.Request, logPrefix string, account string, param *userAccountGetParam) {
 	count := 0
 	active := -1
 	token := ""
@@ -181,7 +183,7 @@ func (h *userAccountHandler) handleAccessToken(w http.ResponseWriter, r *http.Re
 		updateString := "UPDATE user set access_token = ? , access_token_expire =?   WHERE partner_id =? AND account  = ? LIMIT 1"
 		stmt, _ := sqlDB.Prepare(updateString)
 		defer stmt.Close()
-		t := time.Now().Add(time.Duration(10)*time.Minute)
+		t := time.Now().Add(time.Duration(10) * time.Minute)
 		stmt.Exec(token, t.Format("2006-01-02 15:04:05"), param.PartnerID, account)
 	}
 
@@ -192,7 +194,7 @@ func (h *userAccountHandler) handleAccessToken(w http.ResponseWriter, r *http.Re
 		Data: []userAccessTokenData{{
 			found,
 			active,
-			token,}},
+			token}},
 	}
 	js, err := json.Marshal(rd)
 	if err != nil {

@@ -1,23 +1,26 @@
 package handler
 
 import (
-	"net/http"
 	"database/sql"
-	"github.com/cruisechang/dbex"
 	"fmt"
+	"net/http"
+
+	"github.com/cruisechang/dbex"
 )
 
-func NewLimitationsHandler(base baseHandler) *limitationsHandler {
-	return &limitationsHandler{
+//NewLimitationsHandler returns LimitationsHandler structure
+func NewLimitationsHandler(base baseHandler) *LimitationsHandler {
+	return &LimitationsHandler{
 		baseHandler: base,
 	}
 }
 
-type limitationsHandler struct {
+//LimitationsHandler selects limitation data  from db
+type LimitationsHandler struct {
 	baseHandler
 }
 
-func (h *limitationsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *LimitationsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logPrefix := "limitationsHandler"
 
 	defer func() {
@@ -36,10 +39,10 @@ func (h *limitationsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.writeError(w, http.StatusOK, CodeMethodError, "")
 }
 
-func (h *limitationsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
+func (h *LimitationsHandler) sqlQuery(stmt *sql.Stmt, IDOrAccount interface{}, param interface{}) (*sql.Rows, error) {
 	return stmt.Query()
 }
-func (h *limitationsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
+func (h *LimitationsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 
 	return func(IDOrAccount interface{}, targetColumn string, rows *sql.Rows) *responseData {
 		count := 0
@@ -49,7 +52,7 @@ func (h *limitationsHandler) returnResponseDataFunc() func(IDOrAccount interface
 		for rows.Next() {
 			err := rows.Scan(&ud.limitation_id, &ud.limitation)
 			if err == nil {
-				count ++
+				count++
 				resData = append(resData,
 					limitationData{
 						ud.limitation_id,
@@ -65,5 +68,3 @@ func (h *limitationsHandler) returnResponseDataFunc() func(IDOrAccount interface
 		}
 	}
 }
-
-
