@@ -22,6 +22,7 @@ func NewUserAccountHandler(base baseHandler) *userAccountHandler {
 }
 
 //UserAccountHandler does mysql select by account
+//用user 帳密建立access token 然後回傳
 type userAccountHandler struct {
 	baseHandler
 }

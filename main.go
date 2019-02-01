@@ -2,33 +2,38 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/cruisechang/dbServer/handler"
 	"github.com/cruisechang/dbServer/middleware"
 	"github.com/cruisechang/dbServer/util"
 	"github.com/cruisechang/dbex"
-	"log"
-	"os"
 )
 
 func main() {
 
+
 	dbx, err := dbex.NewDBEX("dbexConfig.json")
 	if err != nil {
-		exit(1, fmt.Errorf("NewDBEX error:%s", err.Error()))
+		exit(1, fmt.Errorf("dbex.NewDBEX() error=%s", err.Error()))
 	}
 
 	uniqueIDProvider, err := util.CreateUniqueIDProvider()
 	if err != nil {
-
+		exit(2, fmt.Errorf("CreateUniqueIDProvider() error=%s", err.Error()))
 	}
+
 
 	//middleware
 	mw := middleware.NewMiddleware(dbx.Logger)
+
 
 	//http server middleware
 	router := dbx.HTTPServer.GetRouter()
 	router.Use(mw.LogRequestURI)
 	router.Use(mw.CheckHead)
+
 
 	//router
 	router.Handle("/users/{account}/password", handler.NewUserAccountHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET")
@@ -126,4 +131,3 @@ func exit(id int, err error) {
 	log.Println(err)
 	os.Exit(id)
 }
-

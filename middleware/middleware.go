@@ -1,11 +1,12 @@
 package middleware
 
 import (
-	"net/http"
-	"fmt"
-	"github.com/cruisechang/dbServer/handler"
 	"encoding/json"
+	"fmt"
 	"io"
+	"net/http"
+
+	"github.com/cruisechang/dbServer/handler"
 	"github.com/cruisechang/dbex"
 )
 
@@ -14,7 +15,7 @@ type middleware struct {
 	requestURI string
 }
 
-func NewMiddleware(lg *dbex.Logger) (*middleware) {
+func NewMiddleware(lg *dbex.Logger) *middleware {
 	return &middleware{
 		lg: lg,
 	}
@@ -57,37 +58,3 @@ func (m *middleware) CheckHead(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
-
-//func (m *middleware) CheckBody(next http.Handler) http.Handler {
-//
-//	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-//
-//		body, err := r.GetBody()
-//		if err != nil {
-//			m.lg.Log(dbexLog.LevelError, fmt.Sprintf("requestURI=%s, body error=%s\n", r.RequestURI, err.Error()))
-//			m.writeError(w, handler.C)
-//			return
-//		}
-//
-//		if body == nil {
-//			m.lg.Log(dbexLog.LevelError, fmt.Sprintf("requestURI=%s, body =nil\n", r.RequestURI))
-//			m.writeError(w, config.CodeError0)
-//			return
-//		}
-//
-//		b, err := ioutil.ReadAll(body)
-//
-//		if err != nil {
-//			m.lg.Log(dbexLog.LevelError, fmt.Sprintf("requestURI=%s, parsing body error=%s\n", r.RequestURI, err.Error()))
-//			m.writeError(w, config.CodeError0)
-//			return
-//		}
-//
-//		if b == nil {
-//			m.lg.Log(dbexLog.LevelError, fmt.Sprintf("requestURI=%s, parsing body ==nil\n", r.RequestURI))
-//			m.writeError(w, config.CodeError0)
-//			return
-//		}
-//		next.ServeHTTP(w, r)
-//	})
-//}

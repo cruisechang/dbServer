@@ -28,7 +28,7 @@ func Test_userAccessTokenHandler_get(t *testing.T) {
 		count int
 		token string
 	}{
-		{"0", CodeSuccess, 1, "cb69b634-aeaf-41dc-a945-4a9cfc350fee"}, //success
+		{"0", CodeSuccess, 1, "769d3e12-4e78-4419-b9b3-77fb99f25e59"}, //success
 		{"1", CodeSuccess, 0, "notFound"},                             //not found
 		{"2", CodeSuccess, 0, "99999"},                                // not found
 		{"3", CodePathError, 0, "9.99"},                               // path error = 太短

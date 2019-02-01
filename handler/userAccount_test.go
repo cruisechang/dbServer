@@ -198,7 +198,7 @@ func Test_userAccountHandler_getAccessToken(t *testing.T) {
 	}
 
 	for _, tc := range tt {
-		path := fmt.Sprintf("/users/" + tc.account + "/accesstoken")
+		path := fmt.Sprintf("/users/" + tc.account + "/accessToken")
 
 		//t.Logf("path %s", path)
 		b, err := json.Marshal(tc.param)
@@ -218,7 +218,7 @@ func Test_userAccountHandler_getAccessToken(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/users/{account}/accesstoken", NewUserAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
+		router.Handle("/users/{account}/accessToken", NewUserAccountHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 

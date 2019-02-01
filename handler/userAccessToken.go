@@ -19,6 +19,7 @@ func NewUserAccessTokenHandler(base baseHandler) *UserAccessTokenHandler {
 }
 
 //UserAccessTokenHandler presents structure of user account handler
+//user使用access token 登入，查詢db是否有此access token
 type UserAccessTokenHandler struct {
 	baseHandler
 }
