@@ -44,18 +44,18 @@ func (h *UsersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		ug := &userGetParam{}
 		err := json.Unmarshal(body, ug)
 		if err != nil {
-			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler get data unmarshal error=%s", logPrefix, err.Error()))
+			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get data unmarshal error=%s", logPrefix, err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestDataUnmarshalError, "")
 			return
 		}
 
 		if ug.OrderBy != "userID" && ug.OrderBy != "" {
-			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler  get data orderBy error, orderBy=%s", logPrefix, ug.OrderBy))
+			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get data orderBy error, orderBy=%s", logPrefix, ug.OrderBy))
 			h.writeError(w, http.StatusOK, CodeRequestDataError, "")
 			return
 		}
 		if ug.Order != "asc" && ug.Order != "desc" && ug.Order != "" {
-			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler  get data order error, order=%s", logPrefix, ug.Order))
+			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s get data order error, order=%s", logPrefix, ug.Order))
 			h.writeError(w, http.StatusOK, CodeRequestDataError, "")
 			return
 		}
@@ -68,19 +68,19 @@ func (h *UsersHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		param := &userPostParam{}
 		err := json.Unmarshal(body, param)
 		if err != nil {
-			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler  post data unmarshal error=%s", logPrefix, err.Error()))
+			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s post data unmarshal error=%s,data=%s", logPrefix, err.Error(),body))
 			h.writeError(w, http.StatusOK, CodeRequestDataUnmarshalError, "")
 			return
 		}
 
 		if len(param.Account) < 4 || len(param.Password) < 4 || len(param.Name) < 4 || param.PartnerID < 0 {
-			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler  post data illegal=%+v", logPrefix, param))
+			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s post data illegal=%+v", logPrefix, param))
 			h.writeError(w, http.StatusOK, CodeRequestPostDataIllegal, "post data illegal")
 			return
 		}
 		ID, err := h.getUniqueID()
 		if err != nil {
-			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s handler  post get unique userID error %s", logPrefix, err.Error()))
+			h.logger.LogFile(dbex.LevelError, fmt.Sprintf("%s post get unique userID error %s", logPrefix, err.Error()))
 			h.writeError(w, http.StatusOK, CodeRequestPostDataIllegal, fmt.Sprintf("%s handler post get unique userID error %s", logPrefix, err.Error()))
 		}
 
