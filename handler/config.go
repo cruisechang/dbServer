@@ -42,6 +42,12 @@ const (
 	//delete  刪除不存在的資料，不會錯，但affected column count=0
 
 	HeadAPIKey = "qwerASDFzxcv!@#$"
+
+	RoomTypeBaccarat    int = 0
+	RoomTypeDragonTiger int = 1
+	RoomTypeNiuniu      int = 2
+	RoomTypeSicbo       int = 6
+	RoomTypeRoulette    int = 7
 )
 
 type responseData struct {
@@ -125,6 +131,9 @@ type betCountdownData struct {
 }
 type dealerIDData struct {
 	DealerID uint `json:"dealerID"`
+}
+type historyResultData struct {
+	HistoryResult string `json:"historyResult"`
 }
 
 type hallIDData struct {
@@ -381,39 +390,42 @@ type roomPostParam struct {
 	RoomType     uint   `json:"roomType"`
 	BetCountdown uint   `json:"betCountdown"`
 	HLSURL       string `json:"hlsURL"`
-	//DealerID     uint   `json:"dealerID"`
+	//DealerID     uint   `json:"dealerID"`       //rooms post 裡面填入
 	LimitationID uint `json:"limitationID"`
+	//HistoryResult string `json:"historyResult"`  //rooms post 裡面填入
 }
 
 type roomData struct {
-	RoomID       uint   `json:"roomID"`
-	HallID       uint   `json:"hallID"`
-	Name         string `json:"name"`
-	RoomType     uint   `json:"roomType"`
-	Active       uint   `json:"active"`
-	HLSURL       string `json:"hlsURL"`
-	Boot         uint   `json:"boot"`
-	RoundID      uint64 `json:"round"`
-	Status       int    `json:"status"`
-	BetCountdown uint   `json:"betCountdown"`
-	DealerID     uint   `json:"dealerID"`
-	LimitationID uint   `json:"limitationID"`
-	CreateDate   string `json:"createDate"`
+	RoomID        uint   `json:"roomID"`
+	HallID        uint   `json:"hallID"`
+	Name          string `json:"name"`
+	RoomType      uint   `json:"roomType"`
+	Active        uint   `json:"active"`
+	HLSURL        string `json:"hlsURL"`
+	Boot          uint   `json:"boot"`
+	RoundID       uint64 `json:"round"`
+	Status        int    `json:"status"`
+	BetCountdown  uint   `json:"betCountdown"`
+	DealerID      uint   `json:"dealerID"`
+	LimitationID  uint   `json:"limitationID"`
+	HistoryResult string `json:"historyResult"`
+	CreateDate    string `json:"createDate"`
 }
 type roomDB struct {
-	room_id       uint
-	hall_id       uint
-	name          string
-	room_type     uint
-	active        uint
-	hls_url       string
-	boot          uint
-	round_id      uint64
-	status        int
-	bet_countdown uint
-	dealer_id     uint
-	limitation_id uint
-	create_date   string
+	room_id        uint
+	hall_id        uint
+	name           string
+	room_type      uint
+	active         uint
+	hls_url        string
+	boot           uint
+	round_id       uint64
+	status         int
+	bet_countdown  uint
+	dealer_id      uint
+	limitation_id  uint
+	history_result string
+	create_date    string
 }
 
 type roomPatchParam struct {
@@ -706,9 +718,9 @@ type officialCMSRolePatchParam struct {
 //收到的資料，要比較嚴格
 type broadcastPostParam struct {
 	Content     string `json:"content"`
-	Internal    uint    `json:"internal"`
-	RepeatTimes uint    `json:"repeatTimes"`
-	Active      uint    `json:"active"`
+	Internal    uint   `json:"internal"`
+	RepeatTimes uint   `json:"repeatTimes"`
+	Active      uint   `json:"active"`
 }
 type broadcastData struct {
 	BroadcastID int    `json:"broadcastID"`
@@ -751,8 +763,7 @@ type bannerData struct {
 	PicURL      string `json:"picURL"`
 	LinkURL     string `json:"linkURL"`
 	Description string `json:"description"`
-	Platform    uint    `json:"platform"`
-	Active      uint    `json:"active"`
+	Platform    uint   `json:"platform"`
+	Active      uint   `json:"active"`
 	CreateDate  string `json:"createDate"`
 }
-

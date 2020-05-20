@@ -13,7 +13,6 @@ import (
 
 func main() {
 
-
 	dbx, err := dbex.NewDBEX("dbexConfig.json")
 	if err != nil {
 		exit(1, fmt.Errorf("dbex.NewDBEX() error=%s", err.Error()))
@@ -24,24 +23,36 @@ func main() {
 		exit(2, fmt.Errorf("CreateUniqueIDProvider() error=%s", err.Error()))
 	}
 
-
 	//middleware
 	mw := middleware.NewMiddleware(dbx.Logger)
 
-
 	//http server middleware
 	router := dbx.HTTPServer.GetRouter()
-	router.Use(mw.LogRequestURI)
+	//router.Use(mw.LogRequestURI)
 	router.Use(mw.CheckHead)
 
-
 	//router
+
+	router.Handle("/rooms/{id:[0-9]+}/historyResult", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods( "PATCH")
+	router.Handle("/rooms/{id:[0-9}+}/name", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
+	router.Handle("/rooms/{id:[0-9}+}/active", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
+	router.Handle("/rooms/{id:[0-9}+}/hlsURL", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
+	router.Handle("/rooms/{id:[0-9}+}/boot", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
+	router.Handle("/rooms/{id:[0-9}+}/round", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
+	router.Handle("/rooms/{id:[0-9}+}/status", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
+	router.Handle("/rooms/{id:[0-9}+}/betCountdown", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
+	router.Handle("/rooms/{id:[0-9}+}/dealerID", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
+	router.Handle("/rooms/{id:[0-9}+}", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET", "DELETE", "PATCH")
+	router.Handle("/rooms", handler.NewRoomsHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET", "POST")
+
+
+
 	router.Handle("/users/{account}/password", handler.NewUserAccountHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET")
 	router.Handle("/users/{account}/id", handler.NewUserAccountHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET")
 	router.Handle("/users/{account}/accessToken", handler.NewUserAccountHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET")
 	router.Handle("/users/{accessToken}/tokenData", handler.NewUserAccessTokenHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET")
 	router.Handle("/users/{id:[0-9]+}/credit", handler.NewUserIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET", "PATCH")
-	router.Handle("/users/{id:[0-9]+}/login", handler.NewUserIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET", "PATCH")
+	//router.Handle("/users/{id:[0-9]+}/login", handler.NewUserIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET", "PATCH")
 	router.Handle("/users/{id:[0-9]+}/active", handler.NewUserIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET", "PATCH")
 	router.Handle("/users/{id:[0-9]+}", handler.NewUserIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET")
 	router.Handle("/users", handler.NewUsersHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET", "POST")
@@ -62,16 +73,6 @@ func main() {
 	router.Handle("/halls/{id:[0-9]+}", handler.NewHallIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET", "DELETE", "PATCH")
 	router.Handle("/halls", handler.NewHallsHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET", "POST")
 
-	router.Handle("/rooms/{id:[0-9}+}/name", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
-	router.Handle("/rooms/{id:[0-9}+}/active", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
-	router.Handle("/rooms/{id:[0-9}+}/hlsURL", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
-	router.Handle("/rooms/{id:[0-9}+}/boot", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
-	router.Handle("/rooms/{id:[0-9}+}/round", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
-	router.Handle("/rooms/{id:[0-9}+}/status", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
-	router.Handle("/rooms/{id:[0-9}+}/betCountdown", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
-	router.Handle("/rooms/{id:[0-9}+}/dealerID", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
-	router.Handle("/rooms/{id:[0-9}+}", handler.NewRoomIDHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET", "DELETE", "PATCH")
-	router.Handle("/rooms", handler.NewRoomsHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET", "POST")
 
 	router.Handle("/limitations", handler.NewLimitationsHandler(handler.NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET")
 

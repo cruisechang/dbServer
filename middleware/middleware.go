@@ -43,7 +43,7 @@ func (m *middleware) writeError(w http.ResponseWriter, errorCode int) {
 func (m *middleware) LogRequestURI(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		m.lg.LogFile(dbex.LevelInfo, fmt.Sprintf("requestURI:%s", r.RequestURI))
+		m.lg.LogFile(dbex.LevelInfo, fmt.Sprintf("dbServer requestURI=%s", r.RequestURI))
 		next.ServeHTTP(w, r)
 	})
 }

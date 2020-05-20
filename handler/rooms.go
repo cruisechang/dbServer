@@ -34,7 +34,7 @@ func (h *RoomsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	if r.Method == "GET" || r.Method == "get" {
-		queryString := "SELECT room_id,hall_id,name,room_type,active,hls_url,boot,round_id,status,bet_countdown,dealer_id,limitation_id ,create_date FROM room "
+		queryString := "SELECT room_id,hall_id,name,room_type,active,hls_url,boot,round_id,status,bet_countdown,dealer_id,limitation_id, history_result,create_date FROM room "
 		h.dbQuery(w, r, logPrefix, 0, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
@@ -60,7 +60,7 @@ func (h *RoomsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		queryString := "INSERT  INTO room (room_id,hall_id,name,room_type,hls_url,bet_countdown,dealer_id,limitation_id) values (? ,?,?,?,?,?,?,?)"
+		queryString := "INSERT  INTO room (room_id,hall_id,name,room_type,hls_url,bet_countdown,dealer_id,limitation_id,history_result) values (? ,?,?,?,?,?,?,?,?)"
 		h.dbExec(w, r, logPrefix, param.RoomID, "", queryString, param, h.sqlPost, h.returnPostResponseData)
 
 		return
@@ -80,7 +80,7 @@ func (h *RoomsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, ta
 		resData := []roomData{}
 
 		for rows.Next() {
-			err := rows.Scan(&ud.room_id, &ud.hall_id, &ud.name, &ud.room_type, &ud.active, &ud.hls_url, &ud.boot, &ud.round_id, &ud.status, &ud.bet_countdown, &ud.dealer_id, &ud.limitation_id, &ud.create_date)
+			err := rows.Scan(&ud.room_id, &ud.hall_id, &ud.name, &ud.room_type, &ud.active, &ud.hls_url, &ud.boot, &ud.round_id, &ud.status, &ud.bet_countdown, &ud.dealer_id, &ud.limitation_id, &ud.history_result, &ud.create_date)
 			if err == nil {
 				count++
 				resData = append(resData,
@@ -97,6 +97,7 @@ func (h *RoomsHandler) returnResponseDataFunc() func(IDOrAccount interface{}, ta
 						ud.bet_countdown,
 						ud.dealer_id,
 						ud.limitation_id,
+						ud.history_result,
 						ud.create_date})
 			}
 		}
@@ -115,7 +116,13 @@ func (h *RoomsHandler) sqlPost(stmt *sql.Stmt, IDOrAccount interface{}, param in
 
 	if p, ok := param.(*roomPostParam); ok {
 
-		return stmt.Exec(p.RoomID, p.HallID, p.Name, p.RoomType, p.HLSURL, p.BetCountdown, 1, p.LimitationID)
+		historyResult := "[]"
+
+		//除摋寶，其他都是[]
+		if int(p.RoomType) == RoomTypeSicbo {
+			historyResult = "{}"
+		}
+		return stmt.Exec(p.RoomID, p.HallID, p.Name, p.RoomType, p.HLSURL, p.BetCountdown, 1, p.LimitationID, historyResult)
 	}
 	return nil, errors.New("")
 

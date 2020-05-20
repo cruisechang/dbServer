@@ -12,12 +12,14 @@ import (
 	"github.com/cruisechang/dbex"
 	"github.com/gorilla/mux"
 )
+
 //NewRoomIDHandler returns RoomIDHandler structure
 func NewRoomIDHandler(base baseHandler) *RoomIDHandler {
 	return &RoomIDHandler{
 		baseHandler: base,
 	}
 }
+
 //RoomIDHandler does select, update, delete data from DB by ID
 type RoomIDHandler struct {
 	baseHandler
@@ -26,6 +28,8 @@ type RoomIDHandler struct {
 func (h *RoomIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	logPrefix := "roomIDHandler"
+
+	h.logger.LogFile(dbex.LevelInfo, fmt.Sprintf("%s begin path=%s", logPrefix, r.URL.Path, ))
 
 	defer func() {
 		if r := recover(); r != nil {
@@ -57,7 +61,7 @@ func (h *RoomIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == "GET" || r.Method == "get" {
-		queryString := "SELECT room_id,hall_id,name,room_type,active,hls_url,boot,round_id,status,bet_countdown,dealer_id,limitation_id ,create_date FROM room where room_id = ? LIMIT 1"
+		queryString := "SELECT room_id,hall_id,name,room_type,active,hls_url,boot,round_id,status,bet_countdown,dealer_id,limitation_id ,history_result,create_date FROM room where room_id = ? LIMIT 1"
 		h.dbQuery(w, r, logPrefix, ID, "", queryString, nil, h.sqlQuery, h.returnResponseDataFunc)
 		return
 	}
@@ -76,30 +80,42 @@ func (h *RoomIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if strings.Contains(r.URL.Path, "name") {
 			column = "name"
 			queryString = "UPDATE room set " + column + "= ?  WHERE room_id = ? LIMIT 1"
+
 		} else if strings.Contains(r.URL.Path, "active") {
 			column = "active"
 			queryString = "UPDATE room set " + column + "= ?  WHERE room_id = ? LIMIT 1"
+
 		} else if strings.Contains(r.URL.Path, "hlsURL") {
 			column = "hls_url"
 			queryString = "UPDATE room set " + column + "= ?  WHERE room_id = ? LIMIT 1"
 		} else if strings.Contains(r.URL.Path, "boot") {
 			column = "boot"
 			queryString = "UPDATE room set " + column + "= ?  WHERE room_id = ? LIMIT 1"
+
 		} else if strings.Contains(r.URL.Path, "round") {
 			column = "round_id"
 			queryString = "UPDATE room set " + column + "= ?  WHERE room_id = ? LIMIT 1"
+
 		} else if strings.Contains(r.URL.Path, "status") {
 			column = "status"
 			queryString = "UPDATE room set " + column + "= ?  WHERE room_id = ? LIMIT 1"
+
 		} else if strings.Contains(r.URL.Path, "betCountdown") {
 			column = "bet_countdown"
 			queryString = "UPDATE room set " + column + "= ?  WHERE room_id = ? LIMIT 1"
+
 		} else if strings.Contains(r.URL.Path, "dealerID") {
 			column = "dealer_id"
 			queryString = "UPDATE room set " + column + "= ?  WHERE room_id = ? LIMIT 1"
+
 		} else if strings.Contains(r.URL.Path, "newRound") {
 			column = "newRound"
 			queryString = "UPDATE room set boot = ?,round_id=?,status=?  WHERE room_id = ? LIMIT 1"
+
+		} else if strings.Contains(r.URL.Path, "historyResult") {
+			column = "history_result"
+			queryString = "UPDATE room set " + column + "= ?  WHERE room_id = ? LIMIT 1"
+
 		} else {
 			queryString = "UPDATE room set  room_id = ? , hall_id = ? , name = ? , room_type = ? , active = ? , hls_url= ? , bet_countdown= ? , limitation_id= ?   WHERE room_id = ? LIMIT 1"
 		}
@@ -135,7 +151,7 @@ func (h *RoomIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, t
 		resData := []roomData{}
 
 		for rows.Next() {
-			err := rows.Scan(&ud.room_id, &ud.hall_id, &ud.name, &ud.room_type, &ud.active, &ud.hls_url, &ud.boot, &ud.round_id, &ud.status, &ud.bet_countdown, &ud.dealer_id, &ud.limitation_id, &ud.create_date)
+			err := rows.Scan(&ud.room_id, &ud.hall_id, &ud.name, &ud.room_type, &ud.active, &ud.hls_url, &ud.boot, &ud.round_id, &ud.status, &ud.bet_countdown, &ud.dealer_id, &ud.limitation_id, &ud.history_result, &ud.create_date)
 			if err == nil {
 				count++
 				resData = append(resData,
@@ -152,6 +168,7 @@ func (h *RoomIDHandler) returnResponseDataFunc() func(IDOrAccount interface{}, t
 						ud.bet_countdown,
 						ud.dealer_id,
 						ud.limitation_id,
+						ud.history_result,
 						ud.create_date})
 			}
 		}
@@ -237,6 +254,13 @@ func (h *RoomIDHandler) getPatchData(column string, body []byte) (interface{}, e
 			return nil, err
 		}
 		return d, nil
+	case "history_result":
+		d := &historyResultData{}
+		err := json.Unmarshal(body, d)
+		if err != nil {
+			return nil, err
+		}
+		return d, nil
 	case "":
 		d := &roomPatchParam{}
 		err := json.Unmarshal(body, d)
@@ -281,9 +305,13 @@ func (h *RoomIDHandler) sqlPatch(stmt *sql.Stmt, IDOrAccount interface{}, param 
 	if p, ok := param.(*dealerIDData); ok {
 		return stmt.Exec(p.DealerID, IDOrAccount)
 	}
+	if p, ok := param.(*historyResultData); ok {
+		return stmt.Exec(p.HistoryResult, IDOrAccount)
+	}
 	if p, ok := param.(*roomPatchParam); ok {
 		return stmt.Exec(p.RoomID, p.HallID, p.Name, p.RoomType, p.Active, p.HLSURL, p.BetCountdown, p.LimitationID, IDOrAccount)
 	}
+
 	return nil, errors.New("parsing param error")
 }
 

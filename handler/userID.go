@@ -75,29 +75,6 @@ func (h *UserIDHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	/*
-		if r.Method == "GET" || r.Method == "get" {
-			column := ""
-			if strings.Contains(r.URL.Path, "credit") {
-				column = "credit"
-				queryString := "SELECT  " + column + " from user WHERE user_id = ? LIMIT 1"
-				h.getTargetColumnValue(w, r, "user", id, column, queryString, h.returnTargetColumnResDataCount)
-			} else if strings.Contains(r.URL.Path, "status") {
-				column = "status"
-				queryString := "SELECT  " + column + " from user WHERE user_id = ? LIMIT 1"
-				h.getTargetColumnValue(w, r, "user", id, column, queryString, h.returnTargetColumnResDataCount)
-			} else if strings.Contains(r.URL.Path, "login") {
-				column = "login"
-				queryString := "SELECT  " + column + " from user WHERE user_id = ? LIMIT 1"
-				h.getTargetColumnValue(w, r, "user", id, column, queryString, h.returnTargetColumnResDataCount)
-			} else {
-				queryString := "SELECT user_id,partner_id,account,name,credit,level,category,active,ip,platform,login,create_date from user WHERE user_id = ? LIMIT 1"
-				h.getTargetRow(w, r, "user", id, queryString, h.returnResDataFunc)
-			}
-			return
-		}
-	*/
-
 	if r.Method == "PATCH" || r.Method == "patch" {
 		//check body
 		body, errCode, errMsg := h.checkBody(w, r)

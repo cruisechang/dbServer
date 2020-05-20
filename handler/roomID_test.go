@@ -23,7 +23,7 @@ func Test_roomHandler_get(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
-	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type param struct{ ID uint64 }
 	tt := []struct {
@@ -59,7 +59,7 @@ func Test_roomHandler_get(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("GET")
+		router.Handle("/rooms/{id:[0-9]+}", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("GET")
 
 		router.ServeHTTP(rr, req)
 
@@ -97,10 +97,10 @@ func Test_roomHandler_delete(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	//dbx.Logger.SetLevel(dblog.LevelInfo)
-	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	//insert first
-	h := NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))
+	h := NewBroadcastIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))
 	sqlDB := h.db.GetSQLDB()
 	queryString := "INSERT  INTO room (room_id,hall_id,name,room_type,hls_url,bet_countdown,dealer_id,limitation_id) values (? ,?,?,?,?,?,?,?)"
 
@@ -138,7 +138,7 @@ func Test_roomHandler_delete(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("DELETE")
+		router.Handle("/rooms/{id:[0-9]+}", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("DELETE")
 
 		router.ServeHTTP(rr, req)
 
@@ -170,7 +170,7 @@ func Test_roomHandler_patch(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
-	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	//type param struct {
 	//	DealerID uint `json:"dealerID"`
@@ -205,7 +205,7 @@ func Test_roomHandler_patch(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -237,7 +237,7 @@ func Test_roomHandler_patchName(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
-	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type param struct {
 		Name string `json:"name"`
@@ -272,7 +272,7 @@ func Test_roomHandler_patchName(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/name", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/name", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -304,7 +304,7 @@ func Test_roomHandler_patchActive(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
-	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type param struct {
 		Active uint `json:"active"`
@@ -339,7 +339,7 @@ func Test_roomHandler_patchActive(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/active", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/active", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -371,7 +371,7 @@ func Test_roomHandler_patchHLRURL(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
-	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type param struct {
 		HLSURL string `json:"hlsURL"`
@@ -408,7 +408,7 @@ func Test_roomHandler_patchHLRURL(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/hlsURL", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/hlsURL", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -439,7 +439,7 @@ func Test_roomHandler_patchBoot(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
-	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type param struct {
 		Boot uint `json:"boot"`
@@ -476,7 +476,7 @@ func Test_roomHandler_patchBoot(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/boot", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/boot", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -508,7 +508,7 @@ func Test_roomHandler_patchRound(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
-	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type param struct {
 		Round uint64 `json:"round"`
@@ -543,7 +543,7 @@ func Test_roomHandler_patchRound(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/round", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/round", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -575,7 +575,7 @@ func Test_roomHandler_patchStatus(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
-	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type param struct {
 		Status uint `json:"status"`
@@ -610,7 +610,7 @@ func Test_roomHandler_patchStatus(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/status", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/status", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -642,7 +642,7 @@ func Test_roomHandler_patchBetCountdown(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
-	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type param struct {
 		BetCountdown uint `json:"betCountdown"`
@@ -677,7 +677,7 @@ func Test_roomHandler_patchBetCountdown(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/betCountdown", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/betCountdown", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -709,7 +709,7 @@ func Test_roomHandler_patchBetDealerID(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
-	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	type param struct {
 		DealerID uint `json:"dealerID"`
@@ -744,7 +744,79 @@ func Test_roomHandler_patchBetDealerID(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/dealerID", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/dealerID", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
+
+		router.ServeHTTP(rr, req)
+
+		if rr.Code != http.StatusOK {
+			t.Fatalf("handler failed http.Status   got %v want %v,name=%s", rr.Code, http.StatusOK, tc.name)
+		}
+
+		body, _ := ioutil.ReadAll(rr.Body)
+
+		resData := &responseData{}
+		err = json.Unmarshal(body, resData)
+		if err != nil {
+			t.Fatalf("handler unmarshal responseData error=%s", err.Error())
+		}
+		if resData.Code != tc.code {
+			t.Fatalf("handler resData code  got %d want %d, name=%s", resData.Code, tc.code, tc.name)
+		}
+
+		if resData.Count != tc.count {
+			t.Fatalf("handler resData count  got %d want %d, name=%s", resData.Count, tc.count, tc.name)
+
+		}
+	}
+}
+
+func Test_roomHandler_patchHistoryResult(t *testing.T) {
+	dbx, err := dbex.NewDBEX("dbexConfig.json")
+	if err != nil {
+		t.Fatalf("dbex error %s", err.Error())
+	}
+	dbx.Logger.SetLevel(dbex.LevelInfo)
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
+
+	type param struct {
+		HistoryResult string `json:"historyResult"`
+	}
+
+	result := &struct{ X int }{3}
+
+	resmarsh, _ := json.Marshal(result)
+
+	tt := []struct {
+		name  string
+		ID    uint64
+		param param
+		code  int
+		count int
+	}{
+		{"0", 1, param{string(resmarsh)}, CodeSuccess, 1},
+		{"1", 1, param{string(resmarsh)}, CodeSuccess, 0},
+		{"2", 1, param{"{}"}, CodeSuccess, 1}, //改回去
+		{"3", 99999, param{"{}"}, CodeSuccess, 0},
+	}
+
+	for _, tc := range tt {
+		path := fmt.Sprintf("/rooms/" + strconv.FormatUint(tc.ID, 10) + "/historyResult")
+
+		b, _ := json.Marshal(tc.param)
+
+		req, err := http.NewRequest("PATCH", path, bytes.NewBuffer(b))
+		if err != nil {
+			t.Fatal(err)
+		}
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("charset", "UTF-8")
+		req.Header.Set("API-Key", "qwerASDFzxcv!@#$")
+
+		rr := httptest.NewRecorder()
+
+		// Need to create a router that we can pass the request through so that the vars will be added to the context
+		router := mux.NewRouter()
+		router.Handle("/rooms/{id:[0-9]+}/historyResult", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 
@@ -776,7 +848,7 @@ func Test_roomHandler_patchNewRound(t *testing.T) {
 		t.Fatalf("dbex error %s", err.Error())
 	}
 	dbx.Logger.SetLevel(dbex.LevelInfo)
-	uniqueIDProvider,_:=util.CreateUniqueIDProvider()
+	uniqueIDProvider, _ := util.CreateUniqueIDProvider()
 
 	tt := []struct {
 		name  string
@@ -808,7 +880,7 @@ func Test_roomHandler_patchNewRound(t *testing.T) {
 
 		// Need to create a router that we can pass the request through so that the vars will be added to the context
 		router := mux.NewRouter()
-		router.Handle("/rooms/{id:[0-9]+}/newRound", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger,uniqueIDProvider))).Methods("PATCH")
+		router.Handle("/rooms/{id:[0-9]+}/newRound", NewRoomIDHandler(NewBaseHandler(dbx.DB, dbx.Logger, uniqueIDProvider))).Methods("PATCH")
 
 		router.ServeHTTP(rr, req)
 

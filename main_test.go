@@ -2,10 +2,9 @@ package main
 
 import (
 	"github.com/cruisechang/dbServer/handler"
-	"testing"
 	"net/http"
 	"net/http/httptest"
-
+	"testing"
 )
 
 func Test_main(t *testing.T) {
