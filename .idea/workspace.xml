@@ -3,14 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a6f3a024-60dd-42c0-a6e4-e62a5f0bae49" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/roomID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/roomID.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/roomID_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/roomID_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/rooms.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/rooms.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/userID.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/userID.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/main_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middleware/middleware.go" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/middleware.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +20,7 @@
     <favorites_list name="dbServer" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -107,7 +99,7 @@
       <dir>$PROJECT_DIR$/../..</dir>
     </dirStrings>
   </component>
-  <component name="GOROOT" path="/usr/local/Cellar/go/1.12.5/libexec" />
+  <component name="GOROOT" path="/usr/local/Cellar/go/1.14/libexec" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -169,8 +161,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="24" />
-    <option name="y" value="23" />
+    <option name="x" value="1463" />
+    <option name="y" value="-146" />
     <option name="width" value="1416" />
     <option name="height" value="877" />
   </component>
@@ -219,7 +211,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="go.vgo" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -238,438 +230,438 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.main">
+  <component name="RunManager" selected="Go Test.handler package">
     <configuration name="main" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <kind value="DIRECTORY" />
       <filePath value="$PROJECT_DIR$/" />
       <package value="oa/dbServer" />
       <directory value="$PROJECT_DIR$/" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="banner" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/banners_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="bannerID" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/bannerID_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="betID" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/betID_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="bets" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/bets_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="broadcastID" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/handler/broadcastID_test.go" />
       <filePath value="$PROJECT_DIR$/handler/broadcastID_test.go" />
       <pattern value="$PROJECT_DIR$/../../../../output/dbServer" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="broadcasts" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/broadcasts_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="client" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/test/client_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="dealerAccount" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/dealerAccount_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="dealerID" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/dealerID_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="dealers" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/dealers_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="hallID" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/hallID_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="halls" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/halls_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="handler package" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="PACKAGE" />
       <package value="github.com/cruisechang/dbServer/handler" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="handlerTest" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/test/handler_test.go" />
       <pattern value="$PROJECT_DIR$/../../../output/dbServer" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="limitations" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/limitations_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="notFound" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/notFoundHandler_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="officialCMSManagerAccount" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/officialCMSManagerAccount_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="officialCMSManagerID" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/officialCMSManagerID_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="officialCMSManagers" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/officialCMSManagers_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="officialCMSRoleID" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/officialCMSRoleID_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="officialCMSRoles" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/officialCMSRoles_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="partnerAccount" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/partnerAccount_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="partnerID" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/partnerID_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="partnerLog" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/partnerLog_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="partners" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/partners_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="roomID" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/roomID_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="rooms" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/rooms_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="roundID" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/roundID_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="rounds" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/rounds_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="sonyflake" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/test/sonyflake_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="transferID" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/transferID_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="transferPartnerTransferID" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/transferPartnerTransferID_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="transfers" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/transfers_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="userAccessToken" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/userAccessToken_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="userAccount" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/userAccount_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="userID" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/userID_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="userLog" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/userLog_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <configuration name="users" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="dbServer" />
-      <working_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
       <framework value="gotest" />
       <kind value="FILE" />
       <package value="oa/dbServer" />
       <directory value="$PROJECT_DIR$/" />
       <filePath value="$PROJECT_DIR$/handler/users_test.go" />
-      <output_directory value="$PROJECT_DIR$/../../../../output/dbServer" />
+      <output_directory value="$PROJECT_DIR$/../../../../liveOutput/dbServer" />
       <method v="2" />
     </configuration>
     <list>
@@ -756,9 +748,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="24" y="23" width="1416" height="877" extended-state="6" />
+    <frame x="1463" y="-146" width="1416" height="877" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6564103" visible="true" weight="0.23435226" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6564103" visible="true" weight="0.23726347" />
       <window_info id="Favorites" order="1" sideWeight="0.34358975" side_tool="true" weight="0.22627737" />
       <window_info x="7" y="-814" width="228" height="785" id="Structure" order="2" sideWeight="0.34358975" side_tool="true" weight="0.17445256" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -782,6 +774,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/handler/rounds_test.go">
@@ -982,13 +977,7 @@
     <entry file="file://$PROJECT_DIR$/handler/dealerAccount.go">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../gorilla/mux/middleware.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="23" column="17" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../../gorilla/mux/middleware.go" />
     <entry file="file://$PROJECT_DIR$/handler/limitations.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
